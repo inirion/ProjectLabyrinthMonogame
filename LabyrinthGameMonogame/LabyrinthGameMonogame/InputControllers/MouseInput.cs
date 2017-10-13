@@ -4,7 +4,7 @@ using LabyrinthGameMonogame.Enums;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 
-namespace LabyrinthGameMonogame.Controllers
+namespace LabyrinthGameMonogame.InputControllers
 {
     class MouseInput : IMouseInput
     {
@@ -14,13 +14,15 @@ namespace LabyrinthGameMonogame.Controllers
         MouseState previousState;
         Vector2 currentMousePos;
         Vector2 previousMousePos;
+
+        public Vector2 CurrentMousePos { get => currentMousePos; set => currentMousePos = value; }
         #endregion
         public MouseInput()
         {
             currentState = previousState;
 
-            currentMousePos = previousMousePos;
-            currentMousePos = new Vector2(currentState.X, currentState.Y);
+            CurrentMousePos = previousMousePos;
+            CurrentMousePos = new Vector2(currentState.X, currentState.Y);
 
             KeyBindings = new Dictionary<MouseKeys, Delegate>();
             KeyBindings.Add(MouseKeys.LeftButton, new Func<MouseKeys, MouseState, ButtonState>(GetButtonState));
@@ -28,6 +30,7 @@ namespace LabyrinthGameMonogame.Controllers
             KeyBindings.Add(MouseKeys.MiddleButton, new Func<MouseKeys, MouseState, ButtonState>(GetButtonState));
             KeyBindings.Add(MouseKeys.Button1, new Func<MouseKeys, MouseState, ButtonState>(GetButtonState));
             KeyBindings.Add(MouseKeys.Button2, new Func<MouseKeys, MouseState, ButtonState>(GetButtonState));
+
             Update();
         }
         public void Update()
@@ -35,8 +38,8 @@ namespace LabyrinthGameMonogame.Controllers
             previousState = currentState;
             currentState = Mouse.GetState();
 
-            previousMousePos = currentMousePos;
-            currentMousePos = new Vector2(currentState.X, currentState.Y);
+            previousMousePos = CurrentMousePos;
+            CurrentMousePos = new Vector2(currentState.X, currentState.Y);
         }
 
         public bool Clicked(MouseKeys key)
@@ -45,9 +48,23 @@ namespace LabyrinthGameMonogame.Controllers
                 && KeyBindings[key].DynamicInvoke(key, previousState).Equals(ButtonState.Pressed);
         }
 
+        public bool Clicked(MouseKeys key, Rectangle target)
+        {
+            if ((KeyBindings[key].DynamicInvoke(key, currentState).Equals(ButtonState.Released)
+                && KeyBindings[key].DynamicInvoke(key, previousState).Equals(ButtonState.Pressed))
+                && (target.Contains(currentMousePos)))
+                return true;
+            else return false;
+        }
+
         public bool Pressed(MouseKeys key)
         {
             return KeyBindings[key].DynamicInvoke(key,currentState).Equals(ButtonState.Pressed);
+        }
+
+        public bool Hovered(Rectangle target)
+        {
+            return target.Contains(currentMousePos);
         }
 
         private ButtonState GetButtonState(MouseKeys key, MouseState state)

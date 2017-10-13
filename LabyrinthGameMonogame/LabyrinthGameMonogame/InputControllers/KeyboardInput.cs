@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LabyrinthGameMonogame.Enums;
 
-namespace LabyrinthGameMonogame.Controllers
+namespace LabyrinthGameMonogame.InputControllers
 {
     class KeyboardInput: IKeyboardInput
     {

@@ -1,6 +1,6 @@
 ﻿using LabyrinthGameMonogame.Enums;
 
-namespace LabyrinthGameMonogame.Controllers
+namespace LabyrinthGameMonogame.InputControllers
 {
     public interface IKeyboardInput
     {

@@ -1,4 +1,4 @@
-﻿namespace LabyrinthGameMonogame.Controllers
+﻿namespace LabyrinthGameMonogame.InputControllers
 {
     class ControlManager
     {

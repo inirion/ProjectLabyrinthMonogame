@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabyrinthGameMonogame.GUI.Screens;
+using System;
 
 namespace LabyrinthGameMonogame
 {
@@ -13,6 +14,7 @@ namespace LabyrinthGameMonogame
         [STAThread]
         static void Main()
         {
+            ScreenManager.Instance.ToString();
             using (var game = new Game1())
                 game.Run();
         }
