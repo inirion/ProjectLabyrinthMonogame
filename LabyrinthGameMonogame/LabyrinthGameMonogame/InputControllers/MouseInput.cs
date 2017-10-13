@@ -67,6 +67,15 @@ namespace LabyrinthGameMonogame.InputControllers
             return target.Contains(currentMousePos);
         }
 
+        public void resetMousePosition()
+        {
+            currentMousePos.X = 0;
+            currentMousePos.Y = 0;
+            previousMousePos.X = 0;
+            previousMousePos.Y = 0;
+   
+        }
+
         private ButtonState GetButtonState(MouseKeys key, MouseState state)
         {
             switch (key)

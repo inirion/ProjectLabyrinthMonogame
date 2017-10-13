@@ -37,18 +37,16 @@ namespace LabyrinthGameMonogame.GUI.Screens
         {
             foreach (Button btn in buttons)
             {
+                btn.Color = Color.White;
                 if (ControlManager.Instance.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
                 {
                     btn.Color = Color.Red;
-                }
-                else
-                {
-                    btn.Color = Color.White;
                 }
 
                 if (ControlManager.Instance.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
                     ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
+                    btn.Color = Color.White;
                 }
             }
         }
