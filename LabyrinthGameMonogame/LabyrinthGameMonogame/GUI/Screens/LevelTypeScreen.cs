@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
-using LabyrinthGameMonogame.GUI.Buttons;
+﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.Factories;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+using LabyrinthGameMonogame.GUI.Buttons;
 using LabyrinthGameMonogame.InputControllers;
-using LabyrinthGameMonogame.Enums;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
-    class MainMenuScreen : IScreen
+    class LevelTypeScreen : IScreen
     {
         private List<Button> buttons;
-        public MainMenuScreen(ContentManager content)
+        public LevelTypeScreen(ContentManager content)
         {
-            buttons = ButtonFactory.CreateMainMenuButtons(content);
+            buttons = ButtonFactory.CreateLevelButtons(content);
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach(Button btn in buttons)
+            foreach (Button btn in buttons)
             {
                 btn.Color = Color.White;
                 if (ControlManager.Instance.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
@@ -30,7 +30,6 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 if (ControlManager.Instance.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
                     ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
-                    if (btn.GoesTo == ScreenTypes.Exit) ScreenManager.Instance.IsTransitioning = true;
                     btn.Color = Color.White;
                 }
             }
@@ -39,7 +38,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         {
             spriteBatch.Begin();
 
-            foreach(Button btn in buttons)
+            foreach (Button btn in buttons)
             {
                 spriteBatch.DrawString(btn.Font, btn.Text, new Vector2(btn.ButtonRect.X, btn.ButtonRect.Y), btn.Color);
             }

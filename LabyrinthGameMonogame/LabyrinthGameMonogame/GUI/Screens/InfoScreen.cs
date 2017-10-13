@@ -33,7 +33,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
             spriteBatch.End();
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             foreach (Button btn in buttons)
             {

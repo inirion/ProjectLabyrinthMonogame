@@ -23,6 +23,20 @@ namespace LabyrinthGameMonogame.Factories
             return buttons;
         }
 
+        public static List<Button> CreateLevelButtons(ContentManager content)
+        {
+            List<Button> buttons = new List<Button>();
+            SpriteFont font = content.Load<SpriteFont>("Font");
+            buttons.Add(new Button("Easy", ScreenTypes.MainMenu, font, true));
+            buttons.Add(new Button("Medium", ScreenTypes.MainMenu, font, true));
+            buttons.Add(new Button("Hard", ScreenTypes.MainMenu, font, true));
+            buttons.Add(new Button("Back", ScreenTypes.MainMenu, font, true));
+
+            CentreButtons(buttons);
+
+            return buttons;
+        }
+
         public static List<Button> CreateInfoButtons(ContentManager content)
         {
             List<Button> buttons = new List<Button>();
@@ -32,6 +46,28 @@ namespace LabyrinthGameMonogame.Factories
             buttons.Add(new Button("Daniel Splawski", ScreenTypes.Info, font, false));
             buttons.Add(new Button("Kuba Wozniak", ScreenTypes.Info, font, false));
             buttons.Add(new Button("Back", ScreenTypes.MainMenu, font, true));
+
+            CentreButtons(buttons);
+
+            return buttons;
+        }
+
+        public static List<Button> CreateIntroButtons(ContentManager content)
+        {
+            List<Button> buttons = new List<Button>();
+            SpriteFont font = content.Load<SpriteFont>("Font");
+            buttons.Add(new Button("The Labirynth Game =)", ScreenTypes.Info, font, false));
+
+            CentreButtons(buttons);
+
+            return buttons;
+        }
+
+        public static List<Button> CreateExitButtons(ContentManager content)
+        {
+            List<Button> buttons = new List<Button>();
+            SpriteFont font = content.Load<SpriteFont>("Font");
+            buttons.Add(new Button("Thanks For Playing !! xD", ScreenTypes.Info, font, false));
 
             CentreButtons(buttons);
 

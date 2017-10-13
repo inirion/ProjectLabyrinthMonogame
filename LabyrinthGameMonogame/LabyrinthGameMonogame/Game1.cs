@@ -44,7 +44,7 @@ namespace LabyrinthGameMonogame
             if (ControlManager.Instance.Keyboard.Clicked(KeyboardKeys.Back)) 
                 Exit();
 
-            ScreenManager.Instance.Update();
+            ScreenManager.Instance.Update(gameTime,this);
 
             base.Update(gameTime);
         }

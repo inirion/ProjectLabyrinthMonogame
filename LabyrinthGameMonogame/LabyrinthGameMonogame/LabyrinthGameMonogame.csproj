@@ -48,8 +48,10 @@
     <Compile Include="Factories\ButtonFactory.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />
+    <Compile Include="GUI\Screens\ExitScreen.cs" />
     <Compile Include="GUI\Screens\InfoScreen.cs" />
     <Compile Include="GUI\Screens\IScreen.cs" />
+    <Compile Include="GUI\Screens\LevelTypeScreen.cs" />
     <Compile Include="InputControllers\IKeyboardInput.cs" />
     <Compile Include="InputControllers\IMouseInput.cs" />
     <Compile Include="InputControllers\ControlManager.cs" />

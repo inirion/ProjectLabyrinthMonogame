@@ -14,6 +14,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         private ScreenTypes activeScreenType;
         Vector2 dimensions;
         private ContentManager content;
+        private bool isTransitioning;
         #endregion
 
         private ScreenManager() {  
@@ -32,7 +33,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
         }
         public void Initialize(ContentManager content)
         {
-            activeScreenType = ScreenTypes.MainMenu;
+            IsTransitioning = true;
+            activeScreenType = ScreenTypes.Intro;
             Dimensions = new Vector2(800, 600);
             this.content = content;
         }
@@ -41,13 +43,17 @@ namespace LabyrinthGameMonogame.GUI.Screens
             activeScreen = new Dictionary<ScreenTypes, IScreen>()
             {
                 {ScreenTypes.MainMenu,new MainMenuScreen(content) },
-                {ScreenTypes.Info, new InfoScreen(content) }
+                {ScreenTypes.Info, new InfoScreen(content) },
+                {ScreenTypes.Intro, new IntroScreen(content) },
+                {ScreenTypes.LevelType, new LevelTypeScreen(content) },
+                {ScreenTypes.Exit, new ExitScreen(content) }
             };
         }
 
-        public void Update()
+        public void Update(GameTime gameTime, Game game)
         {
-            activeScreen[activeScreenType].Update();
+            if (activeScreenType == ScreenTypes.Exit && !isTransitioning) game.Exit();
+            activeScreen[activeScreenType].Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -58,5 +64,6 @@ namespace LabyrinthGameMonogame.GUI.Screens
         public Vector2 Dimensions { get => dimensions; private set => dimensions = value; }
         public ContentManager Content { get => content; set => content = value; }
         public ScreenTypes ActiveScreenType { get => activeScreenType; set => activeScreenType = value; }
+        public bool IsTransitioning { get => isTransitioning; set => isTransitioning = value; }
     }
 }
