@@ -32,9 +32,9 @@ namespace LabyrinthGameMonogame.Factories
         public static List<Button> CreateLevelButtons()
         {
             List<Button> buttons = new List<Button>();
-            buttons.Add(new Button("Easy", ScreenTypes.Game, font, true));
-            buttons.Add(new Button("Medium", ScreenTypes.Game, font, true));
-            buttons.Add(new Button("Hard", ScreenTypes.Game, font, true));
+            buttons.Add(new Button("Easy", ScreenTypes.Game, font, true, DifficultyLevel.Easy));
+            buttons.Add(new Button("Medium", ScreenTypes.Game, font, true, DifficultyLevel.Medium));
+            buttons.Add(new Button("Hard", ScreenTypes.Game, font, true, DifficultyLevel.Hard));
             buttons.Add(new Button("Back", ScreenTypes.MainMenu, font, true));
 
             CentreButtons(buttons);

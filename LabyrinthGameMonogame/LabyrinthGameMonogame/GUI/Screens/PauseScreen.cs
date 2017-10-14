@@ -1,5 +1,6 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.Factories;
+using LabyrinthGameMonogame.GameFolder;
 using LabyrinthGameMonogame.GUI.Buttons;
 using LabyrinthGameMonogame.InputControllers;
 using Microsoft.Xna.Framework;
@@ -30,6 +31,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 if (ControlManager.Instance.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
                     ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
+                    if (btn.GoesTo == ScreenTypes.Game) GameManager.Instance.IsGameRunning = true;
+                    if (btn.GoesTo == ScreenTypes.MainMenu) GameManager.Instance.ResetGame = true;
                     btn.Color = Color.White;
                 }
             }

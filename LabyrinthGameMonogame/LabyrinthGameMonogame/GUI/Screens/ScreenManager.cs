@@ -1,4 +1,5 @@
 ﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,9 +13,11 @@ namespace LabyrinthGameMonogame.GUI.Screens
         private static ScreenManager instance;
         private Dictionary<ScreenTypes, IScreen> activeScreen;
         private ScreenTypes activeScreenType;
+        private ScreenTypes previousScreenType;
         Vector2 dimensions;
         private ContentManager content;
         private bool isTransitioning;
+        GraphicsDeviceManager graphics;
         #endregion
 
         private ScreenManager() {  
@@ -31,12 +34,15 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 return instance;
             }
         }
-        public void Initialize(ContentManager content)
+        public void Initialize(ContentManager content, GraphicsDeviceManager graphics)
         {
             IsTransitioning = true;
+            PreviousScreenType = ScreenTypes.Intro;
             activeScreenType = ScreenTypes.Intro;
             Dimensions = new Vector2(800, 600);
-            this.content = content;
+            Content = content;
+            Graphics = graphics;
+            ButtonFactory.Initialize(Content);
         }
         public void LoadContent()
         {
@@ -65,7 +71,9 @@ namespace LabyrinthGameMonogame.GUI.Screens
 
         public Vector2 Dimensions { get => dimensions; private set => dimensions = value; }
         public ContentManager Content { get => content; set => content = value; }
-        public ScreenTypes ActiveScreenType { get => activeScreenType; set => activeScreenType = value; }
+        public ScreenTypes ActiveScreenType { get => activeScreenType; set { PreviousScreenType = activeScreenType; activeScreenType = value; } }
         public bool IsTransitioning { get => isTransitioning; set => isTransitioning = value; }
+        public GraphicsDeviceManager Graphics { get => graphics; set => graphics = value; }
+        internal ScreenTypes PreviousScreenType { get => previousScreenType; set => previousScreenType = value; }
     }
 }

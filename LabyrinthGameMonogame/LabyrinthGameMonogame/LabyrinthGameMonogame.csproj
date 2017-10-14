@@ -42,11 +42,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\DifficultyLevel.cs" />
     <Compile Include="Enums\KeyboardKeys.cs" />
     <Compile Include="Enums\MouseKeys.cs" />
     <Compile Include="Enums\ScreenTypes.cs" />
     <Compile Include="Factories\ButtonFactory.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameFolder\GameManager.cs" />
+    <Compile Include="GameFolder\LabirynthGame.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />
     <Compile Include="GUI\Screens\ExitScreen.cs" />
     <Compile Include="GUI\Screens\GameScreen.cs" />
