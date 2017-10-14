@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LabyrinthGameMonogame.GUI.Screens;
 using Microsoft.Xna.Framework.Content;
+using LabyrinthGameMonogame.Factories;
 
 namespace LabyrinthGameMonogame
 {
@@ -22,6 +23,7 @@ namespace LabyrinthGameMonogame
         protected override void Initialize()
         {
             ScreenManager.Instance.Initialize(Content);
+            ButtonFactory.Initialize(Content);
             base.Initialize();
 
             graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;

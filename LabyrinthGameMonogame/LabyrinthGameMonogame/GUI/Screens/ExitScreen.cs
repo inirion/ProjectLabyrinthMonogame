@@ -22,7 +22,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         {
             procentage = 1;
             zoom = 1;
-            buttons = ButtonFactory.CreateExitButtons(content);
+            buttons = ButtonFactory.CreateExitButtons();
             ScreenManager.Instance.IsTransitioning = true;
             timeToDisplay = 2;
         }

@@ -14,7 +14,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         private List<Button> buttons;
         public MainMenuScreen(ContentManager content)
         {
-            buttons = ButtonFactory.CreateMainMenuButtons(content);
+            buttons = ButtonFactory.CreateMainMenuButtons();
         }
 
         public void Update(GameTime gameTime)

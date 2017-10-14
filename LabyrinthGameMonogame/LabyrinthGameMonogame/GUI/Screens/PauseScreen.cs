@@ -14,7 +14,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         private List<Button> buttons;
         public PauseScreen(ContentManager content)
         {
-            buttons = ButtonFactory.CreatePauseButtons(content);
+            buttons = ButtonFactory.CreatePauseButtons();
         }
 
         public void Update(GameTime gameTime)

@@ -19,7 +19,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
 
         public InfoScreen(ContentManager content)
         {
-            buttons = ButtonFactory.CreateInfoButtons(content);
+            buttons = ButtonFactory.CreateInfoButtons();
         }
         public void Draw(SpriteBatch spriteBatch)
         {

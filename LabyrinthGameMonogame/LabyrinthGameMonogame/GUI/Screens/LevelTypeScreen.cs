@@ -14,7 +14,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         private List<Button> buttons;
         public LevelTypeScreen(ContentManager content)
         {
-            buttons = ButtonFactory.CreateLevelButtons(content);
+            buttons = ButtonFactory.CreateLevelButtons();
         }
 
         public void Update(GameTime gameTime)

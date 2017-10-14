@@ -18,7 +18,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         {
             procentage = 1;
             zoom = 1;
-            buttons = ButtonFactory.CreateIntroButtons(content);
+            buttons = ButtonFactory.CreateIntroButtons();
             ScreenManager.Instance.IsTransitioning = true;
             timeToDisplay = 2;
         }
