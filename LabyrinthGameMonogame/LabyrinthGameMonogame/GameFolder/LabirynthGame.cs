@@ -1,5 +1,6 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GUI.Screens;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,12 +11,11 @@ namespace LabyrinthGameMonogame.GameFolder
     class LabirynthGame
     {
         Model model;
-        DifficultyLevel difficultyLevel;
         float angle;
+        float gap;
         Random random;
         Vector3 aexis;
-
-        DifficultyLevel DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
+        LabirynthGenerator lab;
 
         public LabirynthGame()
         {
@@ -23,20 +23,24 @@ namespace LabyrinthGameMonogame.GameFolder
             GameManager.Instance.IsGameRunning = true;
             random = new Random();
             aexis = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
+            lab = new LabirynthGenerator();
         }
 
         public void GenerateMap()
         {
             
+            lab.CreateMaze();
         }
 
         public void ResetGame()
         {
             if(GameManager.Instance.ResetGame)
             {
+                gap = 0.7f;
                 angle = 0;
                 aexis = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
                 GameManager.Instance.ResetGame = false;
+                GenerateMap();
             }
         }
 
@@ -54,12 +58,12 @@ namespace LabyrinthGameMonogame.GameFolder
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
                     effect.World = Matrix.CreateTranslation(modelPosition);
-                    var cameraPosition = new Vector3(5, 5, 5);
-                    cameraPosition = Vector3.Transform(cameraPosition - modelPosition, Matrix.CreateFromAxisAngle(aexis, angle += 0.01f)) + modelPosition;
+                    var cameraPosition = new Vector3(0, 2, 50);
+                    //cameraPosition = Vector3.Transform(cameraPosition - modelPosition, Matrix.CreateFromAxisAngle(aexis, angle)) + modelPosition;
                     var cameraLookAtVector = Vector3.Zero;
                     var cameraUpVector = Vector3.UnitZ;
                     effect.View = Matrix.CreateLookAt(
-                        cameraPosition, cameraLookAtVector, cameraUpVector);
+                       cameraPosition, cameraLookAtVector+new Vector3(2,2,0), cameraUpVector);
                     float aspectRatio =
                         ScreenManager.Instance.Graphics.PreferredBackBufferWidth / (float)ScreenManager.Instance.Graphics.PreferredBackBufferHeight;
                     float fieldOfView = Microsoft.Xna.Framework.MathHelper.PiOver4;
@@ -77,13 +81,16 @@ namespace LabyrinthGameMonogame.GameFolder
         {
             if (GameManager.Instance.IsGameRunning) {
                 ScreenManager.Instance.Graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+                
+                for(int i = 0; i< lab.Maze.GetLength(0); i++)
+                {
+                    for (int j = 0; j < lab.Maze.GetLength(1); j++)
+                    {
+                        if (lab.Maze[i,j] == 1)
+                        DrawModel(new Vector3(gap * i, gap * j, 0));
 
-                DrawModel(new Vector3(-4, 0, 0));
-                DrawModel(new Vector3(0, 0, 0));
-                DrawModel(new Vector3(4, 0, 0));
-                DrawModel(new Vector3(-4, 0, 3));
-                DrawModel(new Vector3(0, 0, 3));
-                DrawModel(new Vector3(4, 0, 3));
+                    }
+                }
 
             }
         }

@@ -1,4 +1,6 @@
-﻿namespace LabyrinthGameMonogame.GameFolder
+﻿using LabyrinthGameMonogame.Enums;
+
+namespace LabyrinthGameMonogame.GameFolder
 {
     class GameManager
     {
@@ -8,6 +10,7 @@
         {
             IsGameRunning = false;
             ResetGame = false;
+            DifficultyLevel = DifficultyLevel.Easy;
         }
 
         public static GameManager Instance
@@ -24,8 +27,10 @@
 
         public bool IsGameRunning { get => isGameRunning; set => isGameRunning = value; }
         public bool ResetGame { get => resetGame; set => resetGame = value; }
+        internal DifficultyLevel DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
 
         private bool isGameRunning;
         private bool resetGame;
+        private DifficultyLevel difficultyLevel;
     }
 }

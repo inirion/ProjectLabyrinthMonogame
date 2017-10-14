@@ -43,13 +43,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\DifficultyLevel.cs" />
+    <Compile Include="Enums\Directions.cs" />
     <Compile Include="Enums\KeyboardKeys.cs" />
+    <Compile Include="Enums\LabiryntElement.cs" />
     <Compile Include="Enums\MouseKeys.cs" />
     <Compile Include="Enums\ScreenTypes.cs" />
     <Compile Include="Factories\ButtonFactory.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameFolder\GameManager.cs" />
     <Compile Include="GameFolder\LabirynthGame.cs" />
+    <Compile Include="GameFolder\LabirynthGenerator.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />
     <Compile Include="GUI\Screens\ExitScreen.cs" />
     <Compile Include="GUI\Screens\GameScreen.cs" />
@@ -67,6 +70,9 @@
     <Compile Include="GUI\Screens\IntroScreen.cs" />
     <Compile Include="GUI\Screens\MainMenuScreen.cs" />
     <Compile Include="GUI\Screens\ScreenManager.cs" />
+    <Compile Include="Utils\LabirynthCreator.cs" />
+    <Compile Include="Utils\Randomizers\IRandomizer.cs" />
+    <Compile Include="Utils\Randomizers\LabirynthRandomizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

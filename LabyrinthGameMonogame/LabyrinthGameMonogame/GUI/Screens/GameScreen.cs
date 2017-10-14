@@ -19,12 +19,13 @@ namespace LabyrinthGameMonogame.GUI.Screens
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            game.ResetGame();
             game.Draw();
         }
 
         public void Update(GameTime gameTime)
         {
-            game.ResetGame();
+            
             if (ControlManager.Instance.Keyboard.Clicked(KeyboardKeys.Back))
             {
                 ScreenManager.Instance.ActiveScreenType = ScreenTypes.Pause;
