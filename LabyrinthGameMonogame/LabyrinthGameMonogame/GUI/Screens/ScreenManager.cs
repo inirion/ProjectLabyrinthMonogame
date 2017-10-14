@@ -46,7 +46,9 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 {ScreenTypes.Info, new InfoScreen(content) },
                 {ScreenTypes.Intro, new IntroScreen(content) },
                 {ScreenTypes.LevelType, new LevelTypeScreen(content) },
-                {ScreenTypes.Exit, new ExitScreen(content) }
+                {ScreenTypes.Exit, new ExitScreen(content) },
+                {ScreenTypes.Game, new GameScreen(content) },
+                {ScreenTypes.Pause, new PauseScreen(content) }
             };
         }
 

@@ -27,9 +27,9 @@ namespace LabyrinthGameMonogame.Factories
         {
             List<Button> buttons = new List<Button>();
             SpriteFont font = content.Load<SpriteFont>("Font");
-            buttons.Add(new Button("Easy", ScreenTypes.MainMenu, font, true));
-            buttons.Add(new Button("Medium", ScreenTypes.MainMenu, font, true));
-            buttons.Add(new Button("Hard", ScreenTypes.MainMenu, font, true));
+            buttons.Add(new Button("Easy", ScreenTypes.Game, font, true));
+            buttons.Add(new Button("Medium", ScreenTypes.Game, font, true));
+            buttons.Add(new Button("Hard", ScreenTypes.Game, font, true));
             buttons.Add(new Button("Back", ScreenTypes.MainMenu, font, true));
 
             CentreButtons(buttons);
@@ -68,6 +68,18 @@ namespace LabyrinthGameMonogame.Factories
             List<Button> buttons = new List<Button>();
             SpriteFont font = content.Load<SpriteFont>("Font");
             buttons.Add(new Button("Thanks For Playing !! xD", ScreenTypes.Info, font, false));
+
+            CentreButtons(buttons);
+
+            return buttons;
+        }
+
+        public static List<Button> CreatePauseButtons(ContentManager content)
+        {
+            List<Button> buttons = new List<Button>();
+            SpriteFont font = content.Load<SpriteFont>("Font");
+            buttons.Add(new Button("Continue", ScreenTypes.Game, font, true));
+            buttons.Add(new Button("Exit", ScreenTypes.MainMenu, font, true));
 
             CentreButtons(buttons);
 
