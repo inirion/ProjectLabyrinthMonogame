@@ -25,6 +25,12 @@ namespace LabyrinthGameMonogame.Utils
             return tmp;
         }
 
+        public Vector3 GetFinishPosition()
+        {
+            Vector3 tmp = map.FirstOrDefault(i => i.LabiryntElement == LabiryntElement.Finish).Position;
+            return tmp;
+        }
+
         public void CreateMap()
         {
             float gap = 1.0f;

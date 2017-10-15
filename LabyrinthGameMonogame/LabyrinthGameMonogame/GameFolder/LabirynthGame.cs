@@ -1,4 +1,5 @@
 ﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.GameFolder.Enteties;
 using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
@@ -11,15 +12,17 @@ namespace LabyrinthGameMonogame.GameFolder
 {
     class LabirynthGame
     {
-        Camera camera;
+        Player player;
         float angle;
         LabirynthCreator labirynth;
+        Vector3 finish;
 
 
         public LabirynthGame()
         {
             labirynth = new LabirynthCreator();
-            camera = new Camera(new Vector3(0,0,0),new Vector3(0,0,0),5.0f,0.05f);
+            player = new Player(new Vector3(), 3.0f);
+            finish = new Vector3();
         }
 
         public void ResetGame()
@@ -30,15 +33,19 @@ namespace LabyrinthGameMonogame.GameFolder
                 angle = 0;
                 GameManager.Instance.ResetGame = false;
                 //coords x, z, y
-                camera.Position = labirynth.GetStartingPosition();
+                player.Position = labirynth.GetStartingPosition();
+                finish = labirynth.GetFinishPosition();
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            camera.Update(gameTime);
-            angle += 0.1f;
-            //Debug.WriteLine(angle);
+            player.Update(gameTime);
+            if ((player.Position.X > finish.X - 0.5f && player.Position.X < finish.X + 0.5f)
+                && (player.Position.Z > finish.Z - 0.5f && player.Position.Z < finish.Z + 0.5f))
+            {
+                GameManager.Instance.ResetGame = true;
+            }
         }
 
         void DrawModel(GameObject gameObject)
@@ -51,8 +58,8 @@ namespace LabyrinthGameMonogame.GameFolder
                     effect.PreferPerPixelLighting = true;
 
                     effect.World = gameObject.WorldMatrix;
-                    effect.View = camera.View;
-                    effect.Projection = camera.Projection;
+                    effect.View = player.Camera.View;
+                    effect.Projection = player.Camera.Projection;
                 }
 
                 mesh.Draw();
@@ -64,7 +71,6 @@ namespace LabyrinthGameMonogame.GameFolder
                 ScreenManager.Instance.Graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
                 ScreenManager.Instance.Graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                 labirynth.Map.ForEach(i => DrawModel(i));
-
             }
         }
     }
