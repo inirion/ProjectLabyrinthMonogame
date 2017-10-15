@@ -36,9 +36,64 @@ namespace LabyrinthGameMonogame.GameFolder
 
         private bool IsClosed(int[,] maze, int x, int y)
         {
-            if (maze[x - 1,y] == (int)LabiryntElement.Wall && maze[x,y - 1] == (int)LabiryntElement.Wall && maze[x,y + 1] == (int)LabiryntElement.Wall && maze[x + 1,y] == (int)LabiryntElement.Wall) return true;
+            if ((maze[x - 1,y] == (int)LabiryntElement.Wall || maze[x - 1, y] == (int)LabiryntElement.WallNS || maze[x - 1, y] == (int)LabiryntElement.WallEW)
+                && (maze[x,y - 1] == (int)LabiryntElement.Wall || maze[x, y - 1] == (int)LabiryntElement.WallNS || maze[x, y - 1] == (int)LabiryntElement.WallEW)
+                && (maze[x,y + 1] == (int)LabiryntElement.Wall || maze[x, y + 1] == (int)LabiryntElement.WallNS || maze[x, y + 1] == (int)LabiryntElement.WallEW)
+                && (maze[x + 1,y] == (int)LabiryntElement.Wall || maze[x + 1, y] == (int)LabiryntElement.WallNS || maze[x + 1, y] == (int)LabiryntElement.WallEW)) return true;
 
             return false;
+        }
+
+        private void setWallsTurns(int x, int y)
+        {
+            if (maze[x, y - 1] == (int)LabiryntElement.WallEW && maze[x, y + 1] == (int)LabiryntElement.Road && maze[x + 1, y] == (int)LabiryntElement.Road && maze[x - 1, y] == (int)LabiryntElement.WallNS)//prawo-gora
+            {
+                maze[x, y] = (int)LabiryntElement.WallEN;
+            }
+            if (maze[x, y - 1] == (int)LabiryntElement.WallEW && maze[x, y + 1] == (int)LabiryntElement.Road && maze[x+1, y] == (int)LabiryntElement.WallNS && maze[x-1, y] == (int)LabiryntElement.Road)//prawo-dol
+            {
+                maze[x, y] = (int)LabiryntElement.WallES;
+            }
+            if (maze[x, y - 1] == (int)LabiryntElement.Road && maze[x, y + 1] == (int)LabiryntElement.WallEW && maze[x + 1, y] == (int)LabiryntElement.Road && maze[x - 1, y] == (int)LabiryntElement.WallNS)//lewo-gora
+            {
+                maze[x, y] = (int)LabiryntElement.WallWN;
+            }
+            if (maze[x, y - 1] == (int)LabiryntElement.Road && maze[x, y + 1] == (int)LabiryntElement.WallEW && maze[x + 1, y] == (int)LabiryntElement.WallNS && maze[x - 1, y] == (int)LabiryntElement.Road)//lewo-dol
+            {
+                maze[x, y] = (int)LabiryntElement.WallWS;
+            }
+        }
+
+        private void setWalls(int x, int y)
+        {
+            if (maze[x, y - 1] == (int)LabiryntElement.Road && maze[x, y + 1] == (int)LabiryntElement.Road)//pionowa
+            {
+                maze[x, y] = (int)LabiryntElement.WallNS;
+            }
+            if (maze[x - 1, y] == (int)LabiryntElement.Road && maze[x + 1, y] == (int)LabiryntElement.Road)//pozioma
+            {
+                maze[x, y] = (int)LabiryntElement.WallEW;
+            }
+        }
+        private void setWallsConnections(int x, int y)
+        {
+            
+            if (maze[x, y-1] == (int)LabiryntElement.Road && maze[x + 1, y] == (int)LabiryntElement.WallNS && maze[x -1, y] == (int)LabiryntElement.WallNS && maze[x, y+1] == (int)LabiryntElement.WallEW)//pionowa 3 elementy(wolne lewo)
+            {
+                maze[x, y] = (int)LabiryntElement.WallNS;
+            }
+            if (maze[x, y + 1] == (int)LabiryntElement.Road && maze[x + 1, y] == (int)LabiryntElement.WallNS && maze[x - 1, y] == (int)LabiryntElement.WallNS && maze[x, y - 1] == (int)LabiryntElement.WallEW)//pionowa 3 elementy(wolne prawo)
+            {
+                maze[x, y] = (int)LabiryntElement.WallNS;
+            }
+            if (maze[x + 1, y] == (int)LabiryntElement.Road && maze[x - 1, y] == (int)LabiryntElement.WallNS && maze[x, y + 1] == (int)LabiryntElement.WallEW && maze[x, y - 1] == (int)LabiryntElement.WallEW)//pozioma 3 elementy(wolne dol)
+            {
+                maze[x, y] = (int)LabiryntElement.WallEW;
+            }
+            if (maze[x - 1, y] == (int)LabiryntElement.Road && maze[x + 1, y] == (int)LabiryntElement.WallNS && maze[x, y + 1] == (int)LabiryntElement.WallEW && maze[x, y - 1] == (int)LabiryntElement.WallEW)//pozioma 3 elementy(wolne gora)
+            {
+                maze[x, y] = (int)LabiryntElement.WallEW;
+            }
         }
 
         public void CreateMaze()
@@ -62,12 +117,55 @@ namespace LabyrinthGameMonogame.GameFolder
 
             InitMaze();
             GenerateMaze(0, 1, 1, 1);
+            for (int i = 1; i < calculatedSize-1; i++)
+            {
+                for (int j = 1; j < calculatedSize-1; j++)
+                {
+                    if(maze[i,j] == (int)LabiryntElement.Wall)
+                    {
+                        setWalls(i, j);
+                    }
+                }
+            }
+            for (int i = 1; i < calculatedSize - 1; i++)
+            {
+                for (int j = 1; j < calculatedSize - 1; j++)
+                {
+                    if (maze[i, j] == (int)LabiryntElement.Wall)
+                    {
+                        setWallsConnections(i, j);
+                    }
+                }
+            }
+            for (int i = 1; i < calculatedSize - 1; i++)
+            {
+                for (int j = 1; j < calculatedSize - 1; j++)
+                {
+                    if (maze[i, j] == (int)LabiryntElement.Wall)
+                    {
+                        setWallsTurns(i, j);
+                    }
+                }
+            }
+
             for (int i = 0; i < calculatedSize; i++)
             {
                 for (int j = 0; j < calculatedSize; j++)
                 {
-                    if(Maze[i, j] == 1)
-                        Debug.Write("#");
+                    if(Maze[i, j] == (int)LabiryntElement.Wall)
+                        Debug.Write("?");
+                    else if(Maze[i, j] == (int)LabiryntElement.WallNS)
+                        Debug.Write("|");
+                    else if (Maze[i, j] == (int)LabiryntElement.WallEW)
+                        Debug.Write("-");
+                    else if (maze[i,j] == (int)LabiryntElement.WallES)
+                        Debug.Write("╗");
+                    else if (maze[i, j] == (int)LabiryntElement.WallEN)
+                        Debug.Write("╝");
+                    else if (maze[i, j] == (int)LabiryntElement.WallWS)
+                        Debug.Write("╔");
+                    else if (maze[i, j] == (int)LabiryntElement.WallWN)
+                        Debug.Write("╚");
                     else
                         Debug.Write(" ");
                 }
@@ -141,13 +239,25 @@ namespace LabyrinthGameMonogame.GameFolder
                     
                     int rstep = step[random];
                     if (rstep == 1)
-                        Maze[x_next + 1,y_next] = (int)LabiryntElement.Road;
+                    {
+                        Maze[x_next + 1, y_next] = (int)LabiryntElement.Road;
+                    }
+                        
                     else if (rstep == 2)
-                        Maze[x_next,y_next + 1] = (int)LabiryntElement.Road;
+                    {
+                        Maze[x_next, y_next + 1] = (int)LabiryntElement.Road;
+                    }
+                        
                     else if (rstep == 3)
-                        Maze[x_next,y_next - 1] = (int)LabiryntElement.Road;
+                    {
+                        Maze[x_next, y_next - 1] = (int)LabiryntElement.Road;
+                    }
+                        
                     else if (rstep == 4)
-                        Maze[x_next - 1,y_next] = (int)LabiryntElement.Road;
+                    {
+                        Maze[x_next - 1, y_next] = (int)LabiryntElement.Road;
+                    }
+                       
                     visited++;
                 }
                 GenerateMaze(index, x_next, y_next, visited);

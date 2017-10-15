@@ -5,6 +5,12 @@
         Road,
         Wall,
         Finish,
-        Start
+        Start,
+        WallEW,
+        WallNS,
+        WallWN,
+        WallWS,
+        WallEN,
+        WallES
     }
 }

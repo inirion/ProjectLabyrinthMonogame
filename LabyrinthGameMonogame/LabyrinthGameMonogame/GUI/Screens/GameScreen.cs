@@ -29,10 +29,11 @@ namespace LabyrinthGameMonogame.GUI.Screens
             if (ControlManager.Instance.Keyboard.Clicked(KeyboardKeys.Back))
             {
                 ScreenManager.Instance.ActiveScreenType = ScreenTypes.Pause;
+
                 GameManager.Instance.IsGameRunning = false;
             }
 
-            game.Update();
+            game.Update(gameTime);
         }
     }
 }

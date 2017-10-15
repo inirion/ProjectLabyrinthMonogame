@@ -37,8 +37,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics)
         {
             IsTransitioning = true;
-            PreviousScreenType = ScreenTypes.LevelType;
-            activeScreenType = ScreenTypes.LevelType;
+            PreviousScreenType = ScreenTypes.Intro;
+            activeScreenType = ScreenTypes.Intro;
             Dimensions = new Vector2(800, 600);
             Content = content;
             Graphics = graphics;

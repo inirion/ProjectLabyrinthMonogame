@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.Factories;
+using Microsoft.Xna.Framework.Input;
+using LabyrinthGameMonogame.GameFolder;
 
 namespace LabyrinthGameMonogame
 {
@@ -26,8 +28,7 @@ namespace LabyrinthGameMonogame
             graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
             graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
             graphics.ApplyChanges();
-
-            IsMouseVisible = true;
+            
         }
 
         protected override void LoadContent()
@@ -38,10 +39,12 @@ namespace LabyrinthGameMonogame
 
         protected override void Update(GameTime gameTime)
         {
+            if (GameManager.Instance.IsGameRunning)
+                IsMouseVisible = false;
+            else
+                IsMouseVisible = true;
             ControlManager.Instance.Mouse.Update();
             ControlManager.Instance.Keyboard.Update();
-            //if (ControlManager.Instance.Keyboard.Clicked(KeyboardKeys.Back)) 
-            //    Exit();
 
             ScreenManager.Instance.Update(gameTime,this);
 

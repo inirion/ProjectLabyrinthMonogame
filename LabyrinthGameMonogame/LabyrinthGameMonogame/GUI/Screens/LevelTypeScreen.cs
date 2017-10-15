@@ -32,8 +32,12 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 {
                     ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
                     GameManager.Instance.DifficultyLevel = btn.DifficultyLevel;
-                    GameManager.Instance.ResetGame = true;
-                    if (btn.GoesTo == ScreenTypes.Game) GameManager.Instance.IsGameRunning = true;
+                    
+                    if (btn.GoesTo == ScreenTypes.Game)
+                    {
+                        GameManager.Instance.ResetGame = true;
+                        GameManager.Instance.IsGameRunning = true;
+                    }
                     btn.Color = Color.White;
                 }
             }

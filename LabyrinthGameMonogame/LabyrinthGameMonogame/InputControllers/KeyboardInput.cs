@@ -21,7 +21,9 @@ namespace LabyrinthGameMonogame.InputControllers
                 {KeyboardKeys.Down,Keys.S },
                 {KeyboardKeys.Right,Keys.D },
                 {KeyboardKeys.Back,Keys.Escape },
-                {KeyboardKeys.Confirm,Keys.Enter }
+                {KeyboardKeys.Confirm,Keys.Enter },
+                {KeyboardKeys.DownZAexis,Keys.Z },
+                {KeyboardKeys.UpZAexis,Keys.X }
             };
             Update();
         }
