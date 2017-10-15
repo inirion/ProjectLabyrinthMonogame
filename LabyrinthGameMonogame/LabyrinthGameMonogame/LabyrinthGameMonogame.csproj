@@ -52,6 +52,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameFolder\Camera.cs" />
     <Compile Include="GameFolder\GameManager.cs" />
+    <Compile Include="GameFolder\GameObject.cs" />
     <Compile Include="GameFolder\LabirynthGame.cs" />
     <Compile Include="GameFolder\LabirynthGenerator.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />

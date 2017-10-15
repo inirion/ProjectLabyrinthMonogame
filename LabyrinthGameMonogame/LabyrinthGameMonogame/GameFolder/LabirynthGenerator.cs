@@ -1,5 +1,7 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.Utils.Randomizers;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace LabyrinthGameMonogame.GameFolder
@@ -95,6 +97,37 @@ namespace LabyrinthGameMonogame.GameFolder
                 maze[x, y] = (int)LabiryntElement.WallEW;
             }
         }
+        private List<Point> GetSuitableStartFinishPoint()
+        {
+            List<Point> points = new List<Point>();
+            for (int x = 1; x < calculatedSize - 1; x++)
+            {
+                for (int y = 1; y < calculatedSize - 1; y++)
+                {
+                    if (maze[x, y] == (int)LabiryntElement.Road)
+                    {
+                        if (maze[x, y - 1] == (int)LabiryntElement.Road && maze[x, y + 1] != (int)LabiryntElement.Road && maze[x - 1, y] != (int)LabiryntElement.Road && maze[x + 1, y] != (int)LabiryntElement.Road)
+                        {
+                            points.Add(new Point(x, y));
+                        }
+                        if (maze[x, y - 1] != (int)LabiryntElement.Road && maze[x, y + 1] == (int)LabiryntElement.Road && maze[x - 1, y] != (int)LabiryntElement.Road && maze[x + 1, y] != (int)LabiryntElement.Road)
+                        {
+                            points.Add(new Point(x, y));
+                        }
+                        if (maze[x, y - 1] != (int)LabiryntElement.Road && maze[x, y + 1] != (int)LabiryntElement.Road && maze[x - 1, y] == (int)LabiryntElement.Road && maze[x + 1, y] != (int)LabiryntElement.Road)
+                        {
+                            points.Add(new Point(x, y));
+                        }
+                        if (maze[x, y - 1] != (int)LabiryntElement.Road && maze[x, y + 1] != (int)LabiryntElement.Road && maze[x - 1, y] != (int)LabiryntElement.Road && maze[x + 1, y] == (int)LabiryntElement.Road)
+                        {
+                            points.Add(new Point(x, y));
+                        }
+                    }
+                }
+            }
+
+            return points;
+        }
 
         public void CreateMaze()
         {
@@ -176,18 +209,19 @@ namespace LabyrinthGameMonogame.GameFolder
                     }
                 }
             }
-
+            List<Point> points = GetSuitableStartFinishPoint();
+            
             for (int i = 0; i < calculatedSize; i++)
             {
                 for (int j = 0; j < calculatedSize; j++)
                 {
-                    if(Maze[i, j] == (int)LabiryntElement.Wall)
+                    if (Maze[i, j] == (int)LabiryntElement.Wall)
                         Debug.Write("?");
-                    else if(Maze[i, j] == (int)LabiryntElement.WallNS)
+                    else if (Maze[i, j] == (int)LabiryntElement.WallNS)
                         Debug.Write("|");
                     else if (Maze[i, j] == (int)LabiryntElement.WallEW)
                         Debug.Write("-");
-                    else if (maze[i,j] == (int)LabiryntElement.WallES)
+                    else if (maze[i, j] == (int)LabiryntElement.WallES)
                         Debug.Write("╗");
                     else if (maze[i, j] == (int)LabiryntElement.WallEN)
                         Debug.Write("╝");
@@ -195,6 +229,48 @@ namespace LabyrinthGameMonogame.GameFolder
                         Debug.Write("╔");
                     else if (maze[i, j] == (int)LabiryntElement.WallWN)
                         Debug.Write("╚");
+                    else if (maze[i, j] == (int)LabiryntElement.Start)
+                        Debug.Write("S");
+                    else if (maze[i, j] == (int)LabiryntElement.Finish)
+                        Debug.Write("F");
+                    else
+                        Debug.Write(" ");
+                }
+                Debug.WriteLine("");
+            }
+            Debug.WriteLine("");
+            Debug.WriteLine("");
+            int start = rnd.Roll(0, points.Count);
+            int finish;
+            do
+            {
+                finish = rnd.Roll(0, points.Count);
+            } while (start == finish);
+            maze[points[start].X, points[start].Y] = (int)LabiryntElement.Start;
+            maze[points[finish].X, points[finish].Y] = (int)LabiryntElement.Finish;
+
+            for (int i = 0; i < calculatedSize; i++)
+            {
+                for (int j = 0; j < calculatedSize; j++)
+                {
+                    if (Maze[i, j] == (int)LabiryntElement.Wall)
+                        Debug.Write("?");
+                    else if (Maze[i, j] == (int)LabiryntElement.WallNS)
+                        Debug.Write("|");
+                    else if (Maze[i, j] == (int)LabiryntElement.WallEW)
+                        Debug.Write("-");
+                    else if (maze[i, j] == (int)LabiryntElement.WallES)
+                        Debug.Write("╗");
+                    else if (maze[i, j] == (int)LabiryntElement.WallEN)
+                        Debug.Write("╝");
+                    else if (maze[i, j] == (int)LabiryntElement.WallWS)
+                        Debug.Write("╔");
+                    else if (maze[i, j] == (int)LabiryntElement.WallWN)
+                        Debug.Write("╚");
+                    else if (maze[i, j] == (int)LabiryntElement.Start)
+                        Debug.Write("S");
+                    else if (maze[i, j] == (int)LabiryntElement.Finish)
+                        Debug.Write("F");
                     else
                         Debug.Write(" ");
                 }
