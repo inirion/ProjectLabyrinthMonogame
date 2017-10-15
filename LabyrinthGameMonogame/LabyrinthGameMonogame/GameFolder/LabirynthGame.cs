@@ -3,6 +3,7 @@ using LabyrinthGameMonogame.GUI.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Diagnostics;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -13,6 +14,7 @@ namespace LabyrinthGameMonogame.GameFolder
         float angle;
         float gap;
         Random random;
+        Vector2 dim;
         Vector3 aexis;
         LabirynthGenerator lab;
 
@@ -23,7 +25,7 @@ namespace LabyrinthGameMonogame.GameFolder
             random = new Random();
             aexis = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
             lab = new LabirynthGenerator();
-            camera = new Camera();
+            camera = new Camera(new Vector3(0,0,0),new Vector3(0,0,0),5.0f,0.05f);
         }
 
         public void GenerateMap()
@@ -36,17 +38,21 @@ namespace LabyrinthGameMonogame.GameFolder
         {
             if(GameManager.Instance.ResetGame)
             {
-                gap = 0.7f;
+                gap = 1.0f;
                 angle = 0;
                 aexis = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
                 GameManager.Instance.ResetGame = false;
                 GenerateMap();
+                //coords x, z, y
+                camera.Position = new Vector3(gap, 2, gap);
             }
         }
 
         public void Update(GameTime gameTime)
         {
             camera.Update(gameTime);
+            angle += 0.01f;
+            //Debug.WriteLine(angle);
         }
 
         void DrawModel(Vector3 modelPosition)
@@ -58,28 +64,26 @@ namespace LabyrinthGameMonogame.GameFolder
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
                     Matrix worldMatrix = Matrix.CreateTranslation(modelPosition);
+
                     effect.World = worldMatrix;
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
+                    effect.View = camera.View;
+                    effect.Projection = camera.Projection;
                 }
 
                 mesh.Draw();
             }
         }
-
         public void Draw()
         {
             if (GameManager.Instance.IsGameRunning) {
                 ScreenManager.Instance.Graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-                for(int i = 0; i< lab.Maze.GetLength(0); i++)
+                ScreenManager.Instance.Graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                for (int i = 0; i< lab.Maze.GetLength(0); i++)
                 {
                     for (int j = 0; j < lab.Maze.GetLength(1); j++)
                     {
                         switch ((LabiryntElement)lab.Maze[i, j])
                         {
-                            case LabiryntElement.Wall:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
-                                break;
                             case LabiryntElement.WallEN:
                                 DrawModel(new Vector3(gap * i, 0, gap * j));
                                 break;

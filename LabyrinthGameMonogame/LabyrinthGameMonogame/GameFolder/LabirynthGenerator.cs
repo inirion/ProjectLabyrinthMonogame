@@ -147,6 +147,35 @@ namespace LabyrinthGameMonogame.GameFolder
                     }
                 }
             }
+            for (int i = 0; i < calculatedSize; i++)
+            {
+                for (int j = 0; j < calculatedSize; j++)
+                {
+                    if (maze[i, j] == (int)LabiryntElement.Wall)
+                    {
+                        if(i == 0 && j > 0 && j < calculatedSize-1)
+                        {
+                            maze[i, j] = (int)LabiryntElement.WallEW;
+                        }
+                        if (i == calculatedSize-1 && j > 0 && j < calculatedSize -1)
+                        {
+                            maze[i, j] = (int)LabiryntElement.WallEW;
+                        }
+                        if (j == 0 && i > 0 && i < calculatedSize - 1)
+                        {
+                            maze[i, j] = (int)LabiryntElement.WallNS;
+                        }
+                        if (j == calculatedSize - 1 && i > 0 && i < calculatedSize - 1)
+                        {
+                            maze[i, j] = (int)LabiryntElement.WallNS;
+                        }
+                        maze[0, 0] = (int)LabiryntElement.WallWS;
+                        maze[0, calculatedSize-1] = (int)LabiryntElement.WallES;
+                        maze[calculatedSize-1, 0] = (int)LabiryntElement.WallWN;
+                        maze[calculatedSize-1, calculatedSize-1] = (int)LabiryntElement.WallEN;
+                    }
+                }
+            }
 
             for (int i = 0; i < calculatedSize; i++)
             {
