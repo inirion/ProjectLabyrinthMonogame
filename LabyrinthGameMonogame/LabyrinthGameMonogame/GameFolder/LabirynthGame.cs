@@ -51,11 +51,11 @@ namespace LabyrinthGameMonogame.GameFolder
         public void Update(GameTime gameTime)
         {
             camera.Update(gameTime);
-            angle += 0.01f;
+            angle += 0.1f;
             //Debug.WriteLine(angle);
         }
 
-        void DrawModel(Vector3 modelPosition)
+        void DrawModel(Vector3 modelPosition,float rotation)
         {
             foreach (var mesh in model.Meshes)
             {
@@ -63,7 +63,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 {   
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
-                    Matrix worldMatrix = Matrix.CreateTranslation(modelPosition);
+                    Matrix worldMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(270.0f))* Matrix.CreateRotationY(MathHelper.ToRadians(rotation)) * Matrix.CreateTranslation(modelPosition);
 
                     effect.World = worldMatrix;
                     effect.View = camera.View;
@@ -84,23 +84,26 @@ namespace LabyrinthGameMonogame.GameFolder
                     {
                         switch ((LabiryntElement)lab.Maze[i, j])
                         {
+                            case LabiryntElement.Wall:
+                                DrawModel(new Vector3(gap * i, 0, gap * j),0);
+                                break;
                             case LabiryntElement.WallEN:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
+                                DrawModel(new Vector3(gap * i, 0, gap * j),0);
                                 break;
                             case LabiryntElement.WallES:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
+                                DrawModel(new Vector3(gap * i, 0, gap * j),0);
                                 break;
                             case LabiryntElement.WallEW:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
+                                DrawModel(new Vector3(gap * i, 0, gap * j),0);
                                 break;
                             case LabiryntElement.WallNS:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
+                                DrawModel(new Vector3(gap * i, 0, gap * j),90);
                                 break;
                             case LabiryntElement.WallWN:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
+                                DrawModel(new Vector3(gap * i, 0, gap * j),0);
                                 break;
                             case LabiryntElement.WallWS:
-                                DrawModel(new Vector3(gap * i, 0, gap * j));
+                                DrawModel(new Vector3(gap * i, 0, gap * j),0);
                                 break;
                         }
                     }
