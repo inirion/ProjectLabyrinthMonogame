@@ -8,8 +8,8 @@
         Right,
         Back,
         Confirm,
-        UpZAexis,
-        DownZAexis,
+        X,Y,Z, LeftShift,
+        Jump,
         None
     }
 }

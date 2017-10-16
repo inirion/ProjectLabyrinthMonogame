@@ -3,9 +3,9 @@ using LabyrinthGameMonogame.GUI.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LabyrinthGameMonogame.GameFolder
+namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
-    class GameObject
+    class Wall
     {
         Model model;
         LabiryntElement labiryntElement;
@@ -14,7 +14,7 @@ namespace LabyrinthGameMonogame.GameFolder
         Matrix worldMatrix;
 
 
-        public GameObject(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle)
+        public Wall(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle)
         {
             Model = ScreenManager.Instance.Content.Load<Model>(modelName);
             this.angle = angle;
@@ -25,11 +25,11 @@ namespace LabyrinthGameMonogame.GameFolder
         public Matrix WorldMatrix { get => worldMatrix; set => worldMatrix = value; }
         public Model Model { get => model; set => model = value; }
         public Vector3 Position { get => position; set => position = value; }
-        internal LabiryntElement LabiryntElement { get => labiryntElement; set => labiryntElement = value; }
+        public LabiryntElement LabiryntElement { get => labiryntElement; set => labiryntElement = value; }
 
         public void setupModel()
         {
-            WorldMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(angle.X)) 
+            WorldMatrix =  Matrix.CreateRotationX(MathHelper.ToRadians(angle.X)) 
                 * Matrix.CreateRotationY(MathHelper.ToRadians(angle.Y)) 
                 * Matrix.CreateRotationZ(MathHelper.ToRadians(angle.Z)) 
                 * Matrix.CreateTranslation(Position);

@@ -22,8 +22,12 @@ namespace LabyrinthGameMonogame.InputControllers
                 {KeyboardKeys.Right,Keys.D },
                 {KeyboardKeys.Back,Keys.Escape },
                 {KeyboardKeys.Confirm,Keys.Enter },
-                {KeyboardKeys.DownZAexis,Keys.Z },
-                {KeyboardKeys.UpZAexis,Keys.X }
+                {KeyboardKeys.X,Keys.X },
+                {KeyboardKeys.Y,Keys.Y },
+                {KeyboardKeys.Z,Keys.Z },
+                {KeyboardKeys.LeftShift,Keys.LeftShift },
+                {KeyboardKeys.Jump,Keys.Space }
+
             };
             Update();
         }
@@ -34,7 +38,7 @@ namespace LabyrinthGameMonogame.InputControllers
             currentState = Keyboard.GetState();
         }
 
-        public bool Pressed(params KeyboardKeys[] input)
+        public bool Pressed(bool supportSingleKey = false, params KeyboardKeys[] input )
         {
             List<bool> flags = new List<bool>();
             for (int i = 0; i < input.Length; i++) 
@@ -50,6 +54,8 @@ namespace LabyrinthGameMonogame.InputControllers
                 }
                 index++;
             }
+
+            if (input.Length != currentState.GetPressedKeys().Length && supportSingleKey) return false;
             if (flags.TrueForAll(i => i == true)) return true;
             return false;
         }
@@ -61,7 +67,7 @@ namespace LabyrinthGameMonogame.InputControllers
             {
                 flag =  true;
             }
-            if (previousState.GetPressedKeys().Length > 1) flag = false;
+            //if (previousState.GetPressedKeys().Length > 1) flag = false;
             return flag;
         }
     }

@@ -11,9 +11,11 @@ namespace LabyrinthGameMonogame.GameFolder
         private Vector3 cameraPosition;
         private Vector3 cameraRotation;
         private float cameraSpeed;
+        private float jumpingCameraSpeed;
         private float mouseSpeed;
         private Vector3 cameraLookAt;
         private Vector3 mouseRotationBuffer;
+        private float time;
 
         public Vector3 Position
         {
@@ -49,9 +51,14 @@ namespace LabyrinthGameMonogame.GameFolder
             }
         }
 
-        public Camera(Vector3 position, Vector3 rotation, float cameraSpeed, float mouseSpeed)
+        public float CameraSpeed { get => cameraSpeed; set { cameraSpeed = value; } }
+
+        public float JumpingCameraSpeed { get => jumpingCameraSpeed; set => jumpingCameraSpeed = value; }
+
+        public Camera(Vector3 position, Vector3 rotation, float cameraSpeed,float jumpingCameraSpeed, float mouseSpeed)
         {
-            this.cameraSpeed = cameraSpeed;
+            this.CameraSpeed = cameraSpeed;
+            this.JumpingCameraSpeed = jumpingCameraSpeed;
             this.mouseSpeed = mouseSpeed;
 
             Projection = Matrix.CreatePerspectiveFieldOfView(
@@ -89,25 +96,42 @@ namespace LabyrinthGameMonogame.GameFolder
             MoveTo(PreviewMove(scale), Rotation);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, ref bool isJumping, float playerHeight)
         {
+            float speed = CameraSpeed;
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             Vector3 moveVector = Vector3.Zero;
 
-            if (ControlManager.Instance.Keyboard.Pressed(KeyboardKeys.Up))
+            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Up))
                 moveVector.Z = 1;
-            if (ControlManager.Instance.Keyboard.Pressed(KeyboardKeys.Down))
+            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Down))
                 moveVector.Z = -1;
-            if (ControlManager.Instance.Keyboard.Pressed(KeyboardKeys.Left))
+            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Left))
                 moveVector.X = 1;
-            if (ControlManager.Instance.Keyboard.Pressed(KeyboardKeys.Right))
+            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Right))
                 moveVector.X = -1;
+
+            if (isJumping)
+            {
+                moveVector.Y = 1f;
+                speed = JumpingCameraSpeed;
+                
+            }
+            if (!isJumping && cameraPosition.Y >= playerHeight)
+            {
+                moveVector.Y = -1f;
+                speed = JumpingCameraSpeed;
+            }
+            if(cameraPosition.Y >= playerHeight+0.5f)
+            {
+                isJumping = false;
+                speed = cameraSpeed;
+            }
 
             if (moveVector != Vector3.Zero)
             {
                 moveVector.Normalize();
-                moveVector *= dt * cameraSpeed;
+                moveVector *= dt * speed;
 
                 Move(moveVector);
             }

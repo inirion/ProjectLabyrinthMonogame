@@ -3,6 +3,7 @@ using LabyrinthGameMonogame.Utils.Randomizers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -13,6 +14,9 @@ namespace LabyrinthGameMonogame.GameFolder
         int calculatedSize;
         int[] backtrack_x;
         int[] backtrack_y;
+        int[] neighbour_x;
+        int[] neighbour_y;
+        int[] step;
         IRandomizer rnd;
 
         public int[,] Maze { get => maze; set => maze = value; }
@@ -131,23 +135,14 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public void CreateMaze()
         {
-            switch (GameManager.Instance.DifficultyLevel)
-            {
-                case DifficultyLevel.Easy:
-                    size = 5;
-                    break;
-                case DifficultyLevel.Medium:
-                    size = 10;
-                    break;
-                case DifficultyLevel.Hard:
-                    size = 15;
-                    break;
-            }
+            size = (int)GameManager.Instance.DifficultyLevel;
             calculatedSize = size * 2 + 1;
             Maze = new int[calculatedSize, calculatedSize];
             backtrack_x = new int[size * size];
             backtrack_y = new int[size * size];
-
+            neighbour_x = new int[4];
+            neighbour_y = new int[4];
+            step = new int[4];
             InitMaze();
             GenerateMaze(0, 1, 1, 1);
             for (int i = 1; i < calculatedSize-1; i++)
@@ -282,14 +277,9 @@ namespace LabyrinthGameMonogame.GameFolder
 
         private void GenerateMaze(int index, int x, int y, int visited)
         {
-
-
             if (visited < size*size)
             {
                 int neighbour_valid = -1;
-                int[] neighbour_x = new int[4];
-                int[] neighbour_y = new int[4];
-                int[] step = new int[4];
                 int x_next = 0;
                 int y_next = 0;
 

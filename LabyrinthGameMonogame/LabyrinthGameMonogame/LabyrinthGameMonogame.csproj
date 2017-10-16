@@ -51,9 +51,10 @@
     <Compile Include="Factories\ButtonFactory.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameFolder\Camera.cs" />
+    <Compile Include="GameFolder\Enteties\Ground.cs" />
     <Compile Include="GameFolder\Enteties\Player.cs" />
     <Compile Include="GameFolder\GameManager.cs" />
-    <Compile Include="GameFolder\GameObject.cs" />
+    <Compile Include="GameFolder\Enteties\Wall.cs" />
     <Compile Include="GameFolder\LabirynthGame.cs" />
     <Compile Include="GameFolder\LabirynthGenerator.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />

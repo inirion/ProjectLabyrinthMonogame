@@ -5,6 +5,7 @@ namespace LabyrinthGameMonogame.GameFolder
     class GameManager
     {
         private static GameManager instance;
+    
 
         private GameManager()
         {

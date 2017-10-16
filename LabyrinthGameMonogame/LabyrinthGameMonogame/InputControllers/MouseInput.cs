@@ -16,14 +16,17 @@ namespace LabyrinthGameMonogame.InputControllers
         MouseState originalState;
         Vector2 currentMousePos;
         Vector2 previousMousePos;
+        float sensitivity;
 
         public Vector2 CurrentMousePos { get => currentMousePos; set => currentMousePos = value; }
         public Vector2 PreviousMousePos { get => previousMousePos; set => previousMousePos = value; }
         public MouseState OriginalState { get => originalState; set => originalState = value; }
         public MouseState CurrentState { get => currentState; set => currentState = value; }
+        public float Sensitivity { get => sensitivity; set => sensitivity = value; }
         #endregion
         public MouseInput()
         {
+            sensitivity = 0.04f;
             CurrentState = previousState;
 
             CurrentMousePos = PreviousMousePos;
