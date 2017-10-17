@@ -13,6 +13,7 @@ namespace LabyrinthGameMonogame.Utils
         List<Wall> map;
         Vector2 size;
 
+
         public LabirynthCreator() {
             generator = new LabirynthGenerator();
             Map = new List<Wall>();

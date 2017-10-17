@@ -28,10 +28,12 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public bool IsGameRunning { get => isGameRunning; set => isGameRunning = value; }
         public bool ResetGame { get => resetGame; set => resetGame = value; }
-        internal DifficultyLevel DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
+        public DifficultyLevel DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
+        public bool IsColliding { get => isColliding; set => isColliding = value; }
 
         private bool isGameRunning;
         private bool resetGame;
+        private bool isColliding;
         private DifficultyLevel difficultyLevel;
     }
 }

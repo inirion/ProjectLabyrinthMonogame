@@ -25,6 +25,7 @@ namespace LabyrinthGameMonogame.GameFolder
             finish = new Vector3();
             ground = new Ground("Floor",new Vector3(0,-0.1f,0), new Vector3(0,0,0), new Vector3(1,0.01f,0.2f));
             ground.setupModel();
+            CollisionChecker.Instance.Walls = labirynth.Map;
             anglex = ground.Scale.X;
             angley = ground.Scale.Y;
             anglez = ground.Scale.Z;
@@ -35,6 +36,7 @@ namespace LabyrinthGameMonogame.GameFolder
             if(GameManager.Instance.ResetGame)
             {
                 labirynth.CreateMap();
+                CollisionChecker.Instance.Walls = labirynth.Map;
                 GameManager.Instance.ResetGame = false;
                 //coords x, z, y
                 player.Position = labirynth.GetStartingPosition();
@@ -66,10 +68,17 @@ namespace LabyrinthGameMonogame.GameFolder
             {
                 GameManager.Instance.ResetGame = true;
             }
-
+            if (labirynth.Map.Exists(i=> i.BoundingBox.Contains(player.Position) == ContainmentType.Contains))
+            {
+                GameManager.Instance.IsColliding = true;
+            }
+            else
+            {
+                GameManager.Instance.IsColliding = false;
+            }
             ground.setupModel();
 
-            Debug.WriteLine(1/ gameTime.ElapsedGameTime.TotalSeconds);
+            
         }
 
         void DrawModel(Wall wall)

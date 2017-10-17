@@ -1,6 +1,8 @@
 ﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.InputControllers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
@@ -32,6 +34,8 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 speed *= 2;
             }
             camera.CameraSpeed = speed;
+
+
 
             Camera.Update(gameTime, ref isJumping, PlayerHeight);
             this.position = camera.Position;

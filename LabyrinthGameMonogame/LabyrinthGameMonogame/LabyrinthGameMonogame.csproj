@@ -74,6 +74,7 @@
     <Compile Include="GUI\Screens\IntroScreen.cs" />
     <Compile Include="GUI\Screens\MainMenuScreen.cs" />
     <Compile Include="GUI\Screens\ScreenManager.cs" />
+    <Compile Include="Utils\CollisionChecker.cs" />
     <Compile Include="Utils\LabirynthCreator.cs" />
     <Compile Include="Utils\Randomizers\IRandomizer.cs" />
     <Compile Include="Utils\Randomizers\LabirynthRandomizer.cs" />

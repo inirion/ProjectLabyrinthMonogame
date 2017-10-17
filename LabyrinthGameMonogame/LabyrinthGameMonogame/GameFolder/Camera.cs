@@ -1,6 +1,7 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.InputControllers;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -88,7 +89,10 @@ namespace LabyrinthGameMonogame.GameFolder
             Matrix rotate = Matrix.CreateRotationY(cameraRotation.Y);
             Vector3 movement = new Vector3(amount.X, amount.Y, amount.Z);
             movement = Vector3.Transform(movement, rotate);
-            return cameraPosition + movement;
+            return cameraPosition + new Vector3(
+                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(movement.X, 0, 0)) ? 0 : movement.X,
+                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(0, movement.Y, 0)) ? 0 : movement.Y,
+                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(0, 0, movement.Z)) ? 0 : movement.Z);
         }
 
         private void Move(Vector3 scale)
