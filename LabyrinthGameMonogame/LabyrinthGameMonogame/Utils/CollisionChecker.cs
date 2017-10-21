@@ -1,10 +1,6 @@
 ﻿using LabyrinthGameMonogame.GameFolder.Enteties;
 using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LabyrinthGameMonogame.Utils
 {
@@ -35,7 +31,7 @@ namespace LabyrinthGameMonogame.Utils
         public bool CheckCollision(Vector3 cameraPosition)
         {
             bool flag = false;
-            if(Walls.Exists(i => i.BoundingBox.Contains(cameraPosition) == ContainmentType.Contains))
+            if(walls.Exists(i => i.BoundingBox.Contains(cameraPosition) == ContainmentType.Contains) )
             {
                 flag = true;
             }

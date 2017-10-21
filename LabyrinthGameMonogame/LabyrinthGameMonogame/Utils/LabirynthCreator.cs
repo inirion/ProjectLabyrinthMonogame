@@ -83,7 +83,7 @@ namespace LabyrinthGameMonogame.Utils
                             map.Add(new Wall(LabiryntElement.Start, "Wooden_House", new Vector3(gap * i, 0, gap * j), new Vector3(0, 0, 0)));
                             break;
                         case LabiryntElement.Finish:
-                            map.Add(new Wall(LabiryntElement.Finish, "Wooden_House", new Vector3(gap * i, 0, gap * j), new Vector3(0, 0, 0)));
+                            map.Add(new Wall(LabiryntElement.Finish, "cor", new Vector3(gap * i, 0, gap * j), new Vector3(50, 0, 0)));
                             break;
                     }
                 }

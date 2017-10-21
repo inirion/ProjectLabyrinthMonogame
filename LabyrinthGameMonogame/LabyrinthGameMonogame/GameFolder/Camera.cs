@@ -115,7 +115,7 @@ namespace LabyrinthGameMonogame.GameFolder
             if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Right))
                 moveVector.X = -1;
 
-            if (isJumping)
+            if (isJumping && cameraPosition.Y <= playerHeight +0.5f)
             {
                 moveVector.Y = 1f;
                 speed = JumpingCameraSpeed;
