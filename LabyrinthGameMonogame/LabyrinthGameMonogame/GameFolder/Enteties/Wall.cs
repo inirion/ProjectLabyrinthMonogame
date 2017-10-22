@@ -1,5 +1,6 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GUI.Screens;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,10 +8,10 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
     class Wall
     {
-        Model model;
         LabiryntElement labiryntElement;
         Vector3 angle;
         Vector3 position;
+        Vector3 scale;
         Matrix worldMatrix;
         BoundingBox boundingBox;
 
@@ -21,7 +22,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
             // For each mesh of the model
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in AssetHolder.Instance.Assets[LabiryntElement].Meshes)
             {
                 foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {
@@ -48,24 +49,40 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             BoundingBox =  new BoundingBox(min, max);
         }
 
-
-        public Wall(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle)
+        public void Draw(Matrix View, Matrix Projection)
         {
-            Model = ScreenManager.Instance.Content.Load<Model>(modelName);
+            foreach (ModelMesh mesh in AssetHolder.Instance.Assets[LabiryntElement].Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+
+                    effect.World = WorldMatrix;
+                    effect.View = View;
+                    effect.Projection = Projection;
+                }
+                mesh.Draw();
+            }
+        }
+
+        public Wall(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle, Vector3 scale)
+        {
             this.angle = angle;
+            this.scale = scale;
             this.Position = position;
             this.LabiryntElement = labiryntElement;
         }
 
         public Matrix WorldMatrix { get => worldMatrix; set => worldMatrix = value; }
-        public Model Model { get => model; set => model = value; }
         public Vector3 Position { get => position; set => position = value; }
         public LabiryntElement LabiryntElement { get => labiryntElement; set => labiryntElement = value; }
         public BoundingBox BoundingBox { get => boundingBox; set => boundingBox = value; }
 
         public void setupModel()
         {
-            WorldMatrix =  Matrix.CreateRotationX(MathHelper.ToRadians(angle.X)) 
+            WorldMatrix = Matrix.CreateScale(scale)
+                * Matrix.CreateRotationX(MathHelper.ToRadians(angle.X)) 
                 * Matrix.CreateRotationY(MathHelper.ToRadians(angle.Y)) 
                 * Matrix.CreateRotationZ(MathHelper.ToRadians(angle.Z)) 
                 * Matrix.CreateTranslation(Position);

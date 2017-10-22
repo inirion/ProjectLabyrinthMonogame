@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -101,6 +102,56 @@ namespace LabyrinthGameMonogame.GameFolder
                 maze[x, y] = (int)LabiryntElement.WallEW;
             }
         }
+
+        private void setWalls3Way(int x, int y)
+        {
+            if (y == 0 && x > 0 && x < maze.GetLength(0)-1)
+            {
+                if (maze[x-1, y] == (int)LabiryntElement.WallNS && maze[x+1, y] == (int)LabiryntElement.WallNS && maze[x, y+1] == (int)LabiryntElement.WallEW)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WayEast;
+                }
+            }else if(y == maze.GetLength(0) - 1 && x >0 && x < maze.GetLength(0) - 1)
+            {
+                if (maze[x, y-1] == (int)LabiryntElement.WallEW && maze[x-1, y] == (int)LabiryntElement.WallNS && maze[x+1, y] == (int)LabiryntElement.WallNS)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WayWest;
+                }
+            }else if (x == 0 && y > 0 && y < maze.GetLength(0) - 1)
+            {
+                if (maze[x, y-1] == (int)LabiryntElement.WallEW && maze[x + 1, y] == (int)LabiryntElement.WallNS && maze[x, y + 1] == (int)LabiryntElement.WallEW)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WaySouth;
+                }
+            }
+            else if (x == maze.GetLength(0) - 1 && y > 0 && y < maze.GetLength(0) - 1)
+            {
+                if (maze[x, y - 1] == (int)LabiryntElement.WallEW && maze[x - 1, y] == (int)LabiryntElement.WallNS && maze[x, y + 1] == (int)LabiryntElement.WallEW)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WayNorth;
+                }
+            }
+            else if(y >0 && y < maze.GetLength(0) - 1 && x > 0 && x < maze.GetLength(0) - 1)
+            {
+                if (maze[x, y+1] == (int)LabiryntElement.WallEW && maze[x, y-1] == (int)LabiryntElement.Road && maze[x+1, y] == (int)LabiryntElement.WallNS && maze[x-1, y] == (int)LabiryntElement.WallNS)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WayEast;
+                }
+                if (maze[x, y + 1] == (int)LabiryntElement.Road && maze[x, y - 1] == (int)LabiryntElement.WallEW && maze[x + 1, y] == (int)LabiryntElement.WallNS && maze[x - 1, y] == (int)LabiryntElement.WallNS)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WayWest;
+                }
+                if (maze[x+1, y] == (int)LabiryntElement.WallNS && maze[x-1, y] == (int)LabiryntElement.Road && maze[x, y+1] == (int)LabiryntElement.WallEW && maze[x, y-1] == (int)LabiryntElement.WallEW)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WaySouth;
+                }
+                if (maze[x + 1, y] == (int)LabiryntElement.Road && maze[x - 1, y] == (int)LabiryntElement.WallNS && maze[x, y + 1] == (int)LabiryntElement.WallEW && maze[x, y - 1] == (int)LabiryntElement.WallEW)
+                {
+                    maze[x, y] = (int)LabiryntElement.Wall3WayNorth;
+                }
+            }
+        }
+
         private List<Point> GetSuitableStartFinishPoint()
         {
             List<Point> points = new List<Point>();
@@ -175,6 +226,7 @@ namespace LabyrinthGameMonogame.GameFolder
                     }
                 }
             }
+            
             for (int i = 0; i < calculatedSize; i++)
             {
                 for (int j = 0; j < calculatedSize; j++)
@@ -204,6 +256,19 @@ namespace LabyrinthGameMonogame.GameFolder
                     }
                 }
             }
+
+            for (int i = 0; i < calculatedSize; i++)
+            {
+                for (int j = 0; j < calculatedSize; j++)
+                {
+                    if (maze[i, j] == (int)LabiryntElement.WallEW || maze[i, j] == (int)LabiryntElement.WallNS)
+                    {
+                        setWalls3Way(i, j);
+                    }
+                }
+            }
+
+
             List<Point> points = GetSuitableStartFinishPoint();
             
             for (int i = 0; i < calculatedSize; i++)
@@ -228,6 +293,14 @@ namespace LabyrinthGameMonogame.GameFolder
                         Debug.Write("S");
                     else if (maze[i, j] == (int)LabiryntElement.Finish)
                         Debug.Write("F");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WayNorth)
+                        Debug.Write("N");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WayEast)
+                        Debug.Write("E");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WaySouth)
+                        Debug.Write("$");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WayWest)
+                        Debug.Write("W");
                     else
                         Debug.Write(" ");
                 }
@@ -266,6 +339,14 @@ namespace LabyrinthGameMonogame.GameFolder
                         Debug.Write("S");
                     else if (maze[i, j] == (int)LabiryntElement.Finish)
                         Debug.Write("F");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WayNorth)
+                        Debug.Write("N");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WayEast)
+                        Debug.Write("E");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WaySouth)
+                        Debug.Write("$");
+                    else if (maze[i, j] == (int)LabiryntElement.Wall3WayWest)
+                        Debug.Write("W");
                     else
                         Debug.Write(" ");
                 }
@@ -273,7 +354,11 @@ namespace LabyrinthGameMonogame.GameFolder
             }
             Debug.WriteLine("");
             Debug.WriteLine("");
+
+           
         }
+
+        
 
         private void GenerateMaze(int index, int x, int y, int visited)
         {

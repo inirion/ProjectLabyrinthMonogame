@@ -5,6 +5,7 @@ using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.Factories;
 using Microsoft.Xna.Framework.Input;
 using LabyrinthGameMonogame.GameFolder;
+using LabyrinthGameMonogame.Utils;
 
 namespace LabyrinthGameMonogame
 {
@@ -23,13 +24,15 @@ namespace LabyrinthGameMonogame
         protected override void Initialize()
         {
             ScreenManager.Instance.Initialize(Content,graphics);
+            AssetHolder.Instance.Initialize(Content);
             base.Initialize();
-
+            
             graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
             graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
             graphics.ApplyChanges();
             
         }
+
 
         protected override void LoadContent()
         {

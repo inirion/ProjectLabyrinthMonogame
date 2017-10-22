@@ -3,6 +3,7 @@
     enum LabiryntElement
     {
         Road,
+        Pillar,
         Wall,
         Finish,
         Start,
@@ -11,6 +12,10 @@
         WallWN,
         WallWS,
         WallEN,
-        WallES
+        WallES,
+        Wall3WayEast,
+        Wall3WayWest,
+        Wall3WayNorth,
+        Wall3WaySouth,
     }
 }

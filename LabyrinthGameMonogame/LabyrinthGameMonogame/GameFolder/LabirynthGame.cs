@@ -29,6 +29,7 @@ namespace LabyrinthGameMonogame.GameFolder
             anglex = ground.Scale.X;
             angley = ground.Scale.Y;
             anglez = ground.Scale.Z;
+
         }
 
         public void ResetGame()
@@ -81,23 +82,6 @@ namespace LabyrinthGameMonogame.GameFolder
             
         }
 
-        void DrawModel(Wall wall)
-        {
-            foreach (var mesh in wall.Model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {   
-                    effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = true;
-
-                    effect.World = wall.WorldMatrix;
-                    effect.View = player.Camera.View;
-                    effect.Projection = player.Camera.Projection;
-                }
-
-                mesh.Draw();
-            }
-        }
 
         void DrawGroud(Ground ground)
         {
@@ -121,7 +105,7 @@ namespace LabyrinthGameMonogame.GameFolder
             if (GameManager.Instance.IsGameRunning) {
                 ScreenManager.Instance.Graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
                 ScreenManager.Instance.Graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                labirynth.Map.ForEach(i => DrawModel(i));
+                labirynth.Map.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 DrawGroud(ground);
             }
         }
