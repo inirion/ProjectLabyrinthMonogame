@@ -46,7 +46,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
             Resolutions = new List<DisplayMode>();
             foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
             {
-                Resolutions.Add(mode);
+                if(mode.Width >=800)
+                    Resolutions.Add(mode);
             }
             Resolutions.Sort(delegate (DisplayMode a, DisplayMode b)
             {
