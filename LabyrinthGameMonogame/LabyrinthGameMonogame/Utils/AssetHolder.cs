@@ -9,6 +9,7 @@ namespace LabyrinthGameMonogame.Utils
     class AssetHolder
     {
         private Dictionary<LabiryntElement, Model> assets;
+        private SpriteFont font;
         private static AssetHolder instance;
         public static AssetHolder Instance
         {
@@ -22,6 +23,7 @@ namespace LabyrinthGameMonogame.Utils
             }
         }
         public Dictionary<LabiryntElement, Model> Assets { get => assets; set => assets = value; }
+        public SpriteFont Font { get => font; set => font = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -36,6 +38,8 @@ namespace LabyrinthGameMonogame.Utils
             assets.Add(LabiryntElement.Start, content.Load<Model>("Wooden_House"));
             assets.Add(LabiryntElement.Finish, content.Load<Model>("Wooden_House"));
             assets.Add(LabiryntElement.Pillar, content.Load<Model>("Pillar"));
+
+            Font = content.Load<SpriteFont>("Font");
         }
     }
 }

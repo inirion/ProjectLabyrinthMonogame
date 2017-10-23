@@ -8,6 +8,9 @@
         LevelType,
         Game,
         Pause,
-        Exit
+        Exit,
+        Options,
+        OptionsResolution,
+        OptionsSensitivity
     }
 }

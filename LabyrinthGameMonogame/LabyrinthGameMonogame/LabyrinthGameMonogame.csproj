@@ -63,6 +63,7 @@
     <Compile Include="GUI\Screens\InfoScreen.cs" />
     <Compile Include="GUI\Screens\IScreen.cs" />
     <Compile Include="GUI\Screens\LevelTypeScreen.cs" />
+    <Compile Include="GUI\Screens\OptionsScreen.cs" />
     <Compile Include="GUI\Screens\PauseScreen.cs" />
     <Compile Include="InputControllers\IKeyboardInput.cs" />
     <Compile Include="InputControllers\IMouseInput.cs" />

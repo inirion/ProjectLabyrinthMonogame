@@ -4,6 +4,9 @@ using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Enums;
 using Microsoft.Xna.Framework.Content;
 using LabyrinthGameMonogame.GameFolder;
+using System.Diagnostics;
+using System.Collections.Generic;
+using LabyrinthGameMonogame.GUI.Buttons;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
@@ -17,11 +20,18 @@ namespace LabyrinthGameMonogame.GUI.Screens
             
         }
 
+        public void CentreButtons()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             game.ResetGame();
             game.Draw();
         }
+
+       
 
         public void Update(GameTime gameTime)
         {

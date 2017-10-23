@@ -26,10 +26,8 @@ namespace LabyrinthGameMonogame
             ScreenManager.Instance.Initialize(Content,graphics);
             AssetHolder.Instance.Initialize(Content);
             base.Initialize();
-            
-            graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
-            graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
-            graphics.ApplyChanges();
+
+            ScreenManager.Instance.ChangeResolution();
             
         }
 

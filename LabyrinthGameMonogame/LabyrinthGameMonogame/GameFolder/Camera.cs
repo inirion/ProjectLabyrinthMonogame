@@ -4,6 +4,7 @@ using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -55,12 +56,13 @@ namespace LabyrinthGameMonogame.GameFolder
         public float CameraSpeed { get => cameraSpeed; set { cameraSpeed = value; } }
 
         public float JumpingCameraSpeed { get => jumpingCameraSpeed; set => jumpingCameraSpeed = value; }
+        public float MouseSpeed { get => mouseSpeed; set => mouseSpeed = value; }
 
-        public Camera(Vector3 position, Vector3 rotation, float cameraSpeed,float jumpingCameraSpeed, float mouseSpeed)
+        public Camera(Vector3 position, Vector3 rotation, float cameraSpeed,float jumpingCameraSpeed)
         {
             this.CameraSpeed = cameraSpeed;
             this.JumpingCameraSpeed = jumpingCameraSpeed;
-            this.mouseSpeed = mouseSpeed;
+            this.MouseSpeed = ControlManager.Instance.Mouse.Sensitivity;
 
             Projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4,
@@ -131,7 +133,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 isJumping = false;
                 speed = cameraSpeed;
             }*/
-
+            
             if (moveVector != Vector3.Zero)
             {
                 moveVector.Normalize();
@@ -147,9 +149,8 @@ namespace LabyrinthGameMonogame.GameFolder
             {
                 deltaX = ControlManager.Instance.Mouse.CurrentState.X - (ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Width / 2);
                 deltaY = ControlManager.Instance.Mouse.CurrentState.Y - (ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Height / 2);
-
-                mouseRotationBuffer.X -= mouseSpeed * deltaX * dt;
-                mouseRotationBuffer.Y -= mouseSpeed * deltaY * dt;
+                mouseRotationBuffer.X -= MouseSpeed * deltaX * dt;
+                mouseRotationBuffer.Y -= MouseSpeed * deltaY * dt;
 
                 if (mouseRotationBuffer.Y < MathHelper.ToRadians(-75.0f))
                     mouseRotationBuffer.Y = mouseRotationBuffer.Y - (mouseRotationBuffer.Y - MathHelper.ToRadians(-75.0f));

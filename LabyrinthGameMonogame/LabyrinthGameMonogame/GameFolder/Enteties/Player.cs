@@ -16,12 +16,17 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 
         public Player(Vector3 position,float movementSpeed)
         {
-            Camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed*1.5f, ControlManager.Instance.Mouse.Sensitivity);
+            Camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed*1.5f);
             PlayerHeight = 0.2f;
             this.Position = position;
             this.MovementSpeed = movementSpeed;
         }
 
+        public void Reset(Vector3 position)
+        {
+            this.Position = position;
+            this.camera.MouseSpeed = ControlManager.Instance.Mouse.Sensitivity;
+        }
         public void Update(GameTime gameTime)
         {
             float speed = movementSpeed;
@@ -34,7 +39,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 speed *= 2;
             }
             camera.CameraSpeed = speed;
-
+            
 
 
             Camera.Update(gameTime, ref isJumping, PlayerHeight);

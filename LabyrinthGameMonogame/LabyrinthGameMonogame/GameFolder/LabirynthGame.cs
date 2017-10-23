@@ -40,7 +40,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 CollisionChecker.Instance.Walls = labirynth.Map;
                 GameManager.Instance.ResetGame = false;
                 //coords x, z, y
-                player.Position = labirynth.GetStartingPosition();
+                player.Reset(labirynth.GetStartingPosition());
                 finish = labirynth.GetFinishPosition();
                 switch (GameManager.Instance.DifficultyLevel)
                 {
@@ -78,8 +78,9 @@ namespace LabyrinthGameMonogame.GameFolder
                 GameManager.Instance.IsColliding = false;
             }
             ground.setupModel();
-
             
+
+
         }
 
 

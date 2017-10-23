@@ -17,6 +17,22 @@ namespace LabyrinthGameMonogame.GUI.Screens
             buttons = ButtonFactory.CreateMainMenuButtons();
         }
 
+        public void CentreButtons()
+        {
+            float gap = buttons[0].Font.MeasureString(buttons[0].Text).Y + buttons[0].Font.MeasureString(buttons[0].Text).Y / 2;
+            float offset = 0;
+            foreach (Button btn in buttons)
+            {
+                btn.ButtonRect = new Rectangle(
+                    (int)((ScreenManager.Instance.Dimensions.X / 2) - (btn.Font.MeasureString(btn.Text).X) / 2),
+                    (int)(ScreenManager.Instance.Dimensions.Y / 2 - (btn.Font.MeasureString(btn.Text).Y) + offset),
+                    (int)(btn.Font.MeasureString(btn.Text).X),
+                    (int)(btn.Font.MeasureString(btn.Text).Y)
+                    );
+                offset += gap;
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             foreach(Button btn in buttons)
