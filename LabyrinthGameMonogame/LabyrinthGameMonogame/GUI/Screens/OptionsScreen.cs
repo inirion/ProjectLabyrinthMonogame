@@ -15,21 +15,20 @@ using System.Diagnostics;
 namespace LabyrinthGameMonogame.GUI.Screens
 {
 
-    class OptionsScreen : IScreen
+    class OptionsScreen : ScreenDrawable
     {
-        private List<Button> buttons;
         private float tempSencitivity;
         private Vector2 tempDimencions;
         int index;
-        public OptionsScreen(ContentManager content)
+        public OptionsScreen(Game game) : base(game)
         {
             buttons = ButtonFactory.CreateOptionsButtons();
             index = 0;
-            tempSencitivity = ControlManager.Instance.Mouse.Sensitivity*1000;
-            tempDimencions = ScreenManager.Instance.Dimensions;
+            tempSencitivity = controlManager.Mouse.Sensitivity * 1000;
+            tempDimencions = screenManager.Dimensions;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
 
@@ -41,20 +40,20 @@ namespace LabyrinthGameMonogame.GUI.Screens
             spriteBatch.End();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             foreach (Button btn in buttons)
             {
                 btn.Color = Color.White;
-                if (ControlManager.Instance.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
+                if (controlManager.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
                 {
                     btn.Color = Color.Red;
                 }
 
-                if (ControlManager.Instance.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
+                if (controlManager.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
-                    if(btn.GoesTo != ScreenManager.Instance.ActiveScreenType && btn.GoesTo != ScreenTypes.OptionsResolution&& btn.GoesTo != ScreenTypes.OptionsSensitivity)
-                        ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
+                    if (btn.GoesTo != screenManager.ActiveScreenType && btn.GoesTo != ScreenTypes.OptionsResolution && btn.GoesTo != ScreenTypes.OptionsSensitivity)
+                        screenManager.ActiveScreenType = btn.GoesTo;
                     if (btn.Text.Contains("+") && btn.GoesTo == ScreenTypes.OptionsSensitivity)
                     {
                         if (tempSencitivity < 100)
@@ -64,9 +63,9 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     }
                     if (btn.Text.Contains("+") && btn.GoesTo == ScreenTypes.OptionsResolution)
                     {
-                        if (index + 1 < ScreenManager.Instance.Resolutions.Count)
+                        if (index + 1 < screenManager.Resolutions.Count)
                         {
-                            buttons[1].Text = ChangeResolution(index+1,1);
+                            buttons[1].Text = ChangeResolution(index + 1, 1);
                         }
                     }
                     if (btn.Text.Contains("-") && btn.GoesTo == ScreenTypes.OptionsSensitivity)
@@ -89,10 +88,10 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     }
                     if (btn.Text.Contains("Apply"))
                     {
-                        ScreenManager.Instance.ChangeScreenMode();
-                        ControlManager.Instance.Mouse.Sensitivity = tempSencitivity/1000;
-                        ScreenManager.Instance.Dimensions = tempDimencions;
-                        ScreenManager.Instance.ChangeResolution();
+                        screenManager.ChangeScreenMode();
+                        controlManager.Mouse.Sensitivity = tempSencitivity / 1000;
+                        screenManager.Dimensions = tempDimencions;
+                        screenManager.ChangeResolution();
                     }
                     btn.Color = Color.White;
                 }
@@ -100,8 +99,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
         }
         private string ChangeScreenMode()
         {
-            ScreenManager.Instance.Fullscreen = !ScreenManager.Instance.Fullscreen;
-            return "Fullscreen: " + ScreenManager.Instance.Fullscreen.ToString();
+            screenManager.Fullscreen = !screenManager.Fullscreen;
+            return "Fullscreen: " + screenManager.Fullscreen.ToString();
         }
 
         private string ChangeSensitivity(float amount)
@@ -110,22 +109,25 @@ namespace LabyrinthGameMonogame.GUI.Screens
             return "Sensitivity: " + tempSencitivity + "%";
         }
 
-        private string ChangeResolution(int i,int value)
+        private string ChangeResolution(int i, int value)
         {
-            if(ScreenManager.Instance.Resolutions[i].Width != tempDimencions.X
-                || ScreenManager.Instance.Resolutions[i].Height != tempDimencions.Y)
+            if (screenManager.Resolutions[i].Width != tempDimencions.X
+                || screenManager.Resolutions[i].Height != tempDimencions.Y)
             {
-                tempDimencions = new Vector2(ScreenManager.Instance.Resolutions[i].Width, ScreenManager.Instance.Resolutions[i].Height);
-                index+= value;
-                
+                tempDimencions = new Vector2(screenManager.Resolutions[i].Width, screenManager.Resolutions[i].Height);
+                index += value;
+
             }
             return "Resolution: " + (int)tempDimencions.X + "x" + (int)tempDimencions.Y;
         }
-        /// <summary>
-        /// shit that must be done prob can be easy avoided just dont have time =(
-        /// </summary>
-        public void CentreButtons()
+        
+        
+                
+        public override void SetupButtons()
         {
+            buttons[1].Text = "Resolution: " + (int)screenManager.Dimensions.X + "x" + (int)screenManager.Dimensions.Y;
+            buttons[4].Text = "Sensitivity: " + (int)(controlManager.Mouse.Sensitivity * 1000) + "%";
+            buttons[6].Text = "Fullscreen: " + screenManager.Fullscreen.ToString();
             float gap = buttons[1].Font.MeasureString(buttons[1].Text).Y + buttons[1].Font.MeasureString(buttons[1].Text).Y / 2;
             float offset = 0;
 
@@ -149,8 +151,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
         private void PlaceButton(Button btn, float offset)
         {
             btn.ButtonRect = new Rectangle(
-                    (int)((ScreenManager.Instance.Dimensions.X / 2) - (btn.Font.MeasureString(btn.Text).X) / 2),
-                    (int)(ScreenManager.Instance.Dimensions.Y / 2 - (btn.Font.MeasureString(btn.Text).Y) + offset),
+                    (int)((screenManager.Dimensions.X / 2) - (btn.Font.MeasureString(btn.Text).X) / 2),
+                    (int)(screenManager.Dimensions.Y / 2 - (btn.Font.MeasureString(btn.Text).Y) + offset),
                     (int)(btn.Font.MeasureString(btn.Text).X),
                     (int)(btn.Font.MeasureString(btn.Text).Y)
                     );

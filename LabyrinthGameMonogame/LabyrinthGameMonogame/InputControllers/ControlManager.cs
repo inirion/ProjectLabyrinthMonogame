@@ -1,42 +1,22 @@
-﻿namespace LabyrinthGameMonogame.InputControllers
+﻿using LabyrinthGameMonogame.GUI.Screens;
+using Microsoft.Xna.Framework;
+
+namespace LabyrinthGameMonogame.InputControllers
 {
-    class ControlManager
+    class ControlManager: IControlManager
     {
         private KeyboardInput keyboard;
         private MouseInput mouse;
+        
 
-        public KeyboardInput Keyboard
+        public ControlManager(Game game)
         {
-            get {
-                return keyboard;
-            }
+            this.keyboard = new KeyboardInput();
+            this.mouse = new MouseInput(game);
+            
         }
 
-        public MouseInput Mouse
-        {
-            get
-            {
-                return mouse;
-            }
-        }
-
-        private static ControlManager instance;
-        private ControlManager()
-        {
-            keyboard = new KeyboardInput();
-            mouse = new MouseInput();
-        }
-
-        public static ControlManager Instance
-        {
-            get
-            {
-                if(instance == null)
-                {
-                    instance = new ControlManager();
-                }
-                return instance;
-            }
-        }
+        KeyboardInput IControlManager.Keyboard => keyboard;
+        MouseInput IControlManager.Mouse => mouse;
     }
 }

@@ -2,38 +2,21 @@
 
 namespace LabyrinthGameMonogame.GameFolder
 {
-    class GameManager
+    class GameManager:IGameManager
     {
-        private static GameManager instance;
-    
-
-        private GameManager()
+        public GameManager()
         {
-            IsGameRunning = false;
-            ResetGame = false;
-            DifficultyLevel = DifficultyLevel.Easy;
+            isGameRunning = false;
+            resetGame = false;
+            difficultyLevel = DifficultyLevel.Easy;
         }
-
-        public static GameManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new GameManager();
-                }
-                return instance;
-            }
-        }
-
-        public bool IsGameRunning { get => isGameRunning; set => isGameRunning = value; }
-        public bool ResetGame { get => resetGame; set => resetGame = value; }
-        public DifficultyLevel DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
-        public bool IsColliding { get => isColliding; set => isColliding = value; }
 
         private bool isGameRunning;
         private bool resetGame;
-        private bool isColliding;
         private DifficultyLevel difficultyLevel;
+
+        bool IGameManager.IsGameRunning { get => isGameRunning; set => isGameRunning = value; }
+        bool IGameManager.ResetGame { get => resetGame; set => resetGame = value; }
+        DifficultyLevel IGameManager.DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
     }
 }

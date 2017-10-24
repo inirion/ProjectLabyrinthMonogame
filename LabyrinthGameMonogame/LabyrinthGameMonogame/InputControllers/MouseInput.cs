@@ -7,7 +7,7 @@ using LabyrinthGameMonogame.GUI.Screens;
 
 namespace LabyrinthGameMonogame.InputControllers
 {
-    class MouseInput : IMouseInput
+    class MouseInput
     {
         #region Variables
         private Dictionary<MouseKeys, Delegate> KeyBindings;
@@ -17,6 +17,7 @@ namespace LabyrinthGameMonogame.InputControllers
         Vector2 currentMousePos;
         Vector2 previousMousePos;
         float sensitivity;
+        private IScreenManager screenManager;
 
         public Vector2 CurrentMousePos { get => currentMousePos; set => currentMousePos = value; }
         public Vector2 PreviousMousePos { get => previousMousePos; set => previousMousePos = value; }
@@ -24,8 +25,9 @@ namespace LabyrinthGameMonogame.InputControllers
         public MouseState CurrentState { get => currentState; set => currentState = value; }
         public float Sensitivity { get => sensitivity; set => sensitivity = value; }
         #endregion
-        public MouseInput()
+        public MouseInput(Game game)
         {
+            screenManager = (IScreenManager)game.Services.GetService(typeof(IScreenManager));
             sensitivity = 0.04f;
             CurrentState = previousState;
 
@@ -43,10 +45,10 @@ namespace LabyrinthGameMonogame.InputControllers
             Update();
         }
 
-        public void CentrePosition()
+        public void CentrePosition(Vector2 pos)
         {
-            currentMousePos = new Vector2(ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Width / 2, ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Height / 2);
-            Mouse.SetPosition((int)currentMousePos.X,(int)currentMousePos.Y);
+            currentMousePos = pos;
+            Mouse.SetPosition((int)currentMousePos.X, (int)currentMousePos.Y);
             previousMousePos = currentMousePos;
             originalState = Mouse.GetState();
             previousState = Mouse.GetState();
@@ -64,7 +66,7 @@ namespace LabyrinthGameMonogame.InputControllers
 
         public bool Clicked(MouseKeys key)
         {
-            return KeyBindings[key].DynamicInvoke(key, CurrentState).Equals(ButtonState.Released) 
+            return KeyBindings[key].DynamicInvoke(key, CurrentState).Equals(ButtonState.Released)
                 && KeyBindings[key].DynamicInvoke(key, previousState).Equals(ButtonState.Pressed);
         }
 
@@ -79,7 +81,7 @@ namespace LabyrinthGameMonogame.InputControllers
 
         public bool Pressed(MouseKeys key)
         {
-            return KeyBindings[key].DynamicInvoke(key,CurrentState).Equals(ButtonState.Pressed);
+            return KeyBindings[key].DynamicInvoke(key, CurrentState).Equals(ButtonState.Pressed);
         }
 
         public bool Hovered(Rectangle target)
@@ -93,7 +95,7 @@ namespace LabyrinthGameMonogame.InputControllers
             currentMousePos.Y = 0;
             previousMousePos.X = 0;
             previousMousePos.Y = 0;
-   
+
         }
 
         private ButtonState GetButtonState(MouseKeys key, MouseState state)

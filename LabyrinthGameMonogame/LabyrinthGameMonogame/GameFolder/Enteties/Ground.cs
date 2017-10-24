@@ -1,4 +1,5 @@
 ﻿using LabyrinthGameMonogame.GUI.Screens;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -25,9 +26,9 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             scale.Z = z;
         }
 
-        public Ground(string modelName, Vector3 position, Vector3 angle, Vector3 scale)
+        public Ground(Vector3 position, Vector3 angle, Vector3 scale,Game game)
         {
-            Model = ScreenManager.Instance.Content.Load<Model>(modelName);
+            Model = AssetHolder.Instance.Floor;
             Position = position;
             Angle = angle;
             Scale = scale;

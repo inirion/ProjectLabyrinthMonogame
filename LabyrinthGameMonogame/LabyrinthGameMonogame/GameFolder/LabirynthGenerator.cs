@@ -10,6 +10,7 @@ namespace LabyrinthGameMonogame.GameFolder
 {
     class LabirynthGenerator
     {
+        IGameManager gameManager;
         int[,] maze;
         int size;
         int calculatedSize;
@@ -22,8 +23,9 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public int[,] Maze { get => maze; set => maze = value; }
 
-        public LabirynthGenerator()
+        public LabirynthGenerator(Game game)
         {
+            gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             rnd = new LabirynthRandomizer();
         }
 
@@ -186,7 +188,7 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public void CreateMaze()
         {
-            size = (int)GameManager.Instance.DifficultyLevel;
+            size = (int)gameManager.DifficultyLevel;
             calculatedSize = size * 2 + 1;
             Maze = new int[calculatedSize, calculatedSize];
             backtrack_x = new int[size * size];

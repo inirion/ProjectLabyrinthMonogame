@@ -10,56 +10,51 @@ using System.Collections.Generic;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
-    class PauseScreen : IScreen
+    class PauseScreen : ScreenDrawable
     {
-        private List<Button> buttons;
-        public PauseScreen(ContentManager content)
+        private IGameManager gameManager;
+        public PauseScreen(Game game) : base(game)
         {
+            gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             buttons = ButtonFactory.CreatePauseButtons();
         }
-        public void CentreButtons()
+
+        protected override void LoadContent()
         {
-            float gap = buttons[0].Font.MeasureString(buttons[0].Text).Y + buttons[0].Font.MeasureString(buttons[0].Text).Y / 2;
-            float offset = 0;
-            foreach (Button btn in buttons)
-            {
-                btn.ButtonRect = new Rectangle(
-                    (int)((ScreenManager.Instance.Dimensions.X / 2) - (btn.Font.MeasureString(btn.Text).X) / 2),
-                    (int)(ScreenManager.Instance.Dimensions.Y / 2 - (btn.Font.MeasureString(btn.Text).Y) + offset),
-                    (int)(btn.Font.MeasureString(btn.Text).X),
-                    (int)(btn.Font.MeasureString(btn.Text).Y)
-                    );
-                offset += gap;
-            }
+            SetupButtons();
+            base.LoadContent();
         }
-        public void Update(GameTime gameTime)
+
+        public override void Update(GameTime gameTime)
         {
             foreach (Button btn in buttons)
             {
                 btn.Color = Color.White;
-                if (ControlManager.Instance.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
+                if (controlManager.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
                 {
                     btn.Color = Color.Red;
                 }
 
-                if (ControlManager.Instance.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
+                if (controlManager.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
-                    ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
+                    screenManager.ActiveScreenType = btn.GoesTo;
                     if (btn.GoesTo == ScreenTypes.Game)
                     {
-                        GameManager.Instance.IsGameRunning = true;
-                        ControlManager.Instance.Mouse.CentrePosition();
+                        gameManager.IsGameRunning = true;
+                        controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
                     }
                     if (btn.GoesTo == ScreenTypes.MainMenu)
                     {
-                        GameManager.Instance.IsGameRunning = false;
-                        GameManager.Instance.ResetGame = true;
+                        gameManager.IsGameRunning = false;
+                        gameManager.ResetGame = true;
                     }
                     btn.Color = Color.White;
                 }
             }
+            base.Update(gameTime);
         }
-        public void Draw(SpriteBatch spriteBatch)
+
+        public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
 
@@ -69,8 +64,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
             }
 
             spriteBatch.End();
+            base.Draw(gameTime);
         }
-
-
     }
 }

@@ -10,40 +10,33 @@ using LabyrinthGameMonogame.GUI.Buttons;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
-    class GameScreen : IScreen
+    class GameScreen : ScreenDrawable
     {
-        LabirynthGame game;
+        LabirynthGame labirynthGame;
+        IGameManager gameManager;
 
-        public GameScreen(ContentManager content)
+        public GameScreen(Game game) : base(game)
         {
-            game = new LabirynthGame();
-            
+            gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
+            labirynthGame = new LabirynthGame(game);
         }
 
-        public void CentreButtons()
+        public override void Draw(GameTime gameTime)
         {
-            throw new System.NotImplementedException();
+            labirynthGame.ResetGame();
+            labirynthGame.Draw();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Update(GameTime gameTime)
         {
-            game.ResetGame();
-            game.Draw();
-        }
-
-       
-
-        public void Update(GameTime gameTime)
-        {
-            
-            if (ControlManager.Instance.Keyboard.Clicked(KeyboardKeys.Back))
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.Back))
             {
-                ScreenManager.Instance.ActiveScreenType = ScreenTypes.Pause;
+                screenManager.ActiveScreenType = ScreenTypes.Pause;
 
-                GameManager.Instance.IsGameRunning = false;
+                gameManager.IsGameRunning = false;
             }
-
-            game.Update(gameTime);
+            labirynthGame.Update(gameTime);
+            base.Update(gameTime);
         }
     }
 }

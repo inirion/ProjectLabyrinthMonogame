@@ -4,7 +4,7 @@ using LabyrinthGameMonogame.Enums;
 
 namespace LabyrinthGameMonogame.InputControllers
 {
-    class KeyboardInput: IKeyboardInput
+    class KeyboardInput
     {
         #region Variables
         private Dictionary<KeyboardKeys, Keys> KeyBindings;

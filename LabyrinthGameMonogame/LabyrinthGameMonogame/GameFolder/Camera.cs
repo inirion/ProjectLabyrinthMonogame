@@ -4,7 +4,7 @@ using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
+using System;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -18,6 +18,9 @@ namespace LabyrinthGameMonogame.GameFolder
         private Vector3 cameraLookAt;
         private Vector3 mouseRotationBuffer;
         private float time;
+        private IScreenManager screenManager;
+        private IControlManager controlManager;
+        private Game game;
 
         public Vector3 Position
         {
@@ -58,15 +61,18 @@ namespace LabyrinthGameMonogame.GameFolder
         public float JumpingCameraSpeed { get => jumpingCameraSpeed; set => jumpingCameraSpeed = value; }
         public float MouseSpeed { get => mouseSpeed; set => mouseSpeed = value; }
 
-        public Camera(Vector3 position, Vector3 rotation, float cameraSpeed,float jumpingCameraSpeed)
+        public Camera(Vector3 position, Vector3 rotation, float cameraSpeed, float jumpingCameraSpeed,Game game)
         {
+            this.game = game;
+            this.controlManager = (IControlManager)game.Services.GetService(typeof(IControlManager));
+            this.screenManager = (IScreenManager)game.Services.GetService(typeof(IScreenManager));
             this.CameraSpeed = cameraSpeed;
             this.JumpingCameraSpeed = jumpingCameraSpeed;
-            this.MouseSpeed = ControlManager.Instance.Mouse.Sensitivity;
+            this.MouseSpeed = controlManager.Mouse.Sensitivity;
 
             Projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4,
-                ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.AspectRatio,
+                game.GraphicsDevice.Viewport.AspectRatio,
                 0.05f,
                 1000.0f);
 
@@ -102,19 +108,19 @@ namespace LabyrinthGameMonogame.GameFolder
             MoveTo(PreviewMove(scale), Rotation);
         }
 
-        public void Update(GameTime gameTime, ref bool isJumping, float playerHeight)
+        public void Update(GameTime gameTime)
         {
             float speed = CameraSpeed;
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Vector3 moveVector = Vector3.Zero;
 
-            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Up))
+            if (controlManager.Keyboard.Pressed(false, KeyboardKeys.Up))
                 moveVector.Z = 1;
-            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Down))
+            if (controlManager.Keyboard.Pressed(false, KeyboardKeys.Down))
                 moveVector.Z = -1;
-            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Left))
+            if (controlManager.Keyboard.Pressed(false, KeyboardKeys.Left))
                 moveVector.X = 1;
-            if (ControlManager.Instance.Keyboard.Pressed(false,KeyboardKeys.Right))
+            if (controlManager.Keyboard.Pressed(false, KeyboardKeys.Right))
                 moveVector.X = -1;
 
             /*if (isJumping && cameraPosition.Y <= playerHeight +0.5f)
@@ -133,7 +139,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 isJumping = false;
                 speed = cameraSpeed;
             }*/
-            
+
             if (moveVector != Vector3.Zero)
             {
                 moveVector.Normalize();
@@ -145,10 +151,10 @@ namespace LabyrinthGameMonogame.GameFolder
             float deltaX;
             float deltaY;
 
-            if (ControlManager.Instance.Mouse.CurrentState != ControlManager.Instance.Mouse.OriginalState)
+            if (controlManager.Mouse.CurrentState != controlManager.Mouse.OriginalState)
             {
-                deltaX = ControlManager.Instance.Mouse.CurrentState.X - (ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Width / 2);
-                deltaY = ControlManager.Instance.Mouse.CurrentState.Y - (ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Height / 2);
+                deltaX = controlManager.Mouse.CurrentState.X - (game.GraphicsDevice.Viewport.Width / 2);
+                deltaY = controlManager.Mouse.CurrentState.Y - (game.GraphicsDevice.Viewport.Height / 2);
                 mouseRotationBuffer.X -= MouseSpeed * deltaX * dt;
                 mouseRotationBuffer.Y -= MouseSpeed * deltaY * dt;
 
@@ -166,9 +172,9 @@ namespace LabyrinthGameMonogame.GameFolder
 
             }
 
-            Mouse.SetPosition(ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Width / 2, ScreenManager.Instance.Graphics.GraphicsDevice.Viewport.Height / 2);
+            Mouse.SetPosition(game.GraphicsDevice.Viewport.Width / 2, game.GraphicsDevice.Viewport.Height / 2);
 
-            ControlManager.Instance.Mouse.OriginalState = ControlManager.Instance.Mouse.CurrentState;
+            controlManager.Mouse.OriginalState = controlManager.Mouse.CurrentState;
 
         }
     }

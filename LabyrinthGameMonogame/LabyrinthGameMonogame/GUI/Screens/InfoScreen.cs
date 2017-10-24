@@ -1,42 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
-using LabyrinthGameMonogame.GUI.Buttons;
+﻿using LabyrinthGameMonogame.GUI.Buttons;
 using LabyrinthGameMonogame.Factories;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Enums;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
-    class InfoScreen : IScreen
+    class InfoScreen : ScreenDrawable
     {
-        private List<Button> buttons;
-
-        public InfoScreen(ContentManager content)
+        public InfoScreen(Game game) : base(game)
         {
             buttons = ButtonFactory.CreateInfoButtons();
         }
-        public void CentreButtons()
+
+        protected override void LoadContent()
         {
-            float gap = buttons[0].Font.MeasureString(buttons[0].Text).Y + buttons[0].Font.MeasureString(buttons[0].Text).Y / 2;
-            float offset = 0;
+            SetupButtons();
+            base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
             foreach (Button btn in buttons)
             {
-                btn.ButtonRect = new Rectangle(
-                    (int)((ScreenManager.Instance.Dimensions.X / 2) - (btn.Font.MeasureString(btn.Text).X) / 2),
-                    (int)(ScreenManager.Instance.Dimensions.Y / 2 - (btn.Font.MeasureString(btn.Text).Y) + offset),
-                    (int)(btn.Font.MeasureString(btn.Text).X),
-                    (int)(btn.Font.MeasureString(btn.Text).Y)
-                    );
-                offset += gap;
+                btn.Color = Color.White;
+                if (controlManager.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
+                {
+                    btn.Color = Color.Red;
+                }
+
+                if (controlManager.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
+                {
+                    screenManager.ActiveScreenType = btn.GoesTo;
+                    if (btn.GoesTo == ScreenTypes.Exit) screenManager.IsTransitioning = true;
+                    btn.Color = Color.White;
+                }
             }
+            base.Update(gameTime);
         }
-        public void Draw(SpriteBatch spriteBatch)
+
+        public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
 
@@ -46,24 +49,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
             }
 
             spriteBatch.End();
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            foreach (Button btn in buttons)
-            {
-                btn.Color = Color.White;
-                if (ControlManager.Instance.Mouse.Hovered(btn.ButtonRect) && btn.Enabled)
-                {
-                    btn.Color = Color.Red;
-                }
-
-                if (ControlManager.Instance.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
-                {
-                    ScreenManager.Instance.ActiveScreenType = btn.GoesTo;
-                    btn.Color = Color.White;
-                }
-            }
+            base.Draw(gameTime);
         }
     }
 }

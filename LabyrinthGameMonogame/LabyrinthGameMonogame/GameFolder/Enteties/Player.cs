@@ -13,36 +13,39 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         float movementSpeed;
         float playerHeight;
         bool isJumping;
+        IControlManager controlManager;
 
-        public Player(Vector3 position,float movementSpeed)
+        public Player(Vector3 position, float movementSpeed,Game game)
         {
-            Camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed*1.5f);
+            controlManager = (IControlManager)game.Services.GetService(typeof(IControlManager));
+            Camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f,game);
             PlayerHeight = 0.2f;
             this.Position = position;
             this.MovementSpeed = movementSpeed;
         }
 
-        public void Reset(Vector3 position)
+        public void Reset(Vector3 position, Game game)
         {
             this.Position = position;
-            this.camera.MouseSpeed = ControlManager.Instance.Mouse.Sensitivity;
+            this.camera.MouseSpeed = controlManager.Mouse.Sensitivity;
+            this.camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f, game);
         }
         public void Update(GameTime gameTime)
         {
             float speed = movementSpeed;
-            if (ControlManager.Instance.Keyboard.Clicked(KeyboardKeys.Jump) && Position.Y <= PlayerHeight)
-            { 
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.Jump) && Position.Y <= PlayerHeight)
+            {
                 IsJumping = true;
             }
-            if (ControlManager.Instance.Keyboard.Pressed(false, KeyboardKeys.LeftShift))
+            if (controlManager.Keyboard.Pressed(false, KeyboardKeys.LeftShift))
             {
                 speed *= 2;
             }
             camera.CameraSpeed = speed;
-            
 
 
-            Camera.Update(gameTime, ref isJumping, PlayerHeight);
+
+            Camera.Update(gameTime);
             this.position = camera.Position;
         }
 
