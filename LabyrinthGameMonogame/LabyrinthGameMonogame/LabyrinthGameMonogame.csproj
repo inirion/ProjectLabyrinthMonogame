@@ -46,6 +46,7 @@
     <Compile Include="Enums\Directions.cs" />
     <Compile Include="Enums\KeyboardKeys.cs" />
     <Compile Include="Enums\LabiryntElement.cs" />
+    <Compile Include="Enums\LabiryntType.cs" />
     <Compile Include="Enums\MouseKeys.cs" />
     <Compile Include="Enums\ScreenTypes.cs" />
     <Compile Include="Factories\ButtonFactory.cs" />
@@ -53,20 +54,24 @@
     <Compile Include="GameFolder\Camera.cs" />
     <Compile Include="GameFolder\Enteties\Ground.cs" />
     <Compile Include="GameFolder\Enteties\Player.cs" />
+    <Compile Include="GameFolder\Enteties\VertexWall.cs" />
     <Compile Include="GameFolder\GameManager.cs" />
-    <Compile Include="GameFolder\Enteties\Wall.cs" />
+    <Compile Include="GameFolder\Enteties\ModelWall.cs" />
     <Compile Include="GameFolder\IGameManager.cs" />
     <Compile Include="GameFolder\LabirynthGame.cs" />
-    <Compile Include="GameFolder\LabirynthGenerator.cs" />
+    <Compile Include="GameFolder\MazeGenerationAlgorithms\GrowingTreePrimGenerator.cs" />
+    <Compile Include="GameFolder\MazeGenerationAlgorithms\RecursiveBacktrackGenerator.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />
     <Compile Include="GUI\Screens\ExitScreen.cs" />
     <Compile Include="GUI\Screens\GameScreen.cs" />
     <Compile Include="GUI\Screens\InfoScreen.cs" />
     <Compile Include="GUI\Screens\IScreenManager.cs" />
     <Compile Include="GUI\Screens\LevelTypeScreen.cs" />
+    <Compile Include="GUI\Screens\ModelLevelScreen.cs" />
     <Compile Include="GUI\Screens\OptionsScreen.cs" />
     <Compile Include="GUI\Screens\PauseScreen.cs" />
     <Compile Include="GUI\Screens\ScreenDrawable.cs" />
+    <Compile Include="GUI\Screens\VertexLevelScreen.cs" />
     <Compile Include="InputControllers\ControlManager.cs" />
     <Compile Include="InputControllers\IControlManager.cs" />
     <Compile Include="InputControllers\KeyboardInput.cs" />
@@ -78,7 +83,7 @@
     <Compile Include="GUI\Screens\ScreenManager.cs" />
     <Compile Include="Utils\AssetHolder.cs" />
     <Compile Include="Utils\CollisionChecker.cs" />
-    <Compile Include="Utils\LabirynthCreator.cs" />
+    <Compile Include="GameFolder\MazeGenerationAlgorithms\LabirynthCreator.cs" />
     <Compile Include="Utils\Randomizers\IRandomizer.cs" />
     <Compile Include="Utils\Randomizers\LabirynthRandomizer.cs" />
   </ItemGroup>

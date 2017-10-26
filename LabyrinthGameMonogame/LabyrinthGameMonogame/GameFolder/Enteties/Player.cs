@@ -13,6 +13,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         float movementSpeed;
         float playerHeight;
         bool isJumping;
+ 
         IControlManager controlManager;
 
         public Player(Vector3 position, float movementSpeed,Game game)

@@ -36,6 +36,10 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     btn.Color = Color.White;
                 }
             }
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.Back))
+            {
+                screenManager.ActiveScreenType = ScreenTypes.MainMenu;
+            }
             base.Update(gameTime);
         }
 

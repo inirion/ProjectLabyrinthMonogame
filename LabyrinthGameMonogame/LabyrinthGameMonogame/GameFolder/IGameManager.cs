@@ -7,5 +7,6 @@ namespace LabyrinthGameMonogame.GameFolder
         bool IsGameRunning { get; set; }
         bool ResetGame { get; set; }
         DifficultyLevel DifficultyLevel { get; set; }
+        LabiryntType Type { get; set; }
     }
 }

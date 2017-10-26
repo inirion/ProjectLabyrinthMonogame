@@ -13,7 +13,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         public LevelTypeScreen(Game game) : base(game)
         {
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
-            buttons = ButtonFactory.CreateLevelButtons();
+            buttons = ButtonFactory.CreateLevelTypeButtons();
         }
 
         protected override void LoadContent()
@@ -35,15 +35,15 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 if (controlManager.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
                     screenManager.ActiveScreenType = btn.GoesTo;
-                    gameManager.DifficultyLevel = btn.DifficultyLevel;
+                    gameManager.Type = btn.LabiryntType;
 
-                    if (btn.GoesTo == ScreenTypes.Game)
-                    {
-                        gameManager.ResetGame = true;
-                        gameManager.IsGameRunning = true;
-                    }
+
                     btn.Color = Color.White;
                 }
+            }
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.Back))
+            {
+                screenManager.ActiveScreenType = ScreenTypes.LevelType;
             }
             base.Update(gameTime);
         }

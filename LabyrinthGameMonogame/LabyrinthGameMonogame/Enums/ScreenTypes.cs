@@ -11,6 +11,8 @@
         Exit,
         Options,
         OptionsResolution,
-        OptionsSensitivity
+        OptionsSensitivity,
+        ModelLabirynthLevel,
+        VertexLabirynthLevel
     }
 }

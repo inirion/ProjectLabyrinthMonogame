@@ -1,11 +1,6 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GUI.Buttons;
-using LabyrinthGameMonogame.GUI.Screens;
-using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Utils;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace LabyrinthGameMonogame.Factories
@@ -41,13 +36,32 @@ namespace LabyrinthGameMonogame.Factories
             return buttons;
         }
 
-        public static List<Button> CreateLevelButtons()
+        public static List<Button> CreateLevelTypeButtons()
+        {
+            List<Button> buttons = new List<Button>();
+            buttons.Add(new Button("Model Labirynth", ScreenTypes.ModelLabirynthLevel, AssetHolder.Instance.Font, true,type: LabiryntType.Recursive));
+            buttons.Add(new Button("Vertex Labirynth", ScreenTypes.VertexLabirynthLevel, AssetHolder.Instance.Font, true, type: LabiryntType.Prim));
+            buttons.Add(new Button("Back", ScreenTypes.MainMenu, AssetHolder.Instance.Font, true));
+
+            return buttons;
+        }
+
+        public static List<Button> CreateLevelButtonsModel()
         {
             List<Button> buttons = new List<Button>();
             buttons.Add(new Button("Easy", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Easy));
-            buttons.Add(new Button("Medium", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Medium));
+            buttons.Add(new Button("Hard", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Medium));
+            buttons.Add(new Button("Back", ScreenTypes.LevelType, AssetHolder.Instance.Font, true));
+
+            return buttons;
+        }
+
+        public static List<Button> CreateLevelButtonsVertex()
+        {
+            List<Button> buttons = new List<Button>();
+            buttons.Add(new Button("Easy", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Easy));
             buttons.Add(new Button("Hard", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Hard));
-            buttons.Add(new Button("Back", ScreenTypes.MainMenu, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Back", ScreenTypes.LevelType, AssetHolder.Instance.Font, true));
 
             return buttons;
         }
@@ -67,7 +81,7 @@ namespace LabyrinthGameMonogame.Factories
         public static List<Button> CreateIntroButtons()
         {
             List<Button> buttons = new List<Button>();
-            buttons.Add(new Button("The Labirynth Game =)", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("The Labirynth Game", ScreenTypes.Info, AssetHolder.Instance.Font, false));
 
             return buttons;
         }
@@ -75,7 +89,7 @@ namespace LabyrinthGameMonogame.Factories
         public static List<Button> CreateExitButtons()
         {
             List<Button> buttons = new List<Button>();
-            buttons.Add(new Button("Thanks For Playing !! xD", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("Thanks For Playing", ScreenTypes.Info, AssetHolder.Instance.Font, false));
 
             return buttons;
         }

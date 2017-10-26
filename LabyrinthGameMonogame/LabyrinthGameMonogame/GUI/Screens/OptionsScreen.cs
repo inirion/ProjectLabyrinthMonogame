@@ -19,6 +19,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
     {
         private float tempSencitivity;
         private Vector2 tempDimencions;
+        bool tempFullScreen;
         int index;
         public OptionsScreen(Game game) : base(game)
         {
@@ -26,6 +27,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
             index = 0;
             tempSencitivity = controlManager.Mouse.Sensitivity * 1000;
             tempDimencions = screenManager.Dimensions;
+            tempFullScreen = screenManager.Fullscreen;
         }
 
         public override void Draw(GameTime gameTime)
@@ -53,7 +55,11 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 if (controlManager.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
                     if (btn.GoesTo != screenManager.ActiveScreenType && btn.GoesTo != ScreenTypes.OptionsResolution && btn.GoesTo != ScreenTypes.OptionsSensitivity)
+                    {
+                        reset();
                         screenManager.ActiveScreenType = btn.GoesTo;
+                    }
+                        
                     if (btn.Text.Contains("+") && btn.GoesTo == ScreenTypes.OptionsSensitivity)
                     {
                         if (tempSencitivity < 100)
@@ -88,6 +94,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     }
                     if (btn.Text.Contains("Apply"))
                     {
+                        screenManager.Fullscreen = tempFullScreen;
                         screenManager.ChangeScreenMode();
                         controlManager.Mouse.Sensitivity = tempSencitivity / 1000;
                         screenManager.Dimensions = tempDimencions;
@@ -96,11 +103,38 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     btn.Color = Color.White;
                 }
             }
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.Back))
+            {
+                reset();
+                screenManager.ActiveScreenType = ScreenTypes.MainMenu;
+            }
+        }
+
+        private void reset()
+        {
+            tempSencitivity = controlManager.Mouse.Sensitivity * 1000;
+            tempDimencions = screenManager.Dimensions;
+            tempFullScreen = screenManager.Fullscreen;
+            foreach (Button btn in buttons)
+            {
+                if (btn.Text.Contains("Resolution"))
+                {
+                    btn.Text = "Resolution: " + (int)tempDimencions.X + "x" + (int)tempDimencions.Y;
+                }
+                if (btn.Text.Contains("Sensitivity"))
+                {
+                    btn.Text = "Sensitivity: " + tempSencitivity + "%";
+                }
+                if (btn.Text.Contains("Fullscreen"))
+                {
+                    btn.Text = "Fullscreen: " + tempFullScreen.ToString();
+                }
+            }
         }
         private string ChangeScreenMode()
         {
-            screenManager.Fullscreen = !screenManager.Fullscreen;
-            return "Fullscreen: " + screenManager.Fullscreen.ToString();
+            tempFullScreen = !tempFullScreen;
+            return "Fullscreen: " + tempFullScreen.ToString();
         }
 
         private string ChangeSensitivity(float amount)
@@ -116,7 +150,6 @@ namespace LabyrinthGameMonogame.GUI.Screens
             {
                 tempDimencions = new Vector2(screenManager.Resolutions[i].Width, screenManager.Resolutions[i].Height);
                 index += value;
-
             }
             return "Resolution: " + (int)tempDimencions.X + "x" + (int)tempDimencions.Y;
         }

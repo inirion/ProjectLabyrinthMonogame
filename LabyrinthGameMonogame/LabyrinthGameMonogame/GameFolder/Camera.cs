@@ -20,7 +20,9 @@ namespace LabyrinthGameMonogame.GameFolder
         private float time;
         private IScreenManager screenManager;
         private IControlManager controlManager;
+        private IGameManager gameManager;
         private Game game;
+
 
         public Vector3 Position
         {
@@ -66,6 +68,7 @@ namespace LabyrinthGameMonogame.GameFolder
             this.game = game;
             this.controlManager = (IControlManager)game.Services.GetService(typeof(IControlManager));
             this.screenManager = (IScreenManager)game.Services.GetService(typeof(IScreenManager));
+            this.gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             this.CameraSpeed = cameraSpeed;
             this.JumpingCameraSpeed = jumpingCameraSpeed;
             this.MouseSpeed = controlManager.Mouse.Sensitivity;
@@ -98,9 +101,9 @@ namespace LabyrinthGameMonogame.GameFolder
             Vector3 movement = new Vector3(amount.X, amount.Y, amount.Z);
             movement = Vector3.Transform(movement, rotate);
             return cameraPosition + new Vector3(
-                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(movement.X, 0, 0)) ? 0 : movement.X,
-                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(0, movement.Y, 0)) ? 0 : movement.Y,
-                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(0, 0, movement.Z)) ? 0 : movement.Z);
+                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(movement.X, 0, 0), gameManager.Type) ? 0 : movement.X,
+                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(0, movement.Y, 0), gameManager.Type) ? 0 : movement.Y,
+                CollisionChecker.Instance.CheckCollision(cameraPosition + new Vector3(0, 0, movement.Z), gameManager.Type) ? 0 : movement.Z);
         }
 
         private void Move(Vector3 scale)

@@ -1,4 +1,5 @@
-﻿using LabyrinthGameMonogame.GameFolder.Enteties;
+﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.GameFolder.Enteties;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
@@ -7,9 +8,11 @@ namespace LabyrinthGameMonogame.Utils
     class CollisionChecker
     {
         private static CollisionChecker instance;
+
         private CollisionChecker()
         {
-            Walls = new List<Wall>();
+            Walls = new List<ModelWall>();
+            VertexWalls = new List<VertexWall>();
         }
         public static CollisionChecker Instance
         {
@@ -23,17 +26,26 @@ namespace LabyrinthGameMonogame.Utils
             }
         }
 
-        internal List<Wall> Walls { get => walls; set => walls = value; }
+        internal List<ModelWall> Walls { get => walls; set => walls = value; }
+        internal List<VertexWall> VertexWalls { get => vertexWalls; set => vertexWalls = value; }
 
-        List<Wall> walls;
+        List<ModelWall> walls;
+        List<VertexWall> vertexWalls;
 
 
-        public bool CheckCollision(Vector3 cameraPosition)
+        public bool CheckCollision(Vector3 cameraPosition, LabiryntType type)
         {
             bool flag = false;
-            if(walls.Exists(i => i.BoundingBox.Contains(cameraPosition) == ContainmentType.Contains) )
+            if (type == LabiryntType.Recursive)
             {
-                flag = true;
+                if (walls.Exists(i => i.BoundingBox.Contains(new BoundingSphere(cameraPosition,0.1f)) == ContainmentType.Intersects))
+                {
+                    flag = true;
+                }
+            }else if(type == LabiryntType.Prim)
+            {
+                if (vertexWalls.Exists(i =>i.BoundingBox.Contains(new BoundingSphere(cameraPosition,0.1f)) == ContainmentType.Intersects))
+                    flag =  true;
             }
             return flag;
         }

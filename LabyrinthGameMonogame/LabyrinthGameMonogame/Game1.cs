@@ -30,6 +30,7 @@ namespace LabyrinthGameMonogame
         protected override void Initialize()
         {
             screenManager.Initialize();
+            
             AssetHolder.Instance.Initialize(Content);
             base.Initialize();
         }

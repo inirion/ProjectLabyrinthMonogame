@@ -6,14 +6,16 @@ using System.Diagnostics;
 using System.Linq;
 using System;
 
-namespace LabyrinthGameMonogame.GameFolder
+namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
 {
-    class LabirynthGenerator
+    class RecursiveBacktrackGenerator 
     {
         IGameManager gameManager;
         int[,] maze;
         int size;
         int calculatedSize;
+        public Vector3 spawnpoint { get; private set; }
+        public Vector3 exitpoint { get; private set; }
         int[] backtrack_x;
         int[] backtrack_y;
         int[] neighbour_x;
@@ -23,7 +25,7 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public int[,] Maze { get => maze; set => maze = value; }
 
-        public LabirynthGenerator(Game game)
+        public RecursiveBacktrackGenerator(Game game)
         {
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             rnd = new LabirynthRandomizer();
@@ -318,6 +320,8 @@ namespace LabyrinthGameMonogame.GameFolder
             } while (start == finish);
             maze[points[start].X, points[start].Y] = (int)LabiryntElement.Start;
             maze[points[finish].X, points[finish].Y] = (int)LabiryntElement.Finish;
+            spawnpoint = new Vector3(points[start].X, points[start].Y,0);
+            exitpoint = new Vector3(points[finish].X, points[finish].Y, 0);
 
             for (int i = 0; i < calculatedSize; i++)
             {

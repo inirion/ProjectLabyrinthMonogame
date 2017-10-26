@@ -4,6 +4,6 @@
     {
         Easy = 5,
         Medium = 6,
-        Hard = 7
+        Hard = 7,
     }
 }

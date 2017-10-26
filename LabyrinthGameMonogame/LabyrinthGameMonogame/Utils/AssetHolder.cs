@@ -11,6 +11,7 @@ namespace LabyrinthGameMonogame.Utils
         private Dictionary<LabiryntElement, Model> assets;
         private SpriteFont font;
         private Model floor;
+        private Texture2D wallTexture;
         private static AssetHolder instance;
         public static AssetHolder Instance
         {
@@ -26,6 +27,7 @@ namespace LabyrinthGameMonogame.Utils
         public Dictionary<LabiryntElement, Model> Assets { get => assets; set => assets = value; }
         public SpriteFont Font { get => font; set => font = value; }
         public Model Floor { get => floor; set => floor = value; }
+        public Texture2D WallTexture { get => wallTexture; set => wallTexture = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -43,6 +45,7 @@ namespace LabyrinthGameMonogame.Utils
 
             Font = content.Load<SpriteFont>("Font");
             Floor = content.Load<Model>("Floor");
+            WallTexture = content.Load<Texture2D>("wallTexture");
         }
     }
 }

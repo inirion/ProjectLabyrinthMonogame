@@ -1,11 +1,10 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GameFolder.Enteties;
+using LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms;
 using LabyrinthGameMonogame.GUI.Screens;
-using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -31,7 +30,11 @@ namespace LabyrinthGameMonogame.GameFolder
             finish = new Vector3();
             ground = new Ground(new Vector3(0, -0.1f, 0), new Vector3(0, 0, 0), new Vector3(1, 0.01f, 0.2f),game);
             ground.setupModel();
-            CollisionChecker.Instance.Walls = labirynth.Map;
+            if(gameManager.Type == LabiryntType.Recursive)
+                CollisionChecker.Instance.Walls = labirynth.ModelMap;
+            else if (gameManager.Type == LabiryntType.Prim)
+                CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
+
             anglex = ground.Scale.X;
             angley = ground.Scale.Y;
             anglez = ground.Scale.Z;
@@ -42,12 +45,25 @@ namespace LabyrinthGameMonogame.GameFolder
         {
             if (gameManager.ResetGame)
             {
-                labirynth.CreateMap();
-                CollisionChecker.Instance.Walls = labirynth.Map;
+                if (gameManager.Type == LabiryntType.Recursive)
+                {
+                    labirynth.CreateModelMap();
+                    CollisionChecker.Instance.Walls = labirynth.ModelMap;
+                    player.Reset(labirynth.GetStartingPositionModelMap(), game);
+                    finish = labirynth.GetFinishPositionModelMap();
+                }
+                    
+                else if(gameManager.Type == LabiryntType.Prim)
+                {
+                    labirynth.CreateVertexMap(game.GraphicsDevice);
+                    CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
+                    player.Reset(labirynth.GetStartingPositionVertexMap(), game);
+                    finish = labirynth.GetFinishPositionVertexMap();
+                }
+                    
+
                 gameManager.ResetGame = false;
                 //coords x, z, y
-                player.Reset(labirynth.GetStartingPosition(),game);
-                finish = labirynth.GetFinishPosition();
                 switch (gameManager.DifficultyLevel)
                 {
                     case DifficultyLevel.Easy:
@@ -77,8 +93,6 @@ namespace LabyrinthGameMonogame.GameFolder
             }
             ground.setupModel();
 
-
-
         }
 
 
@@ -105,7 +119,18 @@ namespace LabyrinthGameMonogame.GameFolder
             {
                 screenManager.Graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
                 screenManager.Graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                labirynth.Map.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
+                //screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { MultiSampleAntiAlias = true };
+                //screenManager.Graphics.GraphicsDevice.SamplerStates[0] = new SamplerState() { Filter = TextureFilter.Anisotropic };
+                if (gameManager.Type == LabiryntType.Prim)
+                {
+                    
+                    labirynth.VertexMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
+                }else if (gameManager.Type == LabiryntType.Recursive)
+                {
+                    labirynth.ModelMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
+                }
+
+                
                 DrawGroud(ground);
             }
         }

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
-    class Wall
+    class ModelWall
     {
         LabiryntElement labiryntElement;
         Vector3 angle;
@@ -66,7 +66,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             }
         }
 
-        public Wall(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle, Vector3 scale)
+        public ModelWall(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle, Vector3 scale)
         {
             this.angle = angle;
             this.scale = scale;

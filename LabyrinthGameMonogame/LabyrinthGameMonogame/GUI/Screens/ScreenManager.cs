@@ -59,7 +59,9 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 {ScreenTypes.Exit, new ExitScreen(game) },
                 {ScreenTypes.Game, new GameScreen(game) },
                 {ScreenTypes.Pause, new PauseScreen(game) },
-                {ScreenTypes.Options, new OptionsScreen(game) }
+                {ScreenTypes.Options, new OptionsScreen(game) },
+                {ScreenTypes.ModelLabirynthLevel, new ModelLevelScreen(game) },
+                {ScreenTypes.VertexLabirynthLevel, new VertexLevelScreen(game) }
             };
             foreach (ScreenDrawable screen in activeScreen.Values)
             {

@@ -2,21 +2,22 @@
 using LabyrinthGameMonogame.Factories;
 using LabyrinthGameMonogame.GameFolder;
 using LabyrinthGameMonogame.GUI.Buttons;
-using LabyrinthGameMonogame.InputControllers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
-    class PauseScreen : ScreenDrawable
+    class ModelLevelScreen : ScreenDrawable
     {
         private IGameManager gameManager;
-        public PauseScreen(Game game) : base(game)
+        public ModelLevelScreen(Game game) : base(game)
         {
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
-            buttons = ButtonFactory.CreatePauseButtons();
+            buttons = ButtonFactory.CreateLevelButtonsModel();
         }
 
         protected override void LoadContent()
@@ -38,24 +39,19 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 if (controlManager.Mouse.Clicked(MouseKeys.LeftButton, btn.ButtonRect) && btn.Enabled)
                 {
                     screenManager.ActiveScreenType = btn.GoesTo;
+                    gameManager.DifficultyLevel = btn.DifficultyLevel;
+
                     if (btn.GoesTo == ScreenTypes.Game)
                     {
-                        gameManager.IsGameRunning = true;
-                        controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
-                    }
-                    if (btn.GoesTo == ScreenTypes.ModelLabirynthLevel || btn.GoesTo == ScreenTypes.VertexLabirynthLevel)
-                    {
-                        gameManager.IsGameRunning = false;
                         gameManager.ResetGame = true;
+                        gameManager.IsGameRunning = true;
                     }
                     btn.Color = Color.White;
                 }
             }
             if (controlManager.Keyboard.Clicked(KeyboardKeys.Back))
             {
-                gameManager.IsGameRunning = true;
-                controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
-                screenManager.ActiveScreenType = ScreenTypes.Game;
+                screenManager.ActiveScreenType = ScreenTypes.LevelType;
             }
             base.Update(gameTime);
         }

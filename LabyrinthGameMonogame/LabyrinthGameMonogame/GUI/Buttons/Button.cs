@@ -14,9 +14,10 @@ namespace LabyrinthGameMonogame.GUI.Buttons
         private Color color;
         private bool enabled;
         private DifficultyLevel difficultyLevel;
+        private LabiryntType labiryntType;
         #endregion
 
-        public Button(string Text,ScreenTypes goesTo, SpriteFont font, bool enabled, DifficultyLevel difficultyLevel= DifficultyLevel.Easy)
+        public Button(string Text,ScreenTypes goesTo, SpriteFont font, bool enabled, DifficultyLevel difficultyLevel= DifficultyLevel.Easy, LabiryntType type = LabiryntType.Recursive)
         {
             color = Color.White;
             buttonRect = new Rectangle();
@@ -25,6 +26,7 @@ namespace LabyrinthGameMonogame.GUI.Buttons
             Enabled = enabled;
             GoesTo = goesTo;
             DifficultyLevel = difficultyLevel;
+            LabiryntType = type;
         }
 
         public Rectangle ButtonRect { get => buttonRect; set => buttonRect = value; }
@@ -34,5 +36,6 @@ namespace LabyrinthGameMonogame.GUI.Buttons
         public bool Enabled { get => enabled; set => enabled = value; }
         internal ScreenTypes GoesTo { get => goesTo; set => goesTo = value; }
         internal DifficultyLevel DifficultyLevel { get => difficultyLevel; set => difficultyLevel = value; }
+        internal LabiryntType LabiryntType { get => labiryntType; set => labiryntType = value; }
     }
 }
