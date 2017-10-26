@@ -5,6 +5,7 @@ using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -92,7 +93,8 @@ namespace LabyrinthGameMonogame.GameFolder
                 gameManager.ResetGame = true;
             }
             ground.setupModel();
-
+            if(gameManager.Type == LabiryntType.Prim)
+                labirynth.VertexMap.ForEach(i => i.Update(gameTime));
         }
 
 
@@ -119,11 +121,10 @@ namespace LabyrinthGameMonogame.GameFolder
             {
                 screenManager.Graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
                 screenManager.Graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                //screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { MultiSampleAntiAlias = true };
-                //screenManager.Graphics.GraphicsDevice.SamplerStates[0] = new SamplerState() { Filter = TextureFilter.Anisotropic };
+                screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { MultiSampleAntiAlias = true };
+                screenManager.Graphics.GraphicsDevice.SamplerStates[0] = new SamplerState() { Filter = TextureFilter.Anisotropic };
                 if (gameManager.Type == LabiryntType.Prim)
                 {
-                    
                     labirynth.VertexMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }else if (gameManager.Type == LabiryntType.Recursive)
                 {

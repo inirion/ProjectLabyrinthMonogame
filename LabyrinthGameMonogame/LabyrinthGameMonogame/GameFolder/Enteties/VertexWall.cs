@@ -1,5 +1,6 @@
 ﻿using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LabyrinthGameMonogame.GameFolder.Enteties
@@ -12,7 +13,17 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         private Matrix world;
         private float angle;
         private VertexPositionNormalTexture[] vertices;
-        
+        public VertexPositionNormalTexture[] ffront;
+        public VertexPositionNormalTexture[] bback;
+        public VertexPositionNormalTexture[] lleft;
+        public VertexPositionNormalTexture[] rright;
+        public VertexPositionNormalTexture[] ttop;
+        public VertexPositionNormalTexture[] bbot;
+        private int index;
+        double millisecondsPerFrame;
+        double timeSinceLastUpdate;
+
+
         public BoundingBox BoundingBox { get; set; }
         public Vector3 Size { get; set; }
         public Vector3 Posision { get; set; }
@@ -22,6 +33,12 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 
         public VertexWall(GraphicsDevice graphic,Vector3 size, Vector3 position)
         {
+            AssetHolder.Instance.GandalfMusicInstance.IsLooped = true;
+
+
+            millisecondsPerFrame = 50;
+            timeSinceLastUpdate = 0;
+            index = 0;
             Size = size;
             Posision = position;
             Position2D = Position2D;
@@ -30,7 +47,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             this.graphic = graphic;
             basicEffect = new BasicEffect(this.graphic);
             world = Matrix.Identity * Matrix.CreateTranslation(Posision);
-            texture = AssetHolder.Instance.WallTexture;
+            texture = AssetHolder.Instance.GandalfTextures[index];
             BuildVerticles(Size, Vector3.Zero);
 
             basicEffect.AmbientLightColor = Color.White.ToVector3();
@@ -45,19 +62,52 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             basicEffect.View = View;
             basicEffect.Projection = Projection;
             basicEffect.Texture = texture;
-
-            foreach(EffectPass pass in basicEffect.CurrentTechnique.Passes)
+            basicEffect.TextureEnabled = true;
+          
+            foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
+                graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, ffront, 0, 2);
+                graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, bback, 0, 2);
+                graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, rright, 0, 2);
+                graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, lleft, 0, 2);
+                graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, ttop, 0, 2);
+                graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, bbot, 0, 2);
             }
-            graphic.DrawUserPrimitives<VertexPositionNormalTexture>(
-                PrimitiveType.TriangleList, vertices, 0,12);
+
 
         }
+
+        public void Update(GameTime gameTime)
+        {
+            timeSinceLastUpdate += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (timeSinceLastUpdate >= millisecondsPerFrame)
+            {
+                timeSinceLastUpdate = 0;
+                index++;
+                if (index == AssetHolder.Instance.GandalfTextures.Count)
+                {
+                    index = 0;
+                }
+                texture = AssetHolder.Instance.GandalfTextures[index];
+            }
+            if (AssetHolder.Instance.GandalfMusicInstance.State == SoundState.Stopped)
+            {
+                AssetHolder.Instance.GandalfMusicInstance.Play();
+            }
+        }
+
+       
 
         private void BuildVerticles(Vector3 size, Vector3 position)
         {
             vertices = new VertexPositionNormalTexture[36];
+            ffront = new VertexPositionNormalTexture[6];
+            bback = new VertexPositionNormalTexture[6];
+            lleft = new VertexPositionNormalTexture[6];
+            rright = new VertexPositionNormalTexture[6];
+            ttop = new VertexPositionNormalTexture[6];
+            bbot = new VertexPositionNormalTexture[6];
             Vector3 topLeftFront = position + new Vector3(-1.0f, 1.0f, -1.0f) * size;
             Vector3 topRightFront = position + new Vector3(1.0f, 1.0f, -1.0f) * size;
             Vector3 bottomLeftFront = position + new Vector3(-1.0f, -1.0f, -1.0f) * size;
@@ -75,10 +125,10 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             Vector3 leftNormal = new Vector3(-1.0f, 0.0f, 0.0f) * size;
             Vector3 rightNormal = new Vector3(1.0f, 0.0f, 0.0f) * size;
 
-            Vector2 textureTopLeft = new Vector2(0.5f * size.X, 0.0f * size.Y);
+            Vector2 textureTopLeft = new Vector2(2f * size.X, 0.0f * size.Y);
             Vector2 textureTopRight = new Vector2(0.0f * size.X, 0.0f * size.Y);
-            Vector2 textureBottomLeft = new Vector2(0.5f * size.X, 0.5f * size.Y);
-            Vector2 textureBottomRight = new Vector2(0.0f * size.X, 0.5f * size.Y);
+            Vector2 textureBottomLeft = new Vector2(2f * size.X, 2f * size.Y);
+            Vector2 textureBottomRight = new Vector2(0.0f * size.X, 2f * size.Y);
             
             //front
             vertices[0] = new VertexPositionNormalTexture(topLeftFront, frontNormal, textureTopLeft);
@@ -127,6 +177,54 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             vertices[33] = new VertexPositionNormalTexture(topRightBack, rightNormal, textureTopRight);
             vertices[34] = new VertexPositionNormalTexture(topRightFront, rightNormal, textureTopLeft);
             vertices[35] = new VertexPositionNormalTexture(bottomRightBack, rightNormal, textureBottomRight);
+
+            //front
+            ffront[0] = new VertexPositionNormalTexture(topLeftFront, frontNormal, textureTopLeft);
+            ffront[1] = new VertexPositionNormalTexture(bottomLeftFront, frontNormal, textureBottomLeft);
+            ffront[2] = new VertexPositionNormalTexture(topRightFront, frontNormal, textureTopRight);
+            ffront[3] = new VertexPositionNormalTexture(bottomLeftFront, frontNormal, textureBottomLeft);
+            ffront[4] = new VertexPositionNormalTexture(bottomRightFront, frontNormal, textureBottomRight);
+            ffront[5] = new VertexPositionNormalTexture(topRightFront, frontNormal, textureTopRight);
+
+            //back
+            bback[0] = new VertexPositionNormalTexture(topLeftBack, backNormal, textureTopRight);
+            bback[1] = new VertexPositionNormalTexture(topRightBack, backNormal, textureTopLeft);
+            bback[2] = new VertexPositionNormalTexture(bottomLeftBack, backNormal, textureBottomRight);
+            bback[3] = new VertexPositionNormalTexture(bottomLeftBack, backNormal, textureBottomRight);
+            bback[4] = new VertexPositionNormalTexture(topRightBack, backNormal, textureTopLeft);
+            bback[5] = new VertexPositionNormalTexture(bottomRightBack, backNormal, textureBottomLeft);
+
+            //top
+            ttop[0] = new VertexPositionNormalTexture(topLeftFront, topNormal, textureBottomLeft);
+            ttop[1] = new VertexPositionNormalTexture(topRightBack, topNormal, textureTopRight);
+            ttop[2] = new VertexPositionNormalTexture(topLeftBack, topNormal, textureTopLeft);
+            ttop[3] = new VertexPositionNormalTexture(topLeftFront, topNormal, textureBottomLeft);
+            ttop[4] = new VertexPositionNormalTexture(topRightFront, topNormal, textureBottomRight);
+            ttop[5] = new VertexPositionNormalTexture(topRightBack, topNormal, textureTopRight);
+
+            //bottom
+            bbot[0] = new VertexPositionNormalTexture(bottomLeftFront, bottomNormal, textureTopLeft);
+            bbot[1] = new VertexPositionNormalTexture(bottomLeftBack, bottomNormal, textureBottomLeft);
+            bbot[2] = new VertexPositionNormalTexture(bottomRightBack, bottomNormal, textureBottomRight);
+            bbot[3] = new VertexPositionNormalTexture(bottomLeftFront, bottomNormal, textureTopLeft);
+            bbot[4] = new VertexPositionNormalTexture(bottomRightBack, bottomNormal, textureBottomRight);
+            bbot[5] = new VertexPositionNormalTexture(bottomRightFront, bottomNormal, textureTopRight);
+
+            //left
+            lleft[0] = new VertexPositionNormalTexture(topLeftFront, leftNormal, textureTopRight);
+            lleft[1] = new VertexPositionNormalTexture(bottomLeftBack, leftNormal, textureBottomLeft);
+            lleft[2] = new VertexPositionNormalTexture(bottomLeftFront, leftNormal, textureBottomRight);
+            lleft[3] = new VertexPositionNormalTexture(topLeftBack, leftNormal, textureTopLeft);
+            lleft[4] = new VertexPositionNormalTexture(bottomLeftBack, leftNormal, textureBottomLeft);
+            lleft[5] = new VertexPositionNormalTexture(topLeftFront, leftNormal, textureTopRight);
+
+            //right
+            rright[0] = new VertexPositionNormalTexture(topRightFront, rightNormal, textureTopLeft);
+            rright[1] = new VertexPositionNormalTexture(bottomRightFront, rightNormal, textureBottomLeft);
+            rright[2] = new VertexPositionNormalTexture(bottomRightBack, rightNormal, textureBottomRight);
+            rright[3] = new VertexPositionNormalTexture(topRightBack, rightNormal, textureTopRight);
+            rright[4] = new VertexPositionNormalTexture(topRightFront, rightNormal, textureTopLeft);
+            rright[5] = new VertexPositionNormalTexture(bottomRightBack, rightNormal, textureBottomRight);
 
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);

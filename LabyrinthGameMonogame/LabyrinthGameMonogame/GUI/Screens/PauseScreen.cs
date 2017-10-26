@@ -3,6 +3,7 @@ using LabyrinthGameMonogame.Factories;
 using LabyrinthGameMonogame.GameFolder;
 using LabyrinthGameMonogame.GUI.Buttons;
 using LabyrinthGameMonogame.InputControllers;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +28,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
 
         public override void Update(GameTime gameTime)
         {
+            AssetHolder.Instance.GandalfMusicInstance.Pause();
             foreach (Button btn in buttons)
             {
                 btn.Color = Color.White;
@@ -42,11 +44,13 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     {
                         gameManager.IsGameRunning = true;
                         controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
+                        AssetHolder.Instance.GandalfMusicInstance.Play();
                     }
                     if (btn.GoesTo == ScreenTypes.ModelLabirynthLevel || btn.GoesTo == ScreenTypes.VertexLabirynthLevel)
                     {
                         gameManager.IsGameRunning = false;
                         gameManager.ResetGame = true;
+                        AssetHolder.Instance.GandalfMusicInstance.Stop();
                     }
                     btn.Color = Color.White;
                 }
@@ -56,6 +60,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 gameManager.IsGameRunning = true;
                 controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
                 screenManager.ActiveScreenType = ScreenTypes.Game;
+                AssetHolder.Instance.GandalfMusicInstance.Play();
             }
             base.Update(gameTime);
         }

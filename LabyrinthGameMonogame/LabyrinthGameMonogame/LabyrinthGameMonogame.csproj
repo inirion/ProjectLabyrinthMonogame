@@ -52,6 +52,7 @@
     <Compile Include="Factories\ButtonFactory.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameFolder\Camera.cs" />
+    <Compile Include="GameFolder\Enteties\Cube.cs" />
     <Compile Include="GameFolder\Enteties\Ground.cs" />
     <Compile Include="GameFolder\Enteties\Player.cs" />
     <Compile Include="GameFolder\Enteties\VertexWall.cs" />

@@ -1,5 +1,6 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GUI.Screens;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace LabyrinthGameMonogame.Utils
         private SpriteFont font;
         private Model floor;
         private Texture2D wallTexture;
+        private List<Texture2D> gandalfTextures;
+        private SoundEffect gandalfMusic;
+        private SoundEffectInstance gandalfMusicInstance;
         private static AssetHolder instance;
         public static AssetHolder Instance
         {
@@ -28,6 +32,8 @@ namespace LabyrinthGameMonogame.Utils
         public SpriteFont Font { get => font; set => font = value; }
         public Model Floor { get => floor; set => floor = value; }
         public Texture2D WallTexture { get => wallTexture; set => wallTexture = value; }
+        public List<Texture2D> GandalfTextures { get => gandalfTextures; set => gandalfTextures = value; }
+        public SoundEffectInstance GandalfMusicInstance { get => gandalfMusicInstance; set => gandalfMusicInstance = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -46,6 +52,21 @@ namespace LabyrinthGameMonogame.Utils
             Font = content.Load<SpriteFont>("Font");
             Floor = content.Load<Model>("Floor");
             WallTexture = content.Load<Texture2D>("wallTexture");
+            GandalfTextures = new List<Texture2D>();
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf1"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf2"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf3"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf4"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf5"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf6"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf7"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf8"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf9"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf10"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf11"));
+            GandalfTextures.Add(content.Load<Texture2D>("gandalf12"));
+            gandalfMusic = content.Load<SoundEffect>("gandalfMusic");
+            GandalfMusicInstance = gandalfMusic.CreateInstance();
         }
     }
 }
