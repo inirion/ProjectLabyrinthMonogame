@@ -44,13 +44,15 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     {
                         gameManager.IsGameRunning = true;
                         controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
-                        AssetHolder.Instance.GandalfMusicInstance.Play();
+                        if(gameManager.Type == LabiryntType.Prim)
+                            AssetHolder.Instance.GandalfMusicInstance.Resume();
                     }
                     if (btn.GoesTo == ScreenTypes.ModelLabirynthLevel || btn.GoesTo == ScreenTypes.VertexLabirynthLevel)
                     {
                         gameManager.IsGameRunning = false;
                         gameManager.ResetGame = true;
-                        AssetHolder.Instance.GandalfMusicInstance.Stop();
+                        if (gameManager.Type == LabiryntType.Prim)
+                            AssetHolder.Instance.GandalfMusicInstance.Stop();
                     }
                     btn.Color = Color.White;
                 }

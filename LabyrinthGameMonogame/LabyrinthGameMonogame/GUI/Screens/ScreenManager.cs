@@ -113,7 +113,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
 
         public void Update(GameTime gameTime)
         {
-            if (activeScreenType == ScreenTypes.Exit && !isTransitioning) game.Exit();
+            if (activeScreenType == ScreenTypes.Exit && !isTransitioning)
+                game.Exit();
             activeScreen[activeScreenType].Update(gameTime);
         }
 

@@ -6,6 +6,7 @@ using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using System.Linq;
 
 namespace LabyrinthGameMonogame.GameFolder
 {
@@ -20,6 +21,7 @@ namespace LabyrinthGameMonogame.GameFolder
         Game game;
         IGameManager gameManager;
         IScreenManager screenManager;
+        BoundingFrustum frustum;
 
         public LabirynthGame(Game game)
         {
@@ -39,7 +41,7 @@ namespace LabyrinthGameMonogame.GameFolder
             anglex = ground.Scale.X;
             angley = ground.Scale.Y;
             anglez = ground.Scale.Z;
-
+            
         }
 
         public void ResetGame()
@@ -60,9 +62,10 @@ namespace LabyrinthGameMonogame.GameFolder
                     CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
                     player.Reset(labirynth.GetStartingPositionVertexMap(), game);
                     finish = labirynth.GetFinishPositionVertexMap();
+                    labirynth.VertexMap.ForEach(i => i.Reset());
                 }
                     
-
+                frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
                 gameManager.ResetGame = false;
                 //coords x, z, y
                 switch (gameManager.DifficultyLevel)
@@ -79,6 +82,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 }
 
 
+
                 ground.Position = new Vector3((int)gameManager.DifficultyLevel, -0.04f, (int)gameManager.DifficultyLevel);
                 ground.setupModel();
             }
@@ -93,8 +97,12 @@ namespace LabyrinthGameMonogame.GameFolder
                 gameManager.ResetGame = true;
             }
             ground.setupModel();
-            if(gameManager.Type == LabiryntType.Prim)
-                labirynth.VertexMap.ForEach(i => i.Update(gameTime));
+            if (gameManager.Type == LabiryntType.Prim)
+            {
+                frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
+                labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList().ForEach(i => i.Update(gameTime));
+                //labirynth.VertexMap.ForEach(i => i.Update(gameTime));
+            }
         }
 
 
@@ -125,7 +133,8 @@ namespace LabyrinthGameMonogame.GameFolder
                 screenManager.Graphics.GraphicsDevice.SamplerStates[0] = new SamplerState() { Filter = TextureFilter.Anisotropic };
                 if (gameManager.Type == LabiryntType.Prim)
                 {
-                    labirynth.VertexMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
+                    labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList().ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
+                    //labirynth.VertexMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }else if (gameManager.Type == LabiryntType.Recursive)
                 {
                     labirynth.ModelMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));

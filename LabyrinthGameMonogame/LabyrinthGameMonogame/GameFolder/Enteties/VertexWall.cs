@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
@@ -80,6 +81,19 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 
         public void Update(GameTime gameTime)
         {
+            //rotation
+            /*float gt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float rp, rm;
+            if (this.angle > 360.0f) this.angle = 0.0f;
+            this.angle += 50.0f * gt;
+            rp = MathHelper.ToRadians(angle);
+            rm = MathHelper.ToRadians(-angle);
+
+            this.world = Matrix.Identity;
+            this.world *= Matrix.CreateScale(1.0f);
+            this.world *= Matrix.CreateRotationY(rm);
+            this.world *= Matrix.CreateTranslation(Posision);
+            */
             timeSinceLastUpdate += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastUpdate >= millisecondsPerFrame)
             {
@@ -91,13 +105,11 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 }
                 texture = AssetHolder.Instance.GandalfTextures[index];
             }
-            if (AssetHolder.Instance.GandalfMusicInstance.State == SoundState.Stopped)
-            {
-                AssetHolder.Instance.GandalfMusicInstance.Play();
-            }
         }
-
-       
+        public void Reset()
+        {
+            AssetHolder.Instance.GandalfMusicInstance.Play();
+        }
 
         private void BuildVerticles(Vector3 size, Vector3 position)
         {
