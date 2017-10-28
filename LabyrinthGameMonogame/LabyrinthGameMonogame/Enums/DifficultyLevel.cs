@@ -3,7 +3,7 @@
     enum DifficultyLevel
     {
         Easy = 5,
-        Medium = 6,
-        Hard = 50,
+        Medium = 7,
+        Hard = 25,
     }
 }

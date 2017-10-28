@@ -60,8 +60,8 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         {
             vertexMap.Clear();
             vertexMap = new List<VertexWall>();
-
             primGenerator.CreateMaze();
+
             for (int i = 0; i < primGenerator.Maze.GetLength(0); i++)
             {
                 for (int j = 0; j < primGenerator.Maze.GetLength(1); j++)

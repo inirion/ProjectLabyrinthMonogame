@@ -145,6 +145,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             
             spawnpoint = new Vector3(points[start].X,0, points[start].Y);
             exitpoint = new Vector3(points[finish].X,0 , points[finish].Y);
+            points.Clear();
             //Display();
         }
 

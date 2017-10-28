@@ -2,10 +2,12 @@
 using LabyrinthGameMonogame.GameFolder.Enteties;
 using LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms;
 using LabyrinthGameMonogame.GUI.Screens;
+using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LabyrinthGameMonogame.GameFolder
@@ -21,13 +23,25 @@ namespace LabyrinthGameMonogame.GameFolder
         Game game;
         IGameManager gameManager;
         IScreenManager screenManager;
+        IControlManager controlManager;
         BoundingFrustum frustum;
+        BasicEffect basicEffect;
 
         public LabirynthGame(Game game)
         {
+            basicEffect = new BasicEffect(game.GraphicsDevice)
+            {
+                TextureEnabled = true,
+                World = Matrix.Identity,
+                PreferPerPixelLighting = false
+            };
+
+            basicEffect.EnableDefaultLighting();
+            AssetHolder.Instance.MusicInstance.IsLooped = true;
             this.game = game;
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             screenManager = (IScreenManager)game.Services.GetService(typeof(IScreenManager));
+            controlManager = (IControlManager)game.Services.GetService(typeof(IControlManager));
             labirynth = new LabirynthCreator(game);
             player = new Player(new Vector3(), 1.0f,game);
             finish = new Vector3();
@@ -62,7 +76,11 @@ namespace LabyrinthGameMonogame.GameFolder
                     CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
                     player.Reset(labirynth.GetStartingPositionVertexMap(), game);
                     finish = labirynth.GetFinishPositionVertexMap();
-                    labirynth.VertexMap.ForEach(i => i.Reset());
+                    if (AssetHolder.Instance.MusicInstance.State == Microsoft.Xna.Framework.Audio.SoundState.Paused)
+                        AssetHolder.Instance.MusicInstance.Resume();
+                    AssetHolder.Instance.MusicInstance.Stop();
+                    AssetHolder.Instance.SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
+                    labirynth.VertexMap.ForEach(i => i.changeTexture());
                 }
                     
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
@@ -90,6 +108,17 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public void Update(GameTime gameTime)
         {
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.Z)){
+                AssetHolder.Instance.SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
+                labirynth.VertexMap.ForEach(i => i.changeTexture());
+            }
+            if (controlManager.Keyboard.Clicked(KeyboardKeys.X))
+            {
+                AssetHolder.Instance.SelectedTexture = AssetHolder.Instance.GandalfTextures;
+                AssetHolder.Instance.MusicInstance.Stop();
+                AssetHolder.Instance.MusicInstance.Play();
+                labirynth.VertexMap.ForEach(i => i.changeTexture());
+            }
             player.Update(gameTime);
             if ((player.Position.X > finish.X - 0.5f && player.Position.X < finish.X + 0.5f)
                 && (player.Position.Z > finish.Z - 0.5f && player.Position.Z < finish.Z + 0.5f))
@@ -100,7 +129,8 @@ namespace LabyrinthGameMonogame.GameFolder
             if (gameManager.Type == LabiryntType.Prim)
             {
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
-                labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList().ForEach(i => i.Update(gameTime));
+                List<VertexWall> visible = labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList();
+                visible.ForEach(i => i.Update(gameTime));
                 //labirynth.VertexMap.ForEach(i => i.Update(gameTime));
             }
         }
@@ -133,7 +163,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 screenManager.Graphics.GraphicsDevice.SamplerStates[0] = new SamplerState() { Filter = TextureFilter.Anisotropic };
                 if (gameManager.Type == LabiryntType.Prim)
                 {
-                    labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList().ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
+                    labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList().ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection, basicEffect));
                     //labirynth.VertexMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }else if (gameManager.Type == LabiryntType.Recursive)
                 {

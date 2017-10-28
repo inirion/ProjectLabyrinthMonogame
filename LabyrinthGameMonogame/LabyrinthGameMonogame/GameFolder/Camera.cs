@@ -77,7 +77,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 MathHelper.PiOver4,
                 game.GraphicsDevice.Viewport.AspectRatio,
                 0.05f,
-                10.0f);
+                1000.0f);
 
             MoveTo(position, rotation);
         }

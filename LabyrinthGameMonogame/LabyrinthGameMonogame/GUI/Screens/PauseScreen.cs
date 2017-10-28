@@ -28,7 +28,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
 
         public override void Update(GameTime gameTime)
         {
-            AssetHolder.Instance.GandalfMusicInstance.Pause();
+            AssetHolder.Instance.MusicInstance.Pause();
             foreach (Button btn in buttons)
             {
                 btn.Color = Color.White;
@@ -44,15 +44,15 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     {
                         gameManager.IsGameRunning = true;
                         controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
-                        if(gameManager.Type == LabiryntType.Prim)
-                            AssetHolder.Instance.GandalfMusicInstance.Resume();
+                        if(gameManager.Type == LabiryntType.Prim && AssetHolder.Instance.MusicInstance.State == Microsoft.Xna.Framework.Audio.SoundState.Paused)
+                            AssetHolder.Instance.MusicInstance.Resume();
                     }
                     if (btn.GoesTo == ScreenTypes.ModelLabirynthLevel || btn.GoesTo == ScreenTypes.VertexLabirynthLevel)
                     {
                         gameManager.IsGameRunning = false;
                         gameManager.ResetGame = true;
-                        if (gameManager.Type == LabiryntType.Prim)
-                            AssetHolder.Instance.GandalfMusicInstance.Stop();
+                        //if (gameManager.Type == LabiryntType.Prim && AssetHolder.Instance.MusicInstance.State == Microsoft.Xna.Framework.Audio.SoundState.Paused)
+                            AssetHolder.Instance.MusicInstance.Stop();
                     }
                     btn.Color = Color.White;
                 }
@@ -62,7 +62,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 gameManager.IsGameRunning = true;
                 controlManager.Mouse.CentrePosition(new Vector2(screenManager.Dimensions.X / 2, screenManager.Dimensions.Y / 2));
                 screenManager.ActiveScreenType = ScreenTypes.Game;
-                AssetHolder.Instance.GandalfMusicInstance.Play();
+                if (gameManager.Type == LabiryntType.Prim && AssetHolder.Instance.MusicInstance.State == Microsoft.Xna.Framework.Audio.SoundState.Paused)
+                    AssetHolder.Instance.MusicInstance.Resume();
             }
             base.Update(gameTime);
         }

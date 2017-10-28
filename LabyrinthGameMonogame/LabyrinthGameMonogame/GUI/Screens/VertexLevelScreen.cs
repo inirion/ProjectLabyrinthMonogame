@@ -12,7 +12,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
         public VertexLevelScreen(Game game) : base(game)
         {
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
-            buttons = ButtonFactory.CreateLevelButtonsModel();
+            buttons = ButtonFactory.CreateLevelButtonsVertex();
         }
 
         protected override void LoadContent()
