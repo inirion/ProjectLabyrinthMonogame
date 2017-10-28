@@ -1,5 +1,4 @@
 ﻿using LabyrinthGameMonogame.Enums;
-using LabyrinthGameMonogame.GUI.Screens;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +11,7 @@ namespace LabyrinthGameMonogame.Utils
         private Dictionary<LabiryntElement, Model> assets;
         private SpriteFont font;
         private Model floor;
+        private Model skybox;
         private Texture2D wallTexture;
         private List<Texture2D> gandalfTextures;
         private List<Texture2D> selectedTexture;
@@ -36,6 +36,7 @@ namespace LabyrinthGameMonogame.Utils
         public List<Texture2D> GandalfTextures { get => gandalfTextures; set => gandalfTextures = value; }
         public SoundEffectInstance MusicInstance { get => gandalfMusicInstance; set => gandalfMusicInstance = value; }
         public List<Texture2D> SelectedTexture { get => selectedTexture; set => selectedTexture = value; }
+        public Model Skybox { get => skybox; set => skybox = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -70,6 +71,7 @@ namespace LabyrinthGameMonogame.Utils
             gandalfMusic = content.Load<SoundEffect>("gandalfMusic");
             MusicInstance = gandalfMusic.CreateInstance();
             SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
+            Skybox = content.Load<Model>("Skybox");
         }
     }
 }

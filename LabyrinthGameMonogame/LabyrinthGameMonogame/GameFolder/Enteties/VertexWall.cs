@@ -50,8 +50,6 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 
         public void Draw(Matrix View, Matrix Projection, BasicEffect basicEffect)
         {
-            basicEffect.EnableDefaultLighting();
-            basicEffect.PreferPerPixelLighting = true;
             basicEffect.TextureEnabled = true;
             basicEffect.World = world;
             basicEffect.View = View;

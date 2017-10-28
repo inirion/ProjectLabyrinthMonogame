@@ -19,6 +19,7 @@ namespace LabyrinthGameMonogame.GameFolder
         float anglex = 0, angley = 0, anglez = 0;
         LabirynthCreator labirynth;
         Vector3 finish;
+        SkyBox skyBox;
         Ground ground;
         Game game;
         IGameManager gameManager;
@@ -35,7 +36,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 World = Matrix.Identity,
                 PreferPerPixelLighting = false
             };
-
+            
             basicEffect.EnableDefaultLighting();
             AssetHolder.Instance.MusicInstance.IsLooped = true;
             this.game = game;
@@ -55,7 +56,7 @@ namespace LabyrinthGameMonogame.GameFolder
             anglex = ground.Scale.X;
             angley = ground.Scale.Y;
             anglez = ground.Scale.Z;
-            
+            skyBox = new SkyBox(new Vector3((float)DifficultyLevel.Hard / 2, (float)DifficultyLevel.Hard / 2, 0), new Vector3(90,0,0), new Vector3(1f));
         }
 
         public void ResetGame()
@@ -81,8 +82,8 @@ namespace LabyrinthGameMonogame.GameFolder
                     AssetHolder.Instance.MusicInstance.Stop();
                     AssetHolder.Instance.SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
                     labirynth.VertexMap.ForEach(i => i.changeTexture());
+                   
                 }
-                    
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
                 gameManager.ResetGame = false;
                 //coords x, z, y
@@ -98,9 +99,6 @@ namespace LabyrinthGameMonogame.GameFolder
                         ground.Scale = new Vector3(1.25f * 3, 0.01f, 0.55f * 3);
                         break;
                 }
-
-
-
                 ground.Position = new Vector3((int)gameManager.DifficultyLevel, -0.04f, (int)gameManager.DifficultyLevel);
                 ground.setupModel();
             }
@@ -108,16 +106,20 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public void Update(GameTime gameTime)
         {
-            if (controlManager.Keyboard.Clicked(KeyboardKeys.Z)){
-                AssetHolder.Instance.SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
-                labirynth.VertexMap.ForEach(i => i.changeTexture());
-            }
-            if (controlManager.Keyboard.Clicked(KeyboardKeys.X))
+            if (gameManager.Type == LabiryntType.Prim)
             {
-                AssetHolder.Instance.SelectedTexture = AssetHolder.Instance.GandalfTextures;
-                AssetHolder.Instance.MusicInstance.Stop();
-                AssetHolder.Instance.MusicInstance.Play();
-                labirynth.VertexMap.ForEach(i => i.changeTexture());
+                if (controlManager.Keyboard.Clicked(KeyboardKeys.Z))
+                {
+                    AssetHolder.Instance.SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
+                    labirynth.VertexMap.ForEach(i => i.changeTexture());
+                }
+                if (controlManager.Keyboard.Clicked(KeyboardKeys.X))
+                {
+                    AssetHolder.Instance.SelectedTexture = AssetHolder.Instance.GandalfTextures;
+                    AssetHolder.Instance.MusicInstance.Stop();
+                    AssetHolder.Instance.MusicInstance.Play();
+                    labirynth.VertexMap.ForEach(i => i.changeTexture());
+                }
             }
             player.Update(gameTime);
             if ((player.Position.X > finish.X - 0.5f && player.Position.X < finish.X + 0.5f)
@@ -133,6 +135,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 visible.ForEach(i => i.Update(gameTime));
                 //labirynth.VertexMap.ForEach(i => i.Update(gameTime));
             }
+            skyBox.Update(gameTime);
         }
 
 
@@ -169,8 +172,11 @@ namespace LabyrinthGameMonogame.GameFolder
                 {
                     labirynth.ModelMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }
-
-                
+                /*screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.CullClockwiseFace };
+                skyBox.Draw(player.Camera.View, player.Camera.Projection,basicEffect);
+                screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.CullCounterClockwiseFace };
+                */
+                skyBox.Draw(player.Camera.View, player.Camera.Projection);
                 DrawGroud(ground);
             }
         }
