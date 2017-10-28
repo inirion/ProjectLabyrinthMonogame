@@ -13,6 +13,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         float movementSpeed;
         float playerHeight;
         bool isJumping;
+        BoundingSphere boundingSphere;
  
         IControlManager controlManager;
 
@@ -23,6 +24,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             PlayerHeight = 0.2f;
             this.Position = position;
             this.MovementSpeed = movementSpeed;
+            BoundingSphere = new BoundingSphere(position, 0.1f);
         }
 
         public void Reset(Vector3 position, Game game)
@@ -30,9 +32,11 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             this.Position = position;
             this.camera.MouseSpeed = controlManager.Mouse.Sensitivity;
             this.camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f, game);
+            BoundingSphere = new BoundingSphere(position, 0.1f);
         }
         public void Update(GameTime gameTime)
         {
+            
             float speed = movementSpeed;
             if (controlManager.Keyboard.Clicked(KeyboardKeys.Jump) && Position.Y <= PlayerHeight)
             {
@@ -48,6 +52,8 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 
             Camera.Update(gameTime);
             this.position = camera.Position;
+
+            BoundingSphere = new BoundingSphere(position, 0.1f);
         }
 
         public Vector3 Position { get => position; set { position = value; camera.Position = value; } }
@@ -55,5 +61,6 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         public bool IsJumping { get => isJumping; set => isJumping = value; }
         public float PlayerHeight { get => playerHeight; set => playerHeight = value; }
         public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
+        public BoundingSphere BoundingSphere { get => boundingSphere; set => boundingSphere = value; }
     }
 }

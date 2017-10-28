@@ -6,7 +6,6 @@ using LabyrinthGameMonogame.InputControllers;
 using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +14,6 @@ namespace LabyrinthGameMonogame.GameFolder
     class LabirynthGame
     {
         Player player;
-        double frameRate = 0.0;
         float anglex = 0, angley = 0, anglez = 0;
         LabirynthCreator labirynth;
         Vector3 finish;
@@ -27,6 +25,7 @@ namespace LabyrinthGameMonogame.GameFolder
         IControlManager controlManager;
         BoundingFrustum frustum;
         BasicEffect basicEffect;
+        Finish finishPoint;
 
         public LabirynthGame(Game game)
         {
@@ -57,6 +56,7 @@ namespace LabyrinthGameMonogame.GameFolder
             angley = ground.Scale.Y;
             anglez = ground.Scale.Z;
             skyBox = new SkyBox(new Vector3((float)DifficultyLevel.Hard / 2, (float)DifficultyLevel.Hard / 2, 0), new Vector3(90,0,0), new Vector3(1f));
+            finishPoint = new Finish(finish, game.GraphicsDevice,game);
         }
 
         public void ResetGame()
@@ -84,6 +84,7 @@ namespace LabyrinthGameMonogame.GameFolder
                     labirynth.VertexMap.ForEach(i => i.changeTexture());
                    
                 }
+                finishPoint.SetFinishPoint(new Vector3(finish.X,0.3f,finish.Z));
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
                 gameManager.ResetGame = false;
                 //coords x, z, y
@@ -122,18 +123,15 @@ namespace LabyrinthGameMonogame.GameFolder
                 }
             }
             player.Update(gameTime);
-            if ((player.Position.X > finish.X - 0.5f && player.Position.X < finish.X + 0.5f)
-                && (player.Position.Z > finish.Z - 0.5f && player.Position.Z < finish.Z + 0.5f))
-            {
-                gameManager.ResetGame = true;
-            }
+
+            finishPoint.Update(gameTime,player.BoundingSphere);
+
             ground.setupModel();
             if (gameManager.Type == LabiryntType.Prim)
             {
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
-                List<VertexWall> visible = labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList();
+                List<Cube> visible = labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList();
                 visible.ForEach(i => i.Update(gameTime));
-                //labirynth.VertexMap.ForEach(i => i.Update(gameTime));
             }
             skyBox.Update(gameTime);
         }
@@ -167,16 +165,12 @@ namespace LabyrinthGameMonogame.GameFolder
                 if (gameManager.Type == LabiryntType.Prim)
                 {
                     labirynth.VertexMap.Where(m => frustum.Contains(m.BoundingBox) != ContainmentType.Disjoint).ToList().ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection, basicEffect));
-                    //labirynth.VertexMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }else if (gameManager.Type == LabiryntType.Recursive)
                 {
                     labirynth.ModelMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }
-                /*screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.CullClockwiseFace };
-                skyBox.Draw(player.Camera.View, player.Camera.Projection,basicEffect);
-                screenManager.Graphics.GraphicsDevice.RasterizerState = new RasterizerState() { CullMode = CullMode.CullCounterClockwiseFace };
-                */
                 skyBox.Draw(player.Camera.View, player.Camera.Projection);
+                finishPoint.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
                 DrawGroud(ground);
             }
         }

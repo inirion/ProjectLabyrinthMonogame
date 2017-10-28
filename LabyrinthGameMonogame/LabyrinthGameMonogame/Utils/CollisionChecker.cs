@@ -12,7 +12,7 @@ namespace LabyrinthGameMonogame.Utils
         private CollisionChecker()
         {
             Walls = new List<ModelWall>();
-            VertexWalls = new List<VertexWall>();
+            VertexWalls = new List<Cube>();
         }
         public static CollisionChecker Instance
         {
@@ -27,10 +27,10 @@ namespace LabyrinthGameMonogame.Utils
         }
 
         internal List<ModelWall> Walls { get => walls; set => walls = value; }
-        internal List<VertexWall> VertexWalls { get => vertexWalls; set => vertexWalls = value; }
+        internal List<Cube> VertexWalls { get => vertexWalls; set => vertexWalls = value; }
 
         List<ModelWall> walls;
-        List<VertexWall> vertexWalls;
+        List<Cube> vertexWalls;
 
 
         public bool CheckCollision(Vector3 cameraPosition, LabiryntType type)

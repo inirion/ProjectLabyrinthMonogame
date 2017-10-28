@@ -320,8 +320,8 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             } while (start == finish);
             maze[points[start].X, points[start].Y] = (int)LabiryntElement.Start;
             maze[points[finish].X, points[finish].Y] = (int)LabiryntElement.Finish;
-            spawnpoint = new Vector3(points[start].X, points[start].Y,0);
-            exitpoint = new Vector3(points[finish].X, points[finish].Y, 0);
+            spawnpoint = new Vector3(points[start].X, 0, points[start].Y);
+            exitpoint = new Vector3(points[finish].X, 0, points[finish].Y);
 
             for (int i = 0; i < calculatedSize; i++)
             {

@@ -16,6 +16,7 @@ namespace LabyrinthGameMonogame.Utils
         private List<Texture2D> gandalfTextures;
         private List<Texture2D> selectedTexture;
         private SoundEffect gandalfMusic;
+        private Texture2D finishTexture;
         private SoundEffectInstance gandalfMusicInstance;
         private static AssetHolder instance;
         public static AssetHolder Instance
@@ -37,6 +38,7 @@ namespace LabyrinthGameMonogame.Utils
         public SoundEffectInstance MusicInstance { get => gandalfMusicInstance; set => gandalfMusicInstance = value; }
         public List<Texture2D> SelectedTexture { get => selectedTexture; set => selectedTexture = value; }
         public Model Skybox { get => skybox; set => skybox = value; }
+        public Texture2D FinishTexture { get => finishTexture; set => finishTexture = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -72,6 +74,7 @@ namespace LabyrinthGameMonogame.Utils
             MusicInstance = gandalfMusic.CreateInstance();
             SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
             Skybox = content.Load<Model>("Skybox");
+            FinishTexture = content.Load<Texture2D>("finishTexture");
         }
     }
 }

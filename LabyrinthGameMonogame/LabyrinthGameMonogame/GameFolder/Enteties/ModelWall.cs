@@ -66,7 +66,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             }
         }
 
-        public ModelWall(LabiryntElement labiryntElement,string modelName,Vector3 position, Vector3 angle, Vector3 scale)
+        public ModelWall(LabiryntElement labiryntElement,Vector3 position, Vector3 angle, Vector3 scale)
         {
             this.angle = angle;
             this.scale = scale;
