@@ -147,10 +147,14 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             exitpoint = new Vector3(points[finish].X, 0, points[finish].Y);
             points.RemoveAt(finish);
 
-            int key = rnd.Roll(0, points.Count);
-            Maze[points[key].X, points[key].Y] = (int)LabiryntElement.Key;
-            keys.Add(new Vector3(points[key].X, 0, points[key].Y));
-            points.RemoveAt(key);
+            int key = 0;
+            if (points.Count > 0)
+            {
+                key = rnd.Roll(0, points.Count);
+                Maze[points[key].X, points[key].Y] = (int)LabiryntElement.Key;
+                keys.Add(new Vector3(points[key].X, 0, points[key].Y));
+                points.RemoveAt(key);
+            }
 
             if (points.Count > 0)
             {

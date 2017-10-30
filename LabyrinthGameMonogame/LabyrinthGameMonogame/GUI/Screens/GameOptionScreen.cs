@@ -1,30 +1,26 @@
-﻿using System;
+﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.Factories;
+using LabyrinthGameMonogame.GUI.Buttons;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using LabyrinthGameMonogame.GUI.Buttons;
-using Microsoft.Xna.Framework.Content;
-using LabyrinthGameMonogame.Factories;
-using LabyrinthGameMonogame.Enums;
-using LabyrinthGameMonogame.InputControllers;
-using System.Diagnostics;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
-
-    class OptionsScreen : ScreenDrawable
+    class GameOptionScreen : ScreenDrawable
     {
         private float tempSencitivity;
         private Vector2 tempDimencions;
         bool tempFullScreen;
         int index;
         bool resetFlag = false;
-        public OptionsScreen(Game game) : base(game)
+
+        public GameOptionScreen(Game game) : base(game)
         {
-            buttons = ButtonFactory.CreateOptionsButtons();
+            buttons = ButtonFactory.CreateGameOptionsButtons();
             index = 0;
             tempSencitivity = controlManager.Mouse.Sensitivity * 1000;
             tempDimencions = screenManager.Dimensions;
@@ -65,7 +61,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
                         reset();
                         screenManager.ActiveScreenType = btn.GoesTo;
                     }
-                        
+
                     if (btn.Text.Contains("+") && btn.GoesTo == ScreenTypes.OptionsSensitivity)
                     {
                         if (tempSencitivity < 100)
@@ -100,12 +96,12 @@ namespace LabyrinthGameMonogame.GUI.Screens
                     }
                     if (btn.Text.Contains("Apply"))
                     {
+                        resetFlag = true;
                         screenManager.Fullscreen = tempFullScreen;
                         screenManager.ChangeScreenMode();
                         controlManager.Mouse.Sensitivity = tempSencitivity / 1000;
                         screenManager.Dimensions = tempDimencions;
                         screenManager.ChangeResolution();
-                        resetFlag = false;
                     }
                     btn.Color = Color.White;
                 }
@@ -113,12 +109,12 @@ namespace LabyrinthGameMonogame.GUI.Screens
             if (controlManager.Keyboard.Clicked(KeyboardKeys.Back))
             {
                 reset();
-                resetFlag = false;
+                resetFlag = true;
                 screenManager.ActiveScreenType = ScreenTypes.MainMenu;
             }
         }
 
-        private void reset()
+        public void reset()
         {
             tempSencitivity = controlManager.Mouse.Sensitivity * 1000;
             tempDimencions = screenManager.Dimensions;
@@ -161,9 +157,9 @@ namespace LabyrinthGameMonogame.GUI.Screens
             }
             return "Resolution: " + (int)tempDimencions.X + "x" + (int)tempDimencions.Y;
         }
-        
-        
-                
+
+
+
         public override void SetupButtons()
         {
             buttons[1].Text = "Resolution: " + (int)screenManager.Dimensions.X + "x" + (int)screenManager.Dimensions.Y;

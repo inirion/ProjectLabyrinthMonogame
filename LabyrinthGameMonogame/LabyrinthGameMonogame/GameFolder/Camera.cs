@@ -113,6 +113,7 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public void Update(GameTime gameTime)
         {
+            this.MouseSpeed = controlManager.Mouse.Sensitivity;
             float speed = CameraSpeed;
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Vector3 moveVector = Vector3.Zero;

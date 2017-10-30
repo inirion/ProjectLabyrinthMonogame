@@ -10,6 +10,7 @@
         Pause,
         Exit,
         Options,
+        GameOptions,
         OptionsResolution,
         OptionsSensitivity,
         ModelLabirynthLevel,

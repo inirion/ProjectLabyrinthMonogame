@@ -60,6 +60,7 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 {ScreenTypes.Game, new GameScreen(game) },
                 {ScreenTypes.Pause, new PauseScreen(game) },
                 {ScreenTypes.Options, new OptionsScreen(game) },
+                {ScreenTypes.GameOptions, new GameOptionScreen(game) },
                 {ScreenTypes.ModelLabirynthLevel, new ModelLevelScreen(game) },
                 {ScreenTypes.VertexLabirynthLevel, new VertexLevelScreen(game) }
             };

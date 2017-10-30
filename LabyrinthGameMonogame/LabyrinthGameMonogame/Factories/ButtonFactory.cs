@@ -36,6 +36,23 @@ namespace LabyrinthGameMonogame.Factories
             return buttons;
         }
 
+        public static List<Button> CreateGameOptionsButtons()
+        {
+
+            List<Button> buttons = new List<Button>();
+            buttons.Add(new Button("-", ScreenTypes.OptionsResolution, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Resolution: ", ScreenTypes.GameOptions, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("+", ScreenTypes.OptionsResolution, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("-", ScreenTypes.OptionsSensitivity, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Sensitivity: ", ScreenTypes.GameOptions, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("+", ScreenTypes.OptionsSensitivity, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Fullscreen: ", ScreenTypes.GameOptions, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Apply", ScreenTypes.GameOptions, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Back", ScreenTypes.Pause, AssetHolder.Instance.Font, true));
+
+            return buttons;
+        }
+
         public static List<Button> CreateLevelTypeButtons()
         {
             List<Button> buttons = new List<Button>();
@@ -98,6 +115,7 @@ namespace LabyrinthGameMonogame.Factories
         {
             List<Button> buttons = new List<Button>();
             buttons.Add(new Button("Continue", ScreenTypes.Game, AssetHolder.Instance.Font, true));
+            buttons.Add(new Button("Options", ScreenTypes.GameOptions, AssetHolder.Instance.Font, true));
             buttons.Add(new Button("Exit", ScreenTypes.MainMenu, AssetHolder.Instance.Font, true));
 
             return buttons;
