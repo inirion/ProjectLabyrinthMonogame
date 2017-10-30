@@ -59,7 +59,7 @@ namespace LabyrinthGameMonogame.GameFolder
             else if (gameManager.Type == LabiryntType.Prim)
                 CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
 
-            skyBox = new SkyBox(new Vector3((float)DifficultyLevel.Hard / 2, (float)DifficultyLevel.Hard / 2, 0), new Vector3(90,0,0), new Vector3(1f));
+            skyBox = new SkyBox(new Vector3((float)DifficultyLevel.Hard / 2, (float)DifficultyLevel.Hard / 2, 0), new Vector3(90,0,0), new Vector3(5f));
             finishPoint = new Finish(finish, game.GraphicsDevice,game);
             keys = labirynth.GetKeys(gameManager.Type,game.GraphicsDevice,game);
             ground = new Ground(game,labirynth.GroundMap);

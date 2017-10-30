@@ -49,7 +49,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             }
             if (controlManager.Keyboard.Pressed(false, KeyboardKeys.LeftShift))
             {
-                speed *= 2;
+                speed *= 4;
             }
             camera.CameraSpeed = speed;
 

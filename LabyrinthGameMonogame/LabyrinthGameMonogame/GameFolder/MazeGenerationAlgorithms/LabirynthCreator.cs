@@ -177,7 +177,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
                             modelMap.Add(new ModelWall(LabiryntElement.WallWS, new Vector3(i, 0, j), new Vector3(270, 270, 0), new Vector3(0.063f, 0.05f, 0.07f)));
                             break; 
                     }
-                    groundMap.Add(new Cube(game.GraphicsDevice, new Vector3(0.5f, 0.1f, 0.5f), new Vector3(i, 0, j), 2f));
+                    groundMap.Add(new Cube(game.GraphicsDevice, new Vector3(0.5f), new Vector3(i, -0.5f, j), 2f));
                 }
             }
             modelMap.ForEach(i => i.setupModel());
