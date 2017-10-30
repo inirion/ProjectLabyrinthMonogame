@@ -62,7 +62,8 @@ namespace LabyrinthGameMonogame.GUI.Screens
                 {ScreenTypes.Options, new OptionsScreen(game) },
                 {ScreenTypes.GameOptions, new GameOptionScreen(game) },
                 {ScreenTypes.ModelLabirynthLevel, new ModelLevelScreen(game) },
-                {ScreenTypes.VertexLabirynthLevel, new VertexLevelScreen(game) }
+                {ScreenTypes.VertexLabirynthLevel, new VertexLevelScreen(game) },
+                {ScreenTypes.LoadingScreen, new LoadingScreen(game) },
             };
             foreach (ScreenDrawable screen in activeScreen.Values)
             {

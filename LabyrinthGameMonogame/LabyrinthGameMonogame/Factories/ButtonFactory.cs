@@ -66,8 +66,8 @@ namespace LabyrinthGameMonogame.Factories
         public static List<Button> CreateLevelButtonsModel()
         {
             List<Button> buttons = new List<Button>();
-            buttons.Add(new Button("Easy", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Easy));
-            buttons.Add(new Button("Hard", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Medium));
+            buttons.Add(new Button("Easy", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, true, DifficultyLevel.Easy));
+            buttons.Add(new Button("Hard", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, true, DifficultyLevel.Medium));
             buttons.Add(new Button("Back", ScreenTypes.LevelType, AssetHolder.Instance.Font, true));
 
             return buttons;
@@ -76,8 +76,8 @@ namespace LabyrinthGameMonogame.Factories
         public static List<Button> CreateLevelButtonsVertex()
         {
             List<Button> buttons = new List<Button>();
-            buttons.Add(new Button("Easy", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Easy));
-            buttons.Add(new Button("Hard", ScreenTypes.Game, AssetHolder.Instance.Font, true, DifficultyLevel.Hard));
+            buttons.Add(new Button("Easy", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, true, DifficultyLevel.Easy));
+            buttons.Add(new Button("Hard", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, true, DifficultyLevel.Hard));
             buttons.Add(new Button("Back", ScreenTypes.LevelType, AssetHolder.Instance.Font, true));
 
             return buttons;
@@ -99,6 +99,19 @@ namespace LabyrinthGameMonogame.Factories
         {
             List<Button> buttons = new List<Button>();
             buttons.Add(new Button("The Labirynth Game", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+
+            return buttons;
+        }
+
+        public static List<Button> CreateLoadingButtons()
+        {
+            List<Button> buttons = new List<Button>();
+            buttons.Add(new Button("Controls", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("    W - Foword", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("A - Left    D - Right", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("    S - Backwards", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("Shift - Sprint", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("Space - Jump", ScreenTypes.Info, AssetHolder.Instance.Font, false));
 
             return buttons;
         }

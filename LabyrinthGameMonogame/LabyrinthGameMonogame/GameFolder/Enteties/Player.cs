@@ -1,6 +1,7 @@
 ﻿using LabyrinthGameMonogame.Enums;
 using LabyrinthGameMonogame.GUI.Screens;
 using LabyrinthGameMonogame.InputControllers;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -17,25 +18,28 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         BoundingSphere boundingSphere;
         List<Key> keys;
         public bool allKeysCollected;
- 
+        float height;
         IControlManager controlManager;
 
         public Player(Vector3 position, float movementSpeed,Game game)
         {
             keys = new List<Key>();
             controlManager = (IControlManager)game.Services.GetService(typeof(IControlManager));
-            Camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f,game);
-            PlayerHeight = 0.2f;
+            Camera = new Camera(Position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f, game);
+            Height = 0.5f;
             this.Position = position;
+            this.position.Y = Height;
             this.MovementSpeed = movementSpeed;
+            
             BoundingSphere = new BoundingSphere(position, 0.1f);
         }
 
         public void Reset(Vector3 position, Game game)
         {
             this.Position = position;
+            this.position.Y = Height;
             this.camera.MouseSpeed = controlManager.Mouse.Sensitivity;
-            this.camera = new Camera(position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f, game);
+            this.camera = new Camera(this.position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f, game);
             BoundingSphere = new BoundingSphere(position, 0.1f);
         }
         public void Update(GameTime gameTime,ref List<Key> keys)
@@ -57,11 +61,11 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             {
                 if(keys[i].boundingBox.Intersects(new BoundingSphere(position, 0.3f)))
                 {
+                    AssetHolder.Instance.KeyPickupfMusicInstance.Play();
                     this.keys.Add(keys[i]);
                     keys.RemoveAt(i);
                 }
             }
-
             Camera.Update(gameTime);
             this.position = camera.Position;
 
@@ -74,5 +78,6 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         public float PlayerHeight { get => playerHeight; set => playerHeight = value; }
         public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }
         public BoundingSphere BoundingSphere { get => boundingSphere; set => boundingSphere = value; }
+        public float Height { get => height; set => height = value; }
     }
 }

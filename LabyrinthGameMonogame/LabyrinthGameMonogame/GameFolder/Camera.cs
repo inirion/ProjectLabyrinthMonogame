@@ -128,7 +128,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 moveVector.X = -1;
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                if (cameraPosition.Y <= 2f)
+                if (cameraPosition.Y <= 5f)
                 {
                     moveVector.Y = 1f;
 
@@ -136,7 +136,6 @@ namespace LabyrinthGameMonogame.GameFolder
             }else if (Keyboard.GetState().IsKeyUp(Keys.Space))
             {
                 moveVector.Y = -1f;
-
             }
 
             if (moveVector != Vector3.Zero)

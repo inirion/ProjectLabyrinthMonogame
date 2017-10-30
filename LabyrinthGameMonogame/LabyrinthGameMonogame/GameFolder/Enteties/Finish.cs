@@ -1,4 +1,6 @@
-﻿using LabyrinthGameMonogame.Utils;
+﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.GUI.Screens;
+using LabyrinthGameMonogame.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,7 +8,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
     class Finish
     {
-        private Cube finishCube;
+        private Cube keyObject;
         private double millisecondsPerFrame;
         private float angle;
         private double timeSinceLastUpdate;
@@ -18,16 +20,16 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             angle = 0;
             millisecondsPerFrame = 50;
             timeSinceLastUpdate = 0;
-            finishCube = new Cube(graphicsDevice, new Vector3(0.2f), position,5.0f);
-            finishCube.texture = AssetHolder.Instance.FinishTexture;
+            keyObject = new Cube(graphicsDevice, new Vector3(0.2f), position,5.0f);
+            keyObject.texture = AssetHolder.Instance.FinishTexture;
         }
         public void SetFinishPoint(Vector3 posision)
         {
-            finishCube.Posision = posision;
-            finishCube.SetBoundingBox();
+            keyObject.Posision = posision;
+            keyObject.SetBoundingBox();
         }
 
-        public void Update(GameTime gameTime,Player player)
+        public void Update(GameTime gameTime,Player player,IScreenManager screenManager)
         {
             timeSinceLastUpdate += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastUpdate >= millisecondsPerFrame)
@@ -40,20 +42,20 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 rp = MathHelper.ToRadians(angle);
                 rm = MathHelper.ToRadians(-angle);
 
-                finishCube.World = Matrix.Identity;
-                finishCube.World *= Matrix.CreateScale(1.0f);
-                finishCube.World *= Matrix.CreateRotationY(rm);
-                finishCube.World *= Matrix.CreateTranslation(finishCube.Posision);
+                keyObject.World = Matrix.Identity;
+                keyObject.World *= Matrix.CreateScale(1.0f);
+                keyObject.World *= Matrix.CreateRotationY(rm);
+                keyObject.World *= Matrix.CreateTranslation(keyObject.Posision);
             }
-            if (finishCube.BoundingBox.Intersects(new BoundingSphere(player.position, 0.3f)) && player.allKeysCollected)
+            if (keyObject.BoundingBox.Intersects(new BoundingSphere(player.position, 0.3f)) && player.allKeysCollected)
             {
-                gameManager.ResetGame = true;
+                screenManager.ActiveScreenType = ScreenTypes.LoadingScreen;
             }
         }
 
         public void Draw(Matrix View, Matrix Projection, BasicEffect basicEffect)
         {
-            finishCube.Draw(View,Projection,basicEffect);
+            keyObject.Draw(View,Projection,basicEffect);
         }
     }
 }

@@ -104,9 +104,9 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             textures = AssetHolder.Instance.SelectedTexture;
             index = 0;
             if (AssetHolder.Instance.SelectedTexture == AssetHolder.Instance.GandalfTextures)
-                AssetHolder.Instance.MusicInstance.Play();
+                AssetHolder.Instance.GandalfMusicInstance.Play();
             else if (AssetHolder.Instance.SelectedTexture[0] == AssetHolder.Instance.WallTexture)
-                AssetHolder.Instance.MusicInstance.Stop();
+                AssetHolder.Instance.GandalfMusicInstance.Stop();
         }
 
         private void BuildVerticles(Vector3 size, Vector3 position)

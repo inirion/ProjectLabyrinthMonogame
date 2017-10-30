@@ -14,6 +14,7 @@
         OptionsResolution,
         OptionsSensitivity,
         ModelLabirynthLevel,
-        VertexLabirynthLevel
+        VertexLabirynthLevel,
+        LoadingScreen
     }
 }

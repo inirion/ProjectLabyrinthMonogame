@@ -46,7 +46,8 @@ namespace LabyrinthGameMonogame.GameFolder
             //basicEffect.AmbientLightColor = new Vector3(0.2f, 0.2f, 0.2f);
             //basicEffect.EmissiveColor = new Vector3(1, 0, 0);
 
-            AssetHolder.Instance.MusicInstance.IsLooped = true;
+            AssetHolder.Instance.GandalfMusicInstance.IsLooped = true;
+            AssetHolder.Instance.KeyPickupfMusicInstance.IsLooped = false;
             this.game = game;
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             screenManager = (IScreenManager)game.Services.GetService(typeof(IScreenManager));
@@ -67,9 +68,8 @@ namespace LabyrinthGameMonogame.GameFolder
 
         public void ResetGame()
         {
-            if (gameManager.ResetGame)
+            if (gameManager.ResetGame && !screenManager.IsTransitioning)
             {
-
                 if (gameManager.Type == LabiryntType.Recursive)
                 {
                     labirynth.CreateModelMap(game);
@@ -84,9 +84,9 @@ namespace LabyrinthGameMonogame.GameFolder
                     CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
                     player.Reset(labirynth.GetStartingPositionVertexMap(), game);
                     finish = labirynth.GetFinishPositionVertexMap();
-                    if (AssetHolder.Instance.MusicInstance.State == Microsoft.Xna.Framework.Audio.SoundState.Paused)
-                        AssetHolder.Instance.MusicInstance.Resume();
-                    AssetHolder.Instance.MusicInstance.Stop();
+                    if (AssetHolder.Instance.GandalfMusicInstance.State == Microsoft.Xna.Framework.Audio.SoundState.Paused)
+                        AssetHolder.Instance.GandalfMusicInstance.Resume();
+                    AssetHolder.Instance.GandalfMusicInstance.Stop();
                     AssetHolder.Instance.SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
                     labirynth.VertexMap.ForEach(i => i.changeTexture());
                    
@@ -97,8 +97,9 @@ namespace LabyrinthGameMonogame.GameFolder
                 ground = new Ground(game,labirynth.GroundMap);
                 CollisionChecker.Instance.Floor = ground.GroundObjects;
                 gameManager.ResetGame = false;
-                //coords x, z, y
                 
+                //coords x, z, y
+
             }
         }
 
@@ -114,14 +115,14 @@ namespace LabyrinthGameMonogame.GameFolder
                 if (controlManager.Keyboard.Clicked(KeyboardKeys.X))
                 {
                     AssetHolder.Instance.SelectedTexture = AssetHolder.Instance.GandalfTextures;
-                    AssetHolder.Instance.MusicInstance.Stop();
-                    AssetHolder.Instance.MusicInstance.Play();
+                    AssetHolder.Instance.GandalfMusicInstance.Stop();
+                    AssetHolder.Instance.GandalfMusicInstance.Play();
                     labirynth.VertexMap.ForEach(i => i.changeTexture());
                 }
             }
             player.Update(gameTime,ref keys);
             keys.ForEach(i => i.Update(gameTime));
-            finishPoint.Update(gameTime,player);
+            finishPoint.Update(gameTime,player,screenManager);
 
             ground.Update(gameTime,player);
             if (gameManager.Type == LabiryntType.Prim)
@@ -166,10 +167,11 @@ namespace LabyrinthGameMonogame.GameFolder
                 {
                     labirynth.ModelMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }
-                keys.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection, basicEffect));
+                
                 skyBox.Draw(player.Camera.View, player.Camera.Projection);
                 finishPoint.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
                 ground.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
+                keys.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection, basicEffect));
                 //DrawGroud(ground);
             }
         }

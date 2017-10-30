@@ -12,13 +12,16 @@ namespace LabyrinthGameMonogame.Utils
         private SpriteFont font;
         private Model floor;
         private Model skybox;
+        private SoundEffect keyPickup;
         private Texture2D groundTexture;
         private Texture2D wallTexture;
         private List<Texture2D> gandalfTextures;
         private List<Texture2D> selectedTexture;
         private SoundEffect gandalfMusic;
         private Texture2D finishTexture;
+        private Texture2D keyTexture;
         private SoundEffectInstance gandalfMusicInstance;
+        private SoundEffectInstance keyPickupInstance;
         private static AssetHolder instance;
         public static AssetHolder Instance
         {
@@ -36,11 +39,14 @@ namespace LabyrinthGameMonogame.Utils
         public Model Floor { get => floor; set => floor = value; }
         public Texture2D WallTexture { get => wallTexture; set => wallTexture = value; }
         public List<Texture2D> GandalfTextures { get => gandalfTextures; set => gandalfTextures = value; }
-        public SoundEffectInstance MusicInstance { get => gandalfMusicInstance; set => gandalfMusicInstance = value; }
+        public SoundEffectInstance GandalfMusicInstance { get => gandalfMusicInstance; set => gandalfMusicInstance = value; }
+        public SoundEffectInstance KeyPickupfMusicInstance { get => keyPickupInstance; set => keyPickupInstance = value; }
         public List<Texture2D> SelectedTexture { get => selectedTexture; set => selectedTexture = value; }
         public Model Skybox { get => skybox; set => skybox = value; }
         public Texture2D FinishTexture { get => finishTexture; set => finishTexture = value; }
         public Texture2D GroundTexture { get => groundTexture; set => groundTexture = value; }
+        public Texture2D KeyTexture { get => keyTexture; set => keyTexture = value; }
+        public SoundEffect KeyPickup { get => keyPickup; set => keyPickup = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -73,11 +79,14 @@ namespace LabyrinthGameMonogame.Utils
             GandalfTextures.Add(content.Load<Texture2D>("gandalf11"));
             GandalfTextures.Add(content.Load<Texture2D>("gandalf12"));
             gandalfMusic = content.Load<SoundEffect>("gandalfMusic");
-            MusicInstance = gandalfMusic.CreateInstance();
+            GandalfMusicInstance = gandalfMusic.CreateInstance();
             SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
             Skybox = content.Load<Model>("Skybox");
             FinishTexture = content.Load<Texture2D>("finishTexture");
             GroundTexture = content.Load<Texture2D>("groundTexture");
+            KeyTexture = content.Load<Texture2D>("keyTexture");
+            keyPickup = content.Load<SoundEffect>("key_pickup");
+            KeyPickupfMusicInstance = keyPickup.CreateInstance();
         }
     }
 }

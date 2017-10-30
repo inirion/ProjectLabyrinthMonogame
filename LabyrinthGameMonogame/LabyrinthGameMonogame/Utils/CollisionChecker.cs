@@ -48,11 +48,11 @@ namespace LabyrinthGameMonogame.Utils
             }else if(type == LabiryntType.Prim)
             {
                 List<Cube> visibleForCollision = vertexWalls.Where(m => new BoundingSphere(cameraPosition, 5f).Intersects(m.BoundingBox)).ToList();
-                if (visibleForCollision.Exists(i =>i.BoundingBox.Contains(new BoundingSphere(cameraPosition,0.1f)) == ContainmentType.Intersects))
+                if (visibleForCollision.Exists(i =>i.BoundingBox.Contains(new BoundingBox(new Vector3(cameraPosition.X-0.1f,cameraPosition.Y-0.5f,cameraPosition.Z-0.1f), new Vector3(cameraPosition.X+0.1f, cameraPosition.Y+0.5f, cameraPosition.Z+0.1f))) == ContainmentType.Intersects))
                     flag =  true;
             }
             List<Cube> visible = Floor.Where(m => new BoundingSphere(cameraPosition, 5f).Intersects(m.BoundingBox)).ToList();
-            if (visible.Exists(i => i.BoundingBox.Contains(new BoundingSphere(cameraPosition, 0.1f)) == ContainmentType.Intersects))
+            if (visible.Exists(i => i.BoundingBox.Contains(new BoundingBox(new Vector3(cameraPosition.X - 0.1f, cameraPosition.Y - 0.4f, cameraPosition.Z - 0.1f), new Vector3(cameraPosition.X + 0.1f, cameraPosition.Y + 0.4f, cameraPosition.Z + 0.1f))) == ContainmentType.Intersects))
             {
                 flag = true;
             }

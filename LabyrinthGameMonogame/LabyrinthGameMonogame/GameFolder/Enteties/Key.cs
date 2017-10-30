@@ -4,32 +4,39 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LabyrinthGameMonogame.GameFolder.Enteties
 {
+    
     class Key
     {
-        private Cube finishCube;
+        private Cube keyObject;
         public BoundingBox boundingBox { get
             {
-                return finishCube.BoundingBox;
+                return keyObject.BoundingBox;
             } }
         private double millisecondsPerFrame;
         private float angle;
         private double timeSinceLastUpdate;
         private IGameManager gameManager;
+        GraphicsDevice graphicsDevice;
 
 
         public Key(Vector3 position, GraphicsDevice graphicsDevice, Game game)
         {
+            this.graphicsDevice = graphicsDevice;
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             angle = 0;
-            millisecondsPerFrame = 50;
+            millisecondsPerFrame = 5;
             timeSinceLastUpdate = 0;
-            finishCube = new Cube(graphicsDevice, new Vector3(0.05f), new Vector3(position.X, 0.3f, position.Z), 20.0f);
-            finishCube.texture = AssetHolder.Instance.FinishTexture;
+            keyObject = new Cube(graphicsDevice, new Vector3(0.1f), new Vector3(position.X, 0.3f, position.Z), 10.0f);
+            keyObject.texture = AssetHolder.Instance.KeyTexture;
+            keyObject.World = Matrix.Identity;
+            keyObject.World *= Matrix.CreateRotationX(45.0f);
+            keyObject.World *= Matrix.CreateTranslation(keyObject.Posision);
+
         }
         public void SetFinishPoint(Vector3 posision)
         {
-            finishCube.Posision = posision;
-            finishCube.SetBoundingBox();
+            keyObject.Posision = posision;
+            keyObject.SetBoundingBox();
         }
 
         public void Update(GameTime gameTime)
@@ -45,16 +52,16 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 rp = MathHelper.ToRadians(angle);
                 rm = MathHelper.ToRadians(-angle);
 
-                finishCube.World = Matrix.Identity;
-                finishCube.World *= Matrix.CreateScale(1.0f);
-                finishCube.World *= Matrix.CreateRotationY(rm);
-                finishCube.World *= Matrix.CreateTranslation(finishCube.Posision);
+                keyObject.World = Matrix.Identity;
+                keyObject.World *= Matrix.CreateRotationX(45);
+                keyObject.World *= Matrix.CreateRotationY(rm);
+                keyObject.World *= Matrix.CreateTranslation(keyObject.Posision);
             }
         }
 
         public void Draw(Matrix View, Matrix Projection, BasicEffect basicEffect)
         {
-            finishCube.Draw(View, Projection, basicEffect);
+            keyObject.Draw(View, Projection, basicEffect);
         }
     }
 }
