@@ -17,5 +17,6 @@
         Wall3WayWest,
         Wall3WayNorth,
         Wall3WaySouth,
+        Key
     }
 }

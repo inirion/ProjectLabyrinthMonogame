@@ -12,6 +12,7 @@ namespace LabyrinthGameMonogame.Utils
         private SpriteFont font;
         private Model floor;
         private Model skybox;
+        private Texture2D groundTexture;
         private Texture2D wallTexture;
         private List<Texture2D> gandalfTextures;
         private List<Texture2D> selectedTexture;
@@ -39,6 +40,7 @@ namespace LabyrinthGameMonogame.Utils
         public List<Texture2D> SelectedTexture { get => selectedTexture; set => selectedTexture = value; }
         public Model Skybox { get => skybox; set => skybox = value; }
         public Texture2D FinishTexture { get => finishTexture; set => finishTexture = value; }
+        public Texture2D GroundTexture { get => groundTexture; set => groundTexture = value; }
 
         public void Initialize(ContentManager content)
         {
@@ -50,8 +52,8 @@ namespace LabyrinthGameMonogame.Utils
             assets.Add(LabiryntElement.WallES, content.Load<Model>("Connector"));
             assets.Add(LabiryntElement.WallWN, content.Load<Model>("Connector"));
             assets.Add(LabiryntElement.WallWS, content.Load<Model>("Connector"));
-            assets.Add(LabiryntElement.Start, content.Load<Model>("Wooden_House"));
-            assets.Add(LabiryntElement.Finish, content.Load<Model>("Wooden_House"));
+            assets.Add(LabiryntElement.Start, content.Load<Model>("Pillar"));
+            assets.Add(LabiryntElement.Finish, content.Load<Model>("Pillar"));
             assets.Add(LabiryntElement.Pillar, content.Load<Model>("Pillar"));
 
             Font = content.Load<SpriteFont>("Font");
@@ -75,6 +77,7 @@ namespace LabyrinthGameMonogame.Utils
             SelectedTexture = new List<Texture2D>() { AssetHolder.Instance.WallTexture };
             Skybox = content.Load<Model>("Skybox");
             FinishTexture = content.Load<Texture2D>("finishTexture");
+            GroundTexture = content.Load<Texture2D>("groundTexture");
         }
     }
 }

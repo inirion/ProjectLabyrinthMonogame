@@ -21,6 +21,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         int[] neighbour_x;
         int[] neighbour_y;
         int[] step;
+        public List<Vector3> keys { get; private set; }
         IRandomizer rnd;
 
         public int[,] Maze { get => maze; set => maze = value; }
@@ -190,6 +191,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
 
         public void CreateMaze()
         {
+            keys = new List<Vector3>();
             size = (int)gameManager.DifficultyLevel;
             calculatedSize = size * 2 + 1;
             Maze = new int[calculatedSize, calculatedSize];

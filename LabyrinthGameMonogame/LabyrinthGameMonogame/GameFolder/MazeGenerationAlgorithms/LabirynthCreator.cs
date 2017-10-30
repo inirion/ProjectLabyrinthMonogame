@@ -14,6 +14,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         RecursiveBacktrackGenerator recursiveGenerator;
         List<ModelWall> modelMap;
         List<Cube> vertexMap;
+        List<Cube> groundMap;
 
         Vector2 size;
 
@@ -24,12 +25,33 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             modelMap = new List<ModelWall>();
             VertexMap = new List<Cube>();
             Size = new Vector2();
+            GroundMap = new List<Cube>();
         }
 
         public List<ModelWall> ModelMap { get => modelMap; set => modelMap = value; }
         public Vector2 Size { get => size; set => size = value; }
         public List<Cube> VertexMap { get => vertexMap; set => vertexMap = value; }
+        internal List<Cube> GroundMap { get => groundMap; set => groundMap = value; }
 
+        public List<Key> GetKeys(LabiryntType type,GraphicsDevice gd, Game game)
+        {
+            List<Key> keys = new List<Key>();
+            if (type == LabiryntType.Prim)
+            {
+                for(int i = 0;i < primGenerator.keys.Count; i++)
+                {
+                    keys.Add(new Key(primGenerator.keys[i],gd,game));
+                }
+            }
+            if(type == LabiryntType.Recursive)
+            {
+                for (int i = 0; i < primGenerator.keys.Count; i++)
+                {
+                    keys.Add(new Key(primGenerator.keys[i], gd, game));
+                }
+            }
+            return keys;
+        }
         public Vector3 GetStartingPositionModelMap()
         {
             Vector3 tmp = recursiveGenerator.spawnpoint;
@@ -59,7 +81,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         public void CreateVertexMap(GraphicsDevice graphics)
         {
             vertexMap.Clear();
-            vertexMap = new List<Cube>();
+            groundMap.Clear();
             primGenerator.CreateMaze();
 
             for (int i = 0; i < primGenerator.Maze.GetLength(0); i++)
@@ -68,16 +90,21 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
                 {
                     if(primGenerator.Maze[i,j] == (int)LabiryntElement.Wall)
                         VertexMap.Add(new Cube(graphics, new Vector3(0.5f), new Vector3(i,0.5f,j),2.0f));
+                    if (primGenerator.Maze[i, j] == (int)LabiryntElement.Road 
+                        || primGenerator.Maze[i, j] == (int)LabiryntElement.Start 
+                        || primGenerator.Maze[i, j] == (int)LabiryntElement.Finish
+                        || primGenerator.Maze[i, j] == (int)LabiryntElement.Key)
+                        GroundMap.Add(new Cube(graphics, new Vector3(0.5f), new Vector3(i, -0.5f, j), 2.0f));
                 }
             }
                     
             
         }
 
-        public void CreateModelMap()
+        public void CreateModelMap(Game game)
         {
             modelMap.Clear();
-            modelMap = new List<ModelWall>();
+            groundMap.Clear();
 
             recursiveGenerator.CreateMaze();
 
@@ -148,8 +175,9 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
                             modelMap.Add(new ModelWall(LabiryntElement.Pillar, new Vector3(i, 0, j), new Vector3(270, 0, 0), new Vector3(0.2f, 0.2f, 0.17f)));
                             modelMap.Add(new ModelWall(LabiryntElement.WallWS, new Vector3(i, 0, j), new Vector3(270, 180, 0), new Vector3(0.063f, 0.05f, 0.07f)));
                             modelMap.Add(new ModelWall(LabiryntElement.WallWS, new Vector3(i, 0, j), new Vector3(270, 270, 0), new Vector3(0.063f, 0.05f, 0.07f)));
-                            break;
+                            break; 
                     }
+                    groundMap.Add(new Cube(game.GraphicsDevice, new Vector3(0.5f, 0.1f, 0.5f), new Vector3(i, 0, j), 2f));
                 }
             }
             modelMap.ForEach(i => i.setupModel());

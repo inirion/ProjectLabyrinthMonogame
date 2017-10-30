@@ -27,7 +27,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             finishCube.SetBoundingBox();
         }
 
-        public void Update(GameTime gameTime,BoundingSphere player)
+        public void Update(GameTime gameTime,Player player)
         {
             timeSinceLastUpdate += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastUpdate >= millisecondsPerFrame)
@@ -45,7 +45,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 finishCube.World *= Matrix.CreateRotationY(rm);
                 finishCube.World *= Matrix.CreateTranslation(finishCube.Posision);
             }
-            if (finishCube.BoundingBox.Intersects(new BoundingSphere(player.Center, 0.3f)))
+            if (finishCube.BoundingBox.Intersects(new BoundingSphere(player.position, 0.3f)) && player.allKeysCollected)
             {
                 gameManager.ResetGame = true;
             }

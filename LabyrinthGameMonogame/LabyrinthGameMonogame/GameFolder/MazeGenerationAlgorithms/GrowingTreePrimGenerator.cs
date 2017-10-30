@@ -1,4 +1,5 @@
 ﻿using LabyrinthGameMonogame.Enums;
+using LabyrinthGameMonogame.GameFolder.Enteties;
 using LabyrinthGameMonogame.Utils.Randomizers;
 using Microsoft.Xna.Framework;
 using System;
@@ -18,6 +19,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         public Vector3 exitpoint { get; private set; }
         public UInt16 width { get; private set; }
         public UInt16 height { get; private set; }
+        public List<Vector3> keys { get; private set; }
         IRandomizer rnd;
         IGameManager gameManager;
 
@@ -27,6 +29,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
 
         public GrowingTreePrimGenerator( Game game, UInt16 startx = 0, UInt16 starty = 0)
         {
+            keys = new List<Vector3>();
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
             rnd = new LabirynthRandomizer();
             this.width = (UInt16)gameManager.DifficultyLevel;
@@ -68,6 +71,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
 
         public void CreateMaze()
         {
+            keys.Clear();
             this.width = (UInt16)gameManager.DifficultyLevel;
             this.height = (UInt16)gameManager.DifficultyLevel;
             Maze = BuildBaseMaze(width, height);
@@ -134,19 +138,30 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             List<Point> points = GetSuitableStartFinishPoint();
             
             int start = rnd.Roll(0, points.Count);
-            int finish;
-            do
-            {
-                finish = rnd.Roll(0, points.Count);
-            } while (start == finish);
             Maze[points[start].X, points[start].Y] = (int)LabiryntElement.Start;
+            spawnpoint = new Vector3(points[start].X, 0, points[start].Y);
+            points.RemoveAt(start);
+
+            int finish = rnd.Roll(0, points.Count);
             Maze[points[finish].X, points[finish].Y] = (int)LabiryntElement.Finish;
-            
-            
-            spawnpoint = new Vector3(points[start].X,0, points[start].Y);
-            exitpoint = new Vector3(points[finish].X,0 , points[finish].Y);
+            exitpoint = new Vector3(points[finish].X, 0, points[finish].Y);
+            points.RemoveAt(finish);
+
+            int key = rnd.Roll(0, points.Count);
+            Maze[points[key].X, points[key].Y] = (int)LabiryntElement.Key;
+            keys.Add(new Vector3(points[key].X, 0, points[key].Y));
+            points.RemoveAt(key);
+
+            if (points.Count > 0)
+            {
+                key = rnd.Roll(0, points.Count);
+                Maze[points[key].X, points[key].Y] = (int)LabiryntElement.Key;
+                keys.Add(new Vector3(points[key].X, 0, points[key].Y));
+                points.RemoveAt(key);
+            }
+
             points.Clear();
-            //Display();
+            Display();
         }
 
         private List<Point> GetSuitableStartFinishPoint()

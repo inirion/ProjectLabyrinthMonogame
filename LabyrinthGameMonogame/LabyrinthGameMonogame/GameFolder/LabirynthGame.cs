@@ -26,17 +26,26 @@ namespace LabyrinthGameMonogame.GameFolder
         BoundingFrustum frustum;
         BasicEffect basicEffect;
         Finish finishPoint;
+        List<Key> keys;
 
         public LabirynthGame(Game game)
         {
+            keys = new List<Key>();
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 TextureEnabled = true,
                 World = Matrix.Identity,
-                PreferPerPixelLighting = false
+                PreferPerPixelLighting = true
             };
-            
+
             basicEffect.EnableDefaultLighting();
+            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 0);
+            basicEffect.DirectionalLight1.Enabled = true;
+            basicEffect.DirectionalLight2.Enabled = true;
+            //basicEffect.AmbientLightColor = new Vector3(0.2f, 0.2f, 0.2f);
+            //basicEffect.EmissiveColor = new Vector3(1, 0, 0);
+
             AssetHolder.Instance.MusicInstance.IsLooped = true;
             this.game = game;
             gameManager = (IGameManager)game.Services.GetService(typeof(IGameManager));
@@ -45,18 +54,15 @@ namespace LabyrinthGameMonogame.GameFolder
             labirynth = new LabirynthCreator(game);
             player = new Player(new Vector3(), 1.0f,game);
             finish = new Vector3();
-            ground = new Ground(new Vector3(0, -0.1f, 0), new Vector3(0, 0, 0), new Vector3(1, 0.01f, 0.2f),game);
-            ground.setupModel();
             if(gameManager.Type == LabiryntType.Recursive)
                 CollisionChecker.Instance.Walls = labirynth.ModelMap;
             else if (gameManager.Type == LabiryntType.Prim)
                 CollisionChecker.Instance.VertexWalls = labirynth.VertexMap;
 
-            anglex = ground.Scale.X;
-            angley = ground.Scale.Y;
-            anglez = ground.Scale.Z;
             skyBox = new SkyBox(new Vector3((float)DifficultyLevel.Hard / 2, (float)DifficultyLevel.Hard / 2, 0), new Vector3(90,0,0), new Vector3(1f));
             finishPoint = new Finish(finish, game.GraphicsDevice,game);
+            keys = labirynth.GetKeys(gameManager.Type,game.GraphicsDevice,game);
+            ground = new Ground(game,labirynth.GroundMap);
         }
 
         public void ResetGame()
@@ -65,7 +71,7 @@ namespace LabyrinthGameMonogame.GameFolder
             {
                 if (gameManager.Type == LabiryntType.Recursive)
                 {
-                    labirynth.CreateModelMap();
+                    labirynth.CreateModelMap(game);
                     CollisionChecker.Instance.Walls = labirynth.ModelMap;
                     player.Reset(labirynth.GetStartingPositionModelMap(), game);
                     finish = labirynth.GetFinishPositionModelMap();
@@ -85,23 +91,13 @@ namespace LabyrinthGameMonogame.GameFolder
                    
                 }
                 finishPoint.SetFinishPoint(new Vector3(finish.X,0.3f,finish.Z));
+                keys = labirynth.GetKeys(gameManager.Type, game.GraphicsDevice, game);
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
+                ground = new Ground(game,labirynth.GroundMap);
+                CollisionChecker.Instance.Floor = ground.GroundObjects;
                 gameManager.ResetGame = false;
                 //coords x, z, y
-                switch (gameManager.DifficultyLevel)
-                {
-                    case DifficultyLevel.Easy:
-                        ground.Scale = new Vector3(1.25f, 0.01f, 0.55f);
-                        break;
-                    case DifficultyLevel.Medium:
-                        ground.Scale = new Vector3(1.25f * 2, 0.01f, 0.55f * 2);
-                        break;
-                    case DifficultyLevel.Hard:
-                        ground.Scale = new Vector3(1.25f * 3, 0.01f, 0.55f * 3);
-                        break;
-                }
-                ground.Position = new Vector3((int)gameManager.DifficultyLevel, -0.04f, (int)gameManager.DifficultyLevel);
-                ground.setupModel();
+                
             }
         }
 
@@ -122,11 +118,11 @@ namespace LabyrinthGameMonogame.GameFolder
                     labirynth.VertexMap.ForEach(i => i.changeTexture());
                 }
             }
-            player.Update(gameTime);
+            player.Update(gameTime,ref keys);
+            keys.ForEach(i => i.Update(gameTime));
+            finishPoint.Update(gameTime,player);
 
-            finishPoint.Update(gameTime,player.BoundingSphere);
-
-            ground.setupModel();
+            ground.Update(gameTime,player);
             if (gameManager.Type == LabiryntType.Prim)
             {
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
@@ -137,22 +133,22 @@ namespace LabyrinthGameMonogame.GameFolder
         }
 
 
-        void DrawGroud(Ground ground)
-        {
-            foreach (var mesh in ground.Model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = true;
+        //void DrawGroud(Ground ground)
+        //{
+        //    foreach (var mesh in ground.Model.Meshes)
+        //    {
+        //        foreach (BasicEffect effect in mesh.Effects)
+        //        {
+        //            effect.EnableDefaultLighting();
+        //            effect.PreferPerPixelLighting = true;
 
-                    effect.World = ground.WorldMatrix;
-                    effect.View = player.Camera.View;
-                    effect.Projection = player.Camera.Projection;
-                }
-                mesh.Draw();
-            }
-        }
+        //            effect.World = ground.WorldMatrix;
+        //            effect.View = player.Camera.View;
+        //            effect.Projection = player.Camera.Projection;
+        //        }
+        //        mesh.Draw();
+        //    }
+        //}
 
         public void Draw()
         {
@@ -169,9 +165,11 @@ namespace LabyrinthGameMonogame.GameFolder
                 {
                     labirynth.ModelMap.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection));
                 }
+                keys.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection, basicEffect));
                 skyBox.Draw(player.Camera.View, player.Camera.Projection);
                 finishPoint.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
-                DrawGroud(ground);
+                ground.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
+                //DrawGroud(ground);
             }
         }
     }

@@ -69,7 +69,6 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 //graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, bbot, 0, 2);
                 graphic.DrawUserPrimitives<VertexPositionNormalTexture>(PrimitiveType.TriangleList, vertices, 0, 12);
             }
-
         }
 
         public void Update(GameTime gameTime)
