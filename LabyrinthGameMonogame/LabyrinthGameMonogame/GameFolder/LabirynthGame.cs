@@ -69,6 +69,7 @@ namespace LabyrinthGameMonogame.GameFolder
         {
             if (gameManager.ResetGame)
             {
+
                 if (gameManager.Type == LabiryntType.Recursive)
                 {
                     labirynth.CreateModelMap(game);

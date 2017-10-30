@@ -45,9 +45,9 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             }
             if(type == LabiryntType.Recursive)
             {
-                for (int i = 0; i < primGenerator.keys.Count; i++)
+                for (int i = 0; i < recursiveGenerator.keys.Count; i++)
                 {
-                    keys.Add(new Key(primGenerator.keys[i], gd, game));
+                    keys.Add(new Key(recursiveGenerator.keys[i], gd, game));
                 }
             }
             return keys;
