@@ -106,12 +106,12 @@ namespace LabyrinthGameMonogame.Factories
         public static List<Button> CreateLoadingButtons()
         {
             List<Button> buttons = new List<Button>();
-            buttons.Add(new Button("Controls", ScreenTypes.Info, AssetHolder.Instance.Font, false));
-            buttons.Add(new Button("    W - Foword", ScreenTypes.Info, AssetHolder.Instance.Font, false));
-            buttons.Add(new Button("A - Left    D - Right", ScreenTypes.Info, AssetHolder.Instance.Font, false));
-            buttons.Add(new Button("    S - Backwards", ScreenTypes.Info, AssetHolder.Instance.Font, false));
-            buttons.Add(new Button("Shift - Sprint", ScreenTypes.Info, AssetHolder.Instance.Font, false));
-            buttons.Add(new Button("Space - Jump", ScreenTypes.Info, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("Controls", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("    W - Foword", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("A - Left    D - Right", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("    S - Backwards", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("Shift - Sprint", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, false));
+            buttons.Add(new Button("Space - Jump", ScreenTypes.LoadingScreen, AssetHolder.Instance.Font, false));
 
             return buttons;
         }

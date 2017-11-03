@@ -26,7 +26,8 @@ namespace LabyrinthGameMonogame.InputControllers
                 {KeyboardKeys.Y,Keys.Y },
                 {KeyboardKeys.Z,Keys.Z },
                 {KeyboardKeys.LeftShift,Keys.LeftShift },
-                {KeyboardKeys.Jump,Keys.Space }
+                {KeyboardKeys.Jump,Keys.Space },
+                {KeyboardKeys.Map,Keys.M }
 
             };
             Update();

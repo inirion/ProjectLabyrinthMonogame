@@ -2,9 +2,6 @@
 using LabyrinthGameMonogame.Utils.Randomizers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System;
 
 namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
 {
@@ -277,7 +274,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
 
             List<Point> points = GetSuitableStartFinishPoint();
             
-            for (int i = 0; i < calculatedSize; i++)
+            /*for (int i = 0; i < calculatedSize; i++)
             {
                 for (int j = 0; j < calculatedSize; j++)
                 {
@@ -314,6 +311,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             }
             Debug.WriteLine("");
             Debug.WriteLine("");
+            */
             int start = rnd.Roll(0, points.Count);
             int finish;
             do
@@ -324,7 +322,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             maze[points[finish].X, points[finish].Y] = (int)LabiryntElement.Finish;
             spawnpoint = new Vector3(points[start].X, 0, points[start].Y);
             exitpoint = new Vector3(points[finish].X, 0, points[finish].Y);
-
+            /*
             for (int i = 0; i < calculatedSize; i++)
             {
                 for (int j = 0; j < calculatedSize; j++)
@@ -362,7 +360,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             }
             Debug.WriteLine("");
             Debug.WriteLine("");
-
+            */
            
         }
 

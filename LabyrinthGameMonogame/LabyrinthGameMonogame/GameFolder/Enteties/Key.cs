@@ -16,6 +16,10 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
         private float angle;
         private double timeSinceLastUpdate;
         private IGameManager gameManager;
+        public Vector2 Position { get
+            {
+                return keyObject.Position2D;
+            } }
         GraphicsDevice graphicsDevice;
 
 

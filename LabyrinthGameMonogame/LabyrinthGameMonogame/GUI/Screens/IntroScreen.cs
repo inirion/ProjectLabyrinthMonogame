@@ -3,11 +3,13 @@ using LabyrinthGameMonogame.Factories;
 using LabyrinthGameMonogame.GUI.Buttons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace LabyrinthGameMonogame.GUI.Screens
 {
     class IntroScreen : ScreenDrawable
     {
+
         private double timeToDisplay;
         private float procentage;
         private float zoom;

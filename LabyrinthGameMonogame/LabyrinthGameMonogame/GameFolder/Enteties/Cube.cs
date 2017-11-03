@@ -41,7 +41,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             index = 0;
             Size = size;
             Posision = position;
-            Position2D = Position2D;
+            Position2D = new Vector2(position.X,position.Z);
             angle = 1.0f;
             this.graphic = graphic;
             World = Matrix.Identity * Matrix.CreateTranslation(Posision);

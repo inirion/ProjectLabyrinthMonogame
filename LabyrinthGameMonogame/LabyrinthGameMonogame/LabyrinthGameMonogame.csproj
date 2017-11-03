@@ -64,6 +64,7 @@
     <Compile Include="GameFolder\LabirynthGame.cs" />
     <Compile Include="GameFolder\MazeGenerationAlgorithms\GrowingTreePrimGenerator.cs" />
     <Compile Include="GameFolder\MazeGenerationAlgorithms\RecursiveBacktrackGenerator.cs" />
+    <Compile Include="GameFolder\Minimap.cs" />
     <Compile Include="GUI\Buttons\Button.cs" />
     <Compile Include="GUI\Screens\ExitScreen.cs" />
     <Compile Include="GUI\Screens\GameOptionScreen.cs" />

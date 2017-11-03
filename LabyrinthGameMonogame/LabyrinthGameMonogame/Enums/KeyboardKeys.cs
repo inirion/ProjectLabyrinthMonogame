@@ -10,6 +10,7 @@
         Confirm,
         X,Y,Z, LeftShift,
         Jump,
-        None
+        None,
+        Map
     }
 }

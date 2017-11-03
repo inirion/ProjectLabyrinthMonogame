@@ -17,7 +17,19 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         List<Cube> groundMap;
 
         Vector2 size;
-
+        public int[,] getMap(LabiryntType type)
+        {
+            int[,] map = new int[1,1];
+            if (type == LabiryntType.Prim)
+            {
+                map = primGenerator.Maze;
+            }
+            if (type == LabiryntType.Recursive)
+            {
+                map = recursiveGenerator.Maze;
+            }
+            return map;
+        }
 
         public LabirynthCreator(Game game) {
             primGenerator = new GrowingTreePrimGenerator(game);

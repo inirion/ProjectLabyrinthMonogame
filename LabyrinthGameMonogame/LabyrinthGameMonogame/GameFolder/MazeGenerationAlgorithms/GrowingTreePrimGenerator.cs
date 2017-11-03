@@ -1,5 +1,4 @@
 ﻿using LabyrinthGameMonogame.Enums;
-using LabyrinthGameMonogame.GameFolder.Enteties;
 using LabyrinthGameMonogame.Utils.Randomizers;
 using Microsoft.Xna.Framework;
 using System;
@@ -14,7 +13,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
     public enum Direction : byte { North = 0x1, West = 0x2, South = 0x4, East = 0x8 };
     class GrowingTreePrimGenerator
     {
-        public Byte[,] Maze { get; private set; }
+        public int[,] Maze { get; private set; }
         public Vector3 spawnpoint { get; private set; }
         public Vector3 exitpoint { get; private set; }
         public UInt16 width { get; private set; }
@@ -48,9 +47,9 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         }
 
 
-        public Byte[,] BuildBaseMaze(UInt16 width, UInt16 length)
+        public int[,] BuildBaseMaze(UInt16 width, UInt16 length)
         {
-            Byte[,] maze = new Byte[width, length];
+            int[,] maze = new int[width, length];
 
             return maze;
         }
@@ -165,7 +164,7 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
             }
 
             points.Clear();
-            Display();
+            //Display();
         }
 
         private List<Point> GetSuitableStartFinishPoint()
@@ -332,16 +331,16 @@ namespace LabyrinthGameMonogame.GameFolder.MazeGenerationAlgorithms
         }
 
 
-        public Byte[,] LineToBlock()
+        public int[,] LineToBlock()
         {
-            Byte[,] blockmaze;
+            int[,] blockmaze;
 
             if (Maze == null || Maze.GetLength(0) <= 1 && Maze.GetLength(1) <= 1)
             {
                 return null;
             }
 
-            blockmaze = new Byte[2 * Maze.GetLength(0) + 1, 2 * Maze.GetLength(1) + 1];
+            blockmaze = new int[2 * Maze.GetLength(0) + 1, 2 * Maze.GetLength(1) + 1];
 
             for (UInt16 wall = 0; wall < 2 * Maze.GetLength(1) + 1; wall++)
             {

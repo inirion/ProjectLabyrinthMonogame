@@ -27,6 +27,7 @@ namespace LabyrinthGameMonogame.GameFolder
         BasicEffect basicEffect;
         Finish finishPoint;
         List<Key> keys;
+        Minimap minimap;
 
         public LabirynthGame(Game game)
         {
@@ -53,7 +54,7 @@ namespace LabyrinthGameMonogame.GameFolder
             screenManager = (IScreenManager)game.Services.GetService(typeof(IScreenManager));
             controlManager = (IControlManager)game.Services.GetService(typeof(IControlManager));
             labirynth = new LabirynthCreator(game);
-            player = new Player(new Vector3(), 1.0f,game);
+            player = new Player(new Vector3(), 2.0f,game);
             finish = new Vector3();
             if(gameManager.Type == LabiryntType.Recursive)
                 CollisionChecker.Instance.Walls = labirynth.ModelMap;
@@ -64,6 +65,7 @@ namespace LabyrinthGameMonogame.GameFolder
             finishPoint = new Finish(finish, game.GraphicsDevice,game);
             keys = labirynth.GetKeys(gameManager.Type,game.GraphicsDevice,game);
             ground = new Ground(game,labirynth.GroundMap);
+            minimap = new Minimap(labirynth.getMap(gameManager.Type), game,screenManager);
         }
 
         public void ResetGame()
@@ -96,10 +98,10 @@ namespace LabyrinthGameMonogame.GameFolder
                 frustum = new BoundingFrustum(player.Camera.View * player.Camera.Projection);
                 ground = new Ground(game,labirynth.GroundMap);
                 CollisionChecker.Instance.Floor = ground.GroundObjects;
+                minimap.Reset(labirynth.getMap(gameManager.Type), game, screenManager);
                 gameManager.ResetGame = false;
-                
+               
                 //coords x, z, y
-
             }
         }
 
@@ -120,7 +122,7 @@ namespace LabyrinthGameMonogame.GameFolder
                     labirynth.VertexMap.ForEach(i => i.changeTexture());
                 }
             }
-            player.Update(gameTime,ref keys);
+            player.Update(gameTime, ref keys, minimap);
             keys.ForEach(i => i.Update(gameTime));
             finishPoint.Update(gameTime,player,screenManager);
 
@@ -132,6 +134,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 visible.ForEach(i => i.Update(gameTime));
             }
             skyBox.Update(gameTime);
+            minimap.Update(controlManager);
         }
 
 
@@ -172,6 +175,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 finishPoint.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
                 ground.Draw(player.Camera.View, player.Camera.Projection, basicEffect);
                 keys.ForEach(i => i.Draw(player.Camera.View, player.Camera.Projection, basicEffect));
+                minimap.Draw(new Vector2(player.position.X, player.position.Z));
                 //DrawGroud(ground);
             }
         }

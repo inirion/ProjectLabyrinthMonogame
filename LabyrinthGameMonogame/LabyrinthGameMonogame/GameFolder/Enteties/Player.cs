@@ -42,7 +42,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
             this.camera = new Camera(this.position, new Vector3(0, 0, 0), movementSpeed, movementSpeed * 1.5f, game);
             BoundingSphere = new BoundingSphere(position, 0.1f);
         }
-        public void Update(GameTime gameTime,ref List<Key> keys)
+        public void Update(GameTime gameTime,ref List<Key> keys, Minimap minimap)
         {
             if (keys.Count == 0) allKeysCollected = true;
             else allKeysCollected = false;
@@ -63,6 +63,7 @@ namespace LabyrinthGameMonogame.GameFolder.Enteties
                 {
                     AssetHolder.Instance.KeyPickupfMusicInstance.Play();
                     this.keys.Add(keys[i]);
+                    minimap.Reset(keys[i].Position);
                     keys.RemoveAt(i);
                 }
             }
