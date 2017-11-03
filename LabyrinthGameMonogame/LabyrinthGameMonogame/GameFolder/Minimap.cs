@@ -15,9 +15,13 @@ namespace LabyrinthGameMonogame.GameFolder
         private Texture2D finish;
         SpriteBatch spriteBatch;
         private bool toggle;
+        private double timeToDisplay;
+        int timesUsed;
 
         public Minimap(int[,] map, Game game, IScreenManager screenManager)
         {
+            timesUsed = 0;
+            timeToDisplay = 4;
             toggle = false;
             spriteBatch = new SpriteBatch(game.GraphicsDevice);
             int sizeX = (int)screenManager.Dimensions.X / map.GetLength(0);
@@ -67,25 +71,39 @@ namespace LabyrinthGameMonogame.GameFolder
             for (int i = 0; i < data.Length; ++i) data[i] = Color.Red;
             finish.SetData(data);
             this.map = map;
+            timeToDisplay = 2;
+            timesUsed = 0;
         }
         public void Reset(Vector2 key)
         {
             this.map[(int)key.X,(int)key.Y] = (int)LabiryntElement.Road;
         }
 
-        public void Update(IControlManager control)
+        public void Update(IControlManager control, GameTime gameTime)
         {
-            if (control.Keyboard.Clicked(KeyboardKeys.Map)){
-                toggle = !toggle;
+            if (control.Keyboard.Clicked(KeyboardKeys.Map))
+            {
+                toggle = true;
+            }
+            if (toggle)
+            {
+                timeToDisplay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (timeToDisplay <= 0)
+                {
+                    timesUsed++;
+                    toggle = !toggle;
+                    timeToDisplay = 4;
+                }
             }
         }
 
         public void Draw(Vector2 playerPosition)
         {
-            Vector2 pos = new Vector2(playerPosition.X * wall.Width + wall.Width/2 + player.Width, playerPosition.Y * wall.Height + wall.Height/ 2 + player.Height);
+            
             spriteBatch.Begin();
-            if (toggle)
+            if (toggle && timesUsed <=2)
             {
+                Vector2 pos = new Vector2(playerPosition.X * wall.Width + wall.Width / 2 + player.Width, playerPosition.Y * wall.Height + wall.Height / 2 + player.Height);
                 for (int i = 0; i < map.GetLength(0); i++)
                 {
                     for (int j = 0; j < map.GetLength(1); j++)

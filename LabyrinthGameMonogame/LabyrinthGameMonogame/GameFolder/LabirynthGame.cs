@@ -134,7 +134,7 @@ namespace LabyrinthGameMonogame.GameFolder
                 visible.ForEach(i => i.Update(gameTime));
             }
             skyBox.Update(gameTime);
-            minimap.Update(controlManager);
+            minimap.Update(controlManager,gameTime);
         }
 
 
